@@ -6,46 +6,51 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   width:1200px;height:630px;overflow:hidden;
-  background:#0E141E;color:#E9EEF4;
+  background:
+    radial-gradient(circle at 35% 42%, rgba(53,255,177,.18), transparent 30%),
+    linear-gradient(135deg,#07120F 0%,#0D1725 58%,#12101D 100%);
+  color:#E9FFF4;
   font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
   display:flex;align-items:center;
 }
-.serif{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif}
-.mono{font-family:ui-monospace,"SF Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
-.left{flex:1.1;padding:0 0 0 84px;position:relative;z-index:2}
-.brand{display:flex;align-items:center;gap:12px;margin-bottom:44px}
-.swatch{width:20px;height:20px;background:#F0A63A;border-radius:4px}
-.brand b{font-size:28px;font-weight:600;letter-spacing:.08em}
-.brand span{font-size:13px;color:#93A1B3;letter-spacing:.24em;margin-top:6px}
-h1{font-size:64px;font-weight:600;line-height:1.42;letter-spacing:.02em;margin-bottom:30px}
-h1 em{font-style:normal;color:#F0A63A}
-.meter{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
-.meter .big{font-size:40px}
-.meter .big b{color:#F0A63A;font-weight:700}
-.meter .pct{font-size:20px;color:#93A1B3}
-.pill{display:inline-block;font-size:19px;letter-spacing:.1em;color:#F0A63A;border:2px solid #F0A63A;border-radius:999px;padding:10px 28px}
-.right{flex:1;height:630px;position:relative}
-.right svg{position:absolute;top:-30px;left:-130px;width:800px;height:800px}
-.prefecture{fill:#18212D;stroke:#2E3B4C;stroke-width:1}
-.prefecture.on{fill:#F0A63A;stroke:#D4881B}
-.boundary-line{display:none}
+.map{
+  width:690px;height:630px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;padding:24px 0 24px 54px;
+}
+.map:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 55%,rgba(7,18,15,.74));
+  pointer-events:none;
+}
+.map svg{width:610px;height:auto;max-height:590px;filter:drop-shadow(0 0 22px rgba(53,255,177,.18))}
+.tm-sea{fill:#071C24}
+.tm-land path{fill:#10251F;stroke:#214436;stroke-width:1}
+.tm-route{fill:none;stroke:#3BFFB0;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(59,255,176,.85))}
+.tm-dot{fill:#FFD45A;stroke:#07120F;stroke-width:2.4}
+.tm-label{font-size:10px;fill:#E9FFF4;stroke:#07120F;stroke-width:3;paint-order:stroke}
+.copy{width:510px;padding:0 72px 0 14px;position:relative;z-index:2}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:42px}
+.mark{width:34px;height:34px;border-radius:8px;background:#3BFFB0;color:#07120F;display:grid;place-items:center;font-weight:900}
+.brand b{font-size:32px;font-weight:800;letter-spacing:.08em}
+.brand span{font-size:13px;color:#86B69E;letter-spacing:.24em;margin-top:6px}
+h1{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:58px;line-height:1.36;letter-spacing:0;margin-bottom:24px}
+h1 em{font-style:normal;color:#3BFFB0}
+p{font-size:24px;line-height:1.65;color:#BFE8D3;margin-bottom:34px}
+.pill{display:inline-block;font-size:20px;font-weight:900;letter-spacing:.12em;color:#07120F;background:#FFD45A;border-radius:999px;padding:12px 30px}
+.stats{display:flex;gap:14px;margin-bottom:20px}
+.stats span{border:1px solid rgba(59,255,176,.45);background:rgba(59,255,176,.08);border-radius:999px;padding:7px 15px;font:700 18px/1 ui-monospace,"SF Mono",Consolas,monospace;color:#E9FFF4}
 </style>
 </head>
 <body>
-  <div class="left">
-    <div class="brand"><span class="swatch"></span><b class="serif">塗り旅</b><span>NURITABI</span></div>
-    <h1 class="serif">行った場所で、<br>日本を<em>塗れ</em>。</h1>
-    <div class="meter mono"><span class="big"><b>07</b> / 47</span><span class="pct">14.9%</span></div>
+  <div class="map">
+    <!--TRIP_MAP_SVG-->
+  </div>
+  <div class="copy">
+    <div class="brand"><span class="mark">塗</span><b>塗り旅</b><span>NURITABI</span></div>
+    <h1>ピンをつないで、<br>旅を<em>一枚の地図</em>に。</h1>
+    <div class="stats"><span>5 DAYS</span><span>26 SPOTS</span><span>1,140 KM</span></div>
+    <p>実際の東北旅行データを、道なりルートとスポットのピンで再生。</p>
     <span class="pill">β事前登録 受付中</span>
   </div>
-  <div class="right">
-    <!--JAPAN_MAP_SVG-->
-  </div>
-<script>
-  [11,9,7,6,4,3,2].forEach(function(c){
-    var g=document.querySelector('.prefecture[data-code="'+c+'"]');
-    if(g)g.classList.add("on");
-  });
-</script>
 </body>
 </html>

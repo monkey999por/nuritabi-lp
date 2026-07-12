@@ -1,206 +1,154 @@
 // 塗り旅 LP 共通コア（全バリアント共通・build.mjs が <!--CORE_JS--> に注入する）
-// 必須 DOM: #mapbox(中に地図SVG) #mapCaption #cnt #pct #gauge>i #rank #shareX
-// 任意 DOM: #mapCta #joinLede
-// 文言の上書き: ページ側で window.NURITABI_THEME = { rank(n), msg(n), demoCaption, share(n,pct,rank), joinLede(n) }
+// 必須 DOM: #tripbox(中に trip-map.svg) #tmDay #tmSpots #tmKm #tmCaption
 (function(){
   "use strict";
+
   var VARIANTS=__VARIANT_COUNT__; // build.mjs が実数に置換
-  var NAMES={1:"北海道",2:"青森県",3:"岩手県",4:"宮城県",5:"秋田県",6:"山形県",7:"福島県",8:"茨城県",9:"栃木県",10:"群馬県",11:"埼玉県",12:"千葉県",13:"東京都",14:"神奈川県",15:"新潟県",16:"富山県",17:"石川県",18:"福井県",19:"山梨県",20:"長野県",21:"岐阜県",22:"静岡県",23:"愛知県",24:"三重県",25:"滋賀県",26:"京都府",27:"大阪府",28:"兵庫県",29:"奈良県",30:"和歌山県",31:"鳥取県",32:"島根県",33:"岡山県",34:"広島県",35:"山口県",36:"徳島県",37:"香川県",38:"愛媛県",39:"高知県",40:"福岡県",41:"佐賀県",42:"長崎県",43:"熊本県",44:"大分県",45:"宮崎県",46:"鹿児島県",47:"沖縄県"};
+  var TOTAL_KM=1140;
+  var FINAL_CAPTION="5日間・26スポット・1,140km — 旅行がまるごと、一枚の記録になった。";
+  var START_CAPTION="2026年4月・東北 5日間 — これは実際の旅行データ。";
+  var DAY_CAPTIONS={
+    1:"1日目、最初のピンを立てる。",
+    2:"2日目、海沿いのスポットを道なりにつなぐ。",
+    3:"3日目、立ち寄りが線になって伸びていく。",
+    4:"4日目、ピンとルートが旅の密度を上げる。",
+    5:"5日目、最後のスポットまで記録する。"
+  };
 
-  // ── バリアント別の文言（未定義はデフォルト） ──
-  var T=window.NURITABI_THEME||{};
-  function defRank(n){
-    var b;
-    if(n===0)b="まっさら";
-    else if(n<5)b="旅のたまご";
-    else if(n<10)b="旅のはじまり";
-    else if(n<20)b="週末の塗り師";
-    else if(n<30)b="本格塗り師";
-    else if(n<40)b="日本を巡る者";
-    else if(n<47)b="制覇まであと"+(47-n)+"県";
-    else b="全国制覇";
-    return "称号: "+b;
-  }
-  function defMsg(n){
-    if(n===0)return "行った県をタップ。（本番はスポット＝ピン単位。ここでは県でお試し）";
-    if(n<10)return "まだ日本は広い。";
-    if(n<20)return "いい旅、してますね。";
-    if(n<35)return "かなりの塗り師。";
-    if(n<47)return "全国制覇が見えてきた。";
-    return "全国制覇。次は市区町村単位で。";
-  }
-  function defShare(n,p,rank){
-    return "私の日本制覇率は "+n+"/47（"+p+"%）、称号は「"+rank.replace(/^称号: /,"")+"」。あなたの地図は、どこまで塗れてる？ #塗り旅";
-  }
-  function defJoinLede(n){
-    if(n===0)return "2026年内のβ公開を目指して開発中。事前登録いただいた方から順に招待します。";
-    if(n<47)return "あなたの地図、残り "+(47-n)+" 県。ぜんぶ塗りに行こう——β公開の招待を受け取ってください。";
-    return "47都道府県、制覇済みのあなたへ。次は市区町村、約1,700ピースの地図で。";
-  }
-  var rank=T.rank||defRank, msg=T.msg||defMsg, share=T.share||defShare,
-      joinLedeText=T.joinLede||defJoinLede,
-      demoCaption=T.demoCaption||"たとえば、東北一周 1,600km の旅。";
+  var reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var box=document.getElementById("tripbox");
+  var dayEl=document.getElementById("tmDay");
+  var spotsEl=document.getElementById("tmSpots");
+  var kmEl=document.getElementById("tmKm");
+  var capEl=document.getElementById("tmCaption");
 
-  // ── 要素 ──
-  var box=document.getElementById("mapbox");
-  var prefs=box?box.querySelectorAll(".prefecture"):[];
-  var cnt=document.getElementById("cnt"),pct=document.getElementById("pct"),
-      gauge=document.querySelector("#gauge i")||document.getElementById("gauge"),
-      cap=document.getElementById("mapCaption"),
-      cta=document.getElementById("mapCta"),rankEl=document.getElementById("rank"),
-      shareEl=document.getElementById("shareX"),joinLede=document.getElementById("joinLede");
-  var LP_URL=(function(){
-    var m=document.querySelector('meta[property="og:url"]');
-    return (m&&m.content)||location.href.split("#")[0];
-  })();
-  var KEY="nuritabi.painted"; // 全バリアント共通: デザインが変わっても塗りは引き継がれる
-  var demoDone=false;
+  function setText(el,text){if(el)el.textContent=text}
+  function sleep(ms){return new Promise(function(resolve){setTimeout(resolve,ms)})}
+  function dayOf(el){return +(el&&el.getAttribute("data-day")||1)}
 
-  function loadSaved(){
-    try{
-      var v=JSON.parse(localStorage.getItem(KEY)||"[]");
-      return Array.isArray(v)?v:[];
-    }catch(e){return []}
-  }
-  function save(){
-    try{
-      var codes=[].map.call(box.querySelectorAll(".prefecture.on"),function(g){
-        return +g.getAttribute("data-code");
-      });
-      localStorage.setItem(KEY,JSON.stringify(codes));
-    }catch(e){}
-  }
-  function painted(){return box.querySelectorAll(".prefecture.on").length}
-  function update(){
-    var n=painted(),p=(n/47*100).toFixed(1);
-    if(cnt)cnt.textContent=(n<10?"0":"")+n;
-    if(pct)pct.textContent=p+"%";
-    if(gauge)gauge.style.width=(n/47*100)+"%";
-    if(rankEl)rankEl.textContent=rank(n);
-    if(shareEl)shareEl.href="https://x.com/intent/post?text="+encodeURIComponent(share(n,p,rank(n)))+"&url="+encodeURIComponent(LP_URL);
-    if(demoDone){
-      if(cap)cap.innerHTML="<b></b>",cap.firstChild.textContent=msg(n);
-      if(shareEl)shareEl.classList.toggle("show",n>0);
-      if(cta&&n>0)cta.classList.add("show");
-      if(joinLede){var t=joinLedeText(n);if(t)joinLede.textContent=t}
-    }
-  }
-  prefs.forEach(function(g){
-    var code=+g.getAttribute("data-code");
-    g.setAttribute("role","button");
-    g.setAttribute("tabindex","0");
-    g.setAttribute("aria-label",NAMES[code]||"");
-    function toggle(){g.classList.toggle("on");clearDemoArt();demoDone=true;update();save()}
-    g.addEventListener("click",toggle);
-    g.addEventListener("keydown",function(e){
-      if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}
-    });
-  });
+  function initTripPlayback(){
+    if(!box)return;
+    var pins=[].slice.call(box.querySelectorAll(".tm-pin"));
+    var routes=[].slice.call(box.querySelectorAll(".tm-route"));
+    if(!pins.length||!routes.length)return;
 
-  // 復元: 塗った地図は localStorage 共有。再訪・バリアント切替でもそのまま出る
-  var saved=loadSaved();
-  var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function byCode(c){return box.querySelector('.prefecture[data-code="'+c+'"]')}
-  function routeSvg(){return box&&box.querySelector("svg")}
-  function clearDemoArt(){
-    var svg=routeSvg();
-    if(!svg)return;
-    [].forEach.call(svg.querySelectorAll(".route-line"),function(line){line.remove()});
-    [].forEach.call(svg.querySelectorAll(".spot-pin"),function(pin){pin.remove()});
-  }
-  function clearRouteLines(){
-    clearDemoArt();
-  }
-  function prefCenter(g){
-    var svg=routeSvg();
-    if(!svg||!g||!g.getBBox||!g.getCTM||!svg.getCTM)return null;
-    var b=g.getBBox(),pt=svg.createSVGPoint();
-    pt.x=b.x+b.width/2; pt.y=b.y+b.height/2;
-    var m=svg.getCTM();
-    if(!m)return null;
-    var toRoot=m.inverse().multiply(g.getCTM());
-    return pt.matrixTransform(toRoot);
-  }
-  function demoPaintColor(g){
-    return g?getComputedStyle(g).fill:"currentColor";
-  }
-  function drawSpotPin(g){
-    var svg=routeSvg(),p=prefCenter(g);
-    if(!svg||!p)return null;
-    var pin=document.createElementNS("http://www.w3.org/2000/svg","circle");
-    pin.setAttribute("class","spot-pin");
-    pin.setAttribute("cx",p.x);
-    pin.setAttribute("cy",p.y);
-    pin.setAttribute("r","5");
-    pin.setAttribute("fill",demoPaintColor(g));
-    pin.setAttribute("stroke","#fff");
-    pin.setAttribute("stroke-width","1.5");
-    pin.setAttribute("opacity","0.95");
-    pin.setAttribute("pointer-events","none");
-    svg.appendChild(pin);
-    setTimeout(function(){if(pin.parentNode)pin.setAttribute("r","8")},20);
-    setTimeout(function(){if(pin.parentNode)pin.setAttribute("r","5")},150);
-    return {x:p.x,y:p.y,el:pin};
-  }
-  function drawRouteLine(from,to,color){
-    var svg=routeSvg();
-    if(!svg||!from||!to)return;
-    var line=document.createElementNS("http://www.w3.org/2000/svg","line");
-    line.setAttribute("class","route-line");
-    line.setAttribute("x1",from.x);
-    line.setAttribute("y1",from.y);
-    line.setAttribute("x2",to.x);
-    line.setAttribute("y2",to.y);
-    line.setAttribute("stroke",color);
-    line.setAttribute("stroke-width","3");
-    line.setAttribute("stroke-linecap","round");
-    line.setAttribute("stroke-dasharray","2 6");
-    line.setAttribute("opacity","0.9");
-    line.setAttribute("fill","none");
-    line.setAttribute("pointer-events","none");
-    var firstPin=svg.querySelector(".spot-pin");
-    if(firstPin)svg.insertBefore(line,firstPin);
-    else svg.appendChild(line);
-  }
-  if(!box||prefs.length===0){/* no map */}
-  else if(saved.length>0){
-    saved.forEach(function(c){var g=byCode(c);if(g)g.classList.add("on")});
-    demoDone=true;
-    update();
-  }
-  else if(reduced){
-    demoDone=true;
-    update();
-  }else{
-    // 初回デモ: 東北一周ドライブが塗られていく → 白紙に戻して「あなたの番」
-    var route=[11,9,7,6,4,3,2]; // 埼玉→栃木→福島→山形→宮城→岩手→青森
-    if(cap)cap.textContent=demoCaption;
-    var i=0;
-    var prev=null;
-    var t=setInterval(function(){
-      if(demoDone){clearDemoArt();clearInterval(t);return} // ユーザーが先に触ったら譲る
-      if(i<route.length){
-        var g=byCode(route[i++]);
-        if(g){
-          g.classList.add("on");
-          var pin=drawSpotPin(g);
-          if(prev&&pin)drawRouteLine(prev,pin,demoPaintColor(g));
-          if(pin)prev=pin;
+    var kmPerRoute=TOTAL_KM/routes.length;
+    var token=0;
+
+    function reset(){
+      token++;
+      pins.forEach(function(pin){pin.classList.remove("show")});
+      routes.forEach(function(route){
+        route.classList.remove("show");
+        route.style.transition="none";
+        try{
+          var len=route.getTotalLength();
+          route.style.strokeDasharray=String(len);
+          route.style.strokeDashoffset=String(len);
+        }catch(e){
+          route.style.strokeDasharray="";
+          route.style.strokeDashoffset="";
         }
-        update();
-      }else{
-        clearInterval(t);
-        setTimeout(function(){
-          if(demoDone){clearDemoArt();return}
-          prefs.forEach(function(g){g.classList.remove("on")});
-          clearDemoArt();
-          demoDone=true;
-          update();
-        },1400);
+      });
+      setText(dayEl,"1日目");
+      setText(spotsEl,"0");
+      setText(kmEl,"0");
+      setText(capEl,START_CAPTION);
+    }
+
+    function showComplete(){
+      pins.forEach(function(pin){pin.classList.add("show")});
+      routes.forEach(function(route){
+        route.classList.add("show");
+        route.style.transition="none";
+        route.style.strokeDasharray="";
+        route.style.strokeDashoffset="0";
+      });
+      setText(dayEl,"5日目");
+      setText(spotsEl,String(pins.length));
+      setText(kmEl,"1,140");
+      setText(capEl,FINAL_CAPTION);
+    }
+
+    function countKm(from,to,duration,myToken){
+      var start=performance.now();
+      return new Promise(function(resolve){
+        function tick(now){
+          if(myToken!==token){resolve();return}
+          var p=Math.min(1,(now-start)/duration);
+          var eased=1-Math.pow(1-p,3);
+          setText(kmEl,Math.round(from+(to-from)*eased).toLocaleString("ja-JP"));
+          if(p<1)requestAnimationFrame(tick);
+          else resolve();
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
+    async function play(){
+      reset();
+      var myToken=token;
+      await sleep(260);
+      var spotCount=0;
+      var km=0;
+      var routeIndex=0;
+      var maxDay=Math.max.apply(null,pins.map(dayOf).concat(routes.map(dayOf)));
+
+      for(var day=1;day<=maxDay;day++){
+        if(myToken!==token)return;
+        setText(dayEl,day+"日目");
+        setText(capEl,DAY_CAPTIONS[day]||day+"日目を記録中。");
+        var dayPins=pins.filter(function(pin){return dayOf(pin)===day});
+        var dayRoutes=routes.filter(function(route){return dayOf(route)===day});
+
+        for(var i=0;i<dayPins.length;i++){
+          if(myToken!==token)return;
+          dayPins[i].classList.add("show");
+          spotCount++;
+          setText(spotsEl,String(spotCount));
+          await sleep(i===0?360:180);
+
+          var route=dayRoutes[i];
+          if(route){
+            var len=0;
+            try{len=route.getTotalLength()}catch(e){}
+            var duration=Math.max(600,Math.min(900,len?len*2.8:720));
+            route.style.transition="none";
+            if(len){
+              route.style.strokeDasharray=String(len);
+              route.style.strokeDashoffset=String(len);
+            }
+            route.getBoundingClientRect();
+            route.classList.add("show");
+            route.style.transition="stroke-dashoffset "+duration+"ms ease";
+            route.style.strokeDashoffset="0";
+            var nextKm=(routeIndex===routes.length-1)?TOTAL_KM:Math.round(kmPerRoute*(routeIndex+1));
+            await countKm(km,nextKm,duration,myToken);
+            km=nextKm;
+            routeIndex++;
+            await sleep(120);
+          }
+        }
       }
-    },430);
+
+      setText(dayEl,"5日目");
+      setText(spotsEl,String(pins.length));
+      setText(kmEl,"1,140");
+      setText(capEl,FINAL_CAPTION);
+      await sleep(4000);
+      if(myToken===token&&!document.hidden)play();
+    }
+
+    document.addEventListener("visibilitychange",function(){
+      if(document.hidden)token++;
+      else if(!reduced)play();
+    });
+
+    if(reduced)showComplete();
+    else play();
   }
-  update();
+
+  initTripPlayback();
 
   // ── 🎲 シャッフル: 別デザインの同じLPへ（回遊・話題性）──
   if(VARIANTS>1){
