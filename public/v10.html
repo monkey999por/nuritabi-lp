@@ -244,7 +244,7 @@ footer .sign{display:flex;align-items:center;gap:12px}
         <div class="h1row">
           <h1>四十七都道府県、<br><em>満願成就</em>。</h1>
           <div class="ledecol">
-            <p class="lede">行った証を、一頁ずつ。旅程づくりから訪問の記録まで、旅のすべてが帖に納まっていく。都道府県から市区町村、そしてスポットへ——押すほどに、日本はまだ広い。</p>
+            <p class="lede">行った証を、一頁ずつ。地図の上で札所と札所を結べば、旅行ごと・日ごとの旅程が記録となる。詣でた土地は押印され、重ねた参拝の数も残る——押すほどに、日本はまだ広い。</p>
             <a class="btn" href="#join">発願する（無料）</a>
             <p class="wl-note">メールアドレスだけで登録できます。βの招待と開発報のお知らせにのみ使います。</p>
           </div>
@@ -497,20 +497,20 @@ footer .sign{display:flex;align-items:center;gap:12px}
   <section>
     <div class="wrap">
       <p class="legend"><span class="shuin s-sm" aria-hidden="true">一</span>第一頁 — 心得</p>
-      <h2>まだ白い頁が、次の行き先。</h2>
-      <p class="sec-lede">その旅で何をしたかより、どこへ詣でたか。塗り旅は「行った」という事実を功徳として積む、旅の記録帖です。</p>
+      <h2>結んだ道筋が、巡礼の頁。</h2>
+      <p class="sec-lede">札所を結び、参拝の数を重ね、その先で地図に朱が入る。塗り旅は「行った」という事実を功徳として積む、旅の記録帖です。</p>
       <div class="cols">
         <div class="card">
+          <h3><span class="shuin s-sm" aria-hidden="true">結</span>つなぐ</h3>
+          <p>地図の上で、札所と札所を線で結ぶ。立ち寄りを一日ごとに並べれば、一度の巡礼が一頁の旅程と記録になる。</p>
+        </div>
+        <div class="card">
+          <h3><span class="shuin s-sm" aria-hidden="true">重</span>かさねる</h3>
+          <p>同じ土地へ、二度目、三度目の参拝を重ねる。何度詣でたかは記録に積もり、回数は旅の年輪となる。</p>
+        </div>
+        <div class="card">
           <h3><span class="shuin s-sm" aria-hidden="true">塗</span>塗る</h3>
-          <p>詣でた土地に、朱の印が入る。都道府県で四十七、市区町村なら約千七百箇所。粒を細かくするほど満願は遠のき、巡礼は続いていく。</p>
-        </div>
-        <div class="card">
-          <h3><span class="shuin s-sm" aria-hidden="true">並</span>並べる</h3>
-          <p>詣でた場所を、おのれの手で順位づける。他人の星の数より、「自分の中の一位」を胸に持つ旅のほうが、ずっと味わい深い。</p>
-        </div>
-        <div class="card">
-          <h3><span class="shuin s-sm" aria-hidden="true">見</span>見つける</h3>
-          <p>検索しても出てこない土地に、先達の足あとが残っている。映えない場所の「行った」という一筆が、次の誰かの発心になる。</p>
+          <p>結んだ記録の先で、地図に朱の印が入る。都道府県で四十七、市区町村なら約千七百箇所。満願成就は、この巡礼帖の上にある。</p>
         </div>
       </div>
     </div>
@@ -546,7 +546,7 @@ footer .sign{display:flex;align-items:center;gap:12px}
         <div class="step">
           <span class="n">其の一</span>
           <h3>計画する</h3>
-          <p>日程・立ち寄り・道筋を一枚の旅程に。移動時間や路銀も自動で積み上がる、ロングドライブ向けの巡礼計画。</p>
+          <p>地図の上で札所と札所を結び、日ごとの立ち寄りを一枚の旅程に。移動時間や路銀も自動で積み上がる、ロングドライブ向けの巡礼計画。</p>
         </div>
         <div class="step">
           <span class="n">其の二</span>
@@ -556,7 +556,7 @@ footer .sign{display:flex;align-items:center;gap:12px}
         <div class="step">
           <span class="n">其の三</span>
           <h3>塗る</h3>
-          <p>帰る頃には、帖が塗り替わっている。まだ白い頁を眺めながら、次の札所を定める。</p>
+          <p>帰る頃には、帖が塗り替わり、参拝の回数も重なっている。まだ白い頁を眺めながら、次の札所を定める。</p>
         </div>
       </div>
     </div>
@@ -727,7 +727,7 @@ footer .sign{display:flex;align-items:center;gap:12px}
     g.setAttribute("role","button");
     g.setAttribute("tabindex","0");
     g.setAttribute("aria-label",NAMES[code]||"");
-    function toggle(){g.classList.toggle("on");demoDone=true;update();save()}
+    function toggle(){g.classList.toggle("on");clearRouteLines();demoDone=true;update();save()}
     g.addEventListener("click",toggle);
     g.addEventListener("keydown",function(e){
       if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}
@@ -738,6 +738,38 @@ footer .sign{display:flex;align-items:center;gap:12px}
   var saved=loadSaved();
   var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function byCode(c){return box.querySelector('.prefecture[data-code="'+c+'"]')}
+  function routeSvg(){return box&&box.querySelector("svg")}
+  function clearRouteLines(){
+    var svg=routeSvg();
+    if(!svg)return;
+    [].forEach.call(svg.querySelectorAll(".route-line"),function(line){line.remove()});
+  }
+  function prefCenter(g){
+    var svg=routeSvg();
+    if(!svg||!g||!g.getBBox||!g.getCTM)return null;
+    var b=g.getBBox(),m=g.getCTM(),p=svg.createSVGPoint();
+    p.x=b.x+b.width/2;
+    p.y=b.y+b.height/2;
+    return p.matrixTransform(m);
+  }
+  function drawRouteLine(from,to){
+    var svg=routeSvg(),a=prefCenter(from),b=prefCenter(to);
+    if(!svg||!a||!b)return;
+    var line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("class","route-line");
+    line.setAttribute("x1",a.x);
+    line.setAttribute("y1",a.y);
+    line.setAttribute("x2",b.x);
+    line.setAttribute("y2",b.y);
+    line.setAttribute("stroke",getComputedStyle(from).fill);
+    line.setAttribute("stroke-width","3");
+    line.setAttribute("stroke-linecap","round");
+    line.setAttribute("stroke-dasharray","2 6");
+    line.setAttribute("opacity","0.9");
+    line.setAttribute("fill","none");
+    line.setAttribute("pointer-events","none");
+    svg.appendChild(line);
+  }
   if(!box||prefs.length===0){/* no map */}
   else if(saved.length>0){
     saved.forEach(function(c){var g=byCode(c);if(g)g.classList.add("on")});
@@ -752,17 +784,23 @@ footer .sign{display:flex;align-items:center;gap:12px}
     var route=[11,9,7,6,4,3,2]; // 埼玉→栃木→福島→山形→宮城→岩手→青森
     if(cap)cap.textContent=demoCaption;
     var i=0;
+    var prev=null;
     var t=setInterval(function(){
-      if(demoDone){clearInterval(t);return} // ユーザーが先に触ったら譲る
+      if(demoDone){clearRouteLines();clearInterval(t);return} // ユーザーが先に触ったら譲る
       if(i<route.length){
         var g=byCode(route[i++]);
-        if(g)g.classList.add("on");
+        if(g){
+          g.classList.add("on");
+          if(prev)drawRouteLine(prev,g);
+          prev=g;
+        }
         update();
       }else{
         clearInterval(t);
         setTimeout(function(){
-          if(demoDone)return;
+          if(demoDone){clearRouteLines();return}
           prefs.forEach(function(g){g.classList.remove("on")});
+          clearRouteLines();
           demoDone=true;
           update();
         },1400);

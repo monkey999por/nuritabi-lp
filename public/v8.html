@@ -260,7 +260,7 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <p class="ach">じっせき かいじょ: ぜんこくせいは 0/47</p>
     <div class="hero-msg">
       <p>＊あなたは まだ しろい <b>ニッポンのちず</b> を てにいれた！</p>
-      <p>＊りょていを たて、くるまで はしり、いったばしょを ぬる。<br>とどうふけんで 47、しくちょうそんなら やく1,700。<b>ぼうけんは ながい。</b></p>
+      <p>＊ばしょと ばしょを ちずで つなぐと、たびごと・ひごとの りょていと きろくに なる。<br>いったばしょは ぬられ、いったかいすうは かさなる。<b>ぼうけんは ながい。</b></p>
     </div>
     <div class="cmdbar">
       <a class="btn" href="#join">ぼうけんに とうろくする（むりょう）</a>
@@ -517,20 +517,20 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
       <span class="win-tag">コンセプト</span>
       <div class="win">
         <div class="win-body">
-          <h2>まだ しろいばしょが、つぎの もくてきち。</h2>
-          <p class="sec-lede">＊そのたびで なにをしたかより、どこへ いったか。塗り旅は「いった」という じじつを たからものにする、たびのきろくサービスだ。</p>
+          <h2>つないだ せんが、たびのログ。</h2>
+          <p class="sec-lede">＊たちよりを つなぐ。かいすうを かさねる。そのさきで ちずが ぬられる。塗り旅は「いった」という じじつを たからものにする、たびのきろくサービスだ。</p>
           <div class="menu">
             <div class="menu-item">
+              <h3>つなぐ</h3>
+              <p>＊ちずのうえで ばしょと ばしょを せんで つなぐ。たちよりを ひごとに ならべると、たびぜんぶが 1まいの りょていと きろくに なる。</p>
+            </div>
+            <div class="menu-item">
+              <h3>かさねる</h3>
+              <p>＊おなじばしょへ 2かいめ、3かいめ。なんど いったかが きろくに つみあがる。かいすうは たびの ねんりんだ。</p>
+            </div>
+            <div class="menu-item">
               <h3>ぬる</h3>
-              <p>＊ほうもんしたばしょで ちずが ぬられていく。とどうふけんで 47、しくちょうそんなら やく1,700。つぶが こまかいほど せいはは とおくなり、たびは つづいていく。</p>
-            </div>
-            <div class="menu-item">
-              <h3>ならべる</h3>
-              <p>＊いったばしょを じぶんのてで ランキングする。たにんのレビューの ほしのかずより、「じぶんのなかの いちい」を もっているたびのほうが、ずっと おもしろい。</p>
-            </div>
-            <div class="menu-item">
-              <h3>みつける</h3>
-              <p>＊けんさくしても でてこないばしょに、だれかの あしあとが のこっている。ばえないスポットの「いった」というきろくが、つぎのだれかの いくりゆうになる。</p>
+              <p>＊つないだ きろくの さきで、ちずが ぬられていく。とどうふけんで 47、しくちょうそんなら やく1,700。せいはは りょていのうえに のる クリアじっせきだ。</p>
             </div>
           </div>
         </div>
@@ -574,7 +574,7 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
             <div class="q-step">
               <span class="n">STEP 01</span>
               <h3>けいかくする</h3>
-              <p>＊にってい・たちより・ルートを 1まいのりょていに。いどうじかんや ひようも じどうで つみあがる、ロングドライブむけの プランナー。</p>
+              <p>＊ちずのうえで ばしょと ばしょを つなぎ、ひごとの たちよりを 1まいのりょていに。いどうじかんや ひようも じどうで つみあがる、ロングドライブむけの プランナー。</p>
             </div>
             <div class="q-step">
               <span class="n">STEP 02</span>
@@ -584,7 +584,7 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
             <div class="q-step">
               <span class="n">STEP 03</span>
               <h3>ぬる</h3>
-              <p>＊かえるころには、ちずが ぬりかわっている。まだしろいばしょを ながめながら、つぎのいきさきを きめる。</p>
+              <p>＊かえるころには、ちずが ぬりかわり、いったかいすうも かさなっている。まだしろいばしょを ながめながら、つぎのいきさきを きめる。</p>
             </div>
           </div>
         </div>
@@ -755,7 +755,7 @@ window.NURITABI_THEME={
     g.setAttribute("role","button");
     g.setAttribute("tabindex","0");
     g.setAttribute("aria-label",NAMES[code]||"");
-    function toggle(){g.classList.toggle("on");demoDone=true;update();save()}
+    function toggle(){g.classList.toggle("on");clearRouteLines();demoDone=true;update();save()}
     g.addEventListener("click",toggle);
     g.addEventListener("keydown",function(e){
       if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}
@@ -766,6 +766,38 @@ window.NURITABI_THEME={
   var saved=loadSaved();
   var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function byCode(c){return box.querySelector('.prefecture[data-code="'+c+'"]')}
+  function routeSvg(){return box&&box.querySelector("svg")}
+  function clearRouteLines(){
+    var svg=routeSvg();
+    if(!svg)return;
+    [].forEach.call(svg.querySelectorAll(".route-line"),function(line){line.remove()});
+  }
+  function prefCenter(g){
+    var svg=routeSvg();
+    if(!svg||!g||!g.getBBox||!g.getCTM)return null;
+    var b=g.getBBox(),m=g.getCTM(),p=svg.createSVGPoint();
+    p.x=b.x+b.width/2;
+    p.y=b.y+b.height/2;
+    return p.matrixTransform(m);
+  }
+  function drawRouteLine(from,to){
+    var svg=routeSvg(),a=prefCenter(from),b=prefCenter(to);
+    if(!svg||!a||!b)return;
+    var line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("class","route-line");
+    line.setAttribute("x1",a.x);
+    line.setAttribute("y1",a.y);
+    line.setAttribute("x2",b.x);
+    line.setAttribute("y2",b.y);
+    line.setAttribute("stroke",getComputedStyle(from).fill);
+    line.setAttribute("stroke-width","3");
+    line.setAttribute("stroke-linecap","round");
+    line.setAttribute("stroke-dasharray","2 6");
+    line.setAttribute("opacity","0.9");
+    line.setAttribute("fill","none");
+    line.setAttribute("pointer-events","none");
+    svg.appendChild(line);
+  }
   if(!box||prefs.length===0){/* no map */}
   else if(saved.length>0){
     saved.forEach(function(c){var g=byCode(c);if(g)g.classList.add("on")});
@@ -780,17 +812,23 @@ window.NURITABI_THEME={
     var route=[11,9,7,6,4,3,2]; // 埼玉→栃木→福島→山形→宮城→岩手→青森
     if(cap)cap.textContent=demoCaption;
     var i=0;
+    var prev=null;
     var t=setInterval(function(){
-      if(demoDone){clearInterval(t);return} // ユーザーが先に触ったら譲る
+      if(demoDone){clearRouteLines();clearInterval(t);return} // ユーザーが先に触ったら譲る
       if(i<route.length){
         var g=byCode(route[i++]);
-        if(g)g.classList.add("on");
+        if(g){
+          g.classList.add("on");
+          if(prev)drawRouteLine(prev,g);
+          prev=g;
+        }
         update();
       }else{
         clearInterval(t);
         setTimeout(function(){
-          if(demoDone)return;
+          if(demoDone){clearRouteLines();return}
           prefs.forEach(function(g){g.classList.remove("on")});
+          clearRouteLines();
           demoDone=true;
           update();
         },1400);

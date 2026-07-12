@@ -90,7 +90,7 @@
     g.setAttribute("role","button");
     g.setAttribute("tabindex","0");
     g.setAttribute("aria-label",NAMES[code]||"");
-    function toggle(){g.classList.toggle("on");demoDone=true;update();save()}
+    function toggle(){g.classList.toggle("on");clearRouteLines();demoDone=true;update();save()}
     g.addEventListener("click",toggle);
     g.addEventListener("keydown",function(e){
       if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}
@@ -101,6 +101,38 @@
   var saved=loadSaved();
   var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function byCode(c){return box.querySelector('.prefecture[data-code="'+c+'"]')}
+  function routeSvg(){return box&&box.querySelector("svg")}
+  function clearRouteLines(){
+    var svg=routeSvg();
+    if(!svg)return;
+    [].forEach.call(svg.querySelectorAll(".route-line"),function(line){line.remove()});
+  }
+  function prefCenter(g){
+    var svg=routeSvg();
+    if(!svg||!g||!g.getBBox||!g.getCTM)return null;
+    var b=g.getBBox(),m=g.getCTM(),p=svg.createSVGPoint();
+    p.x=b.x+b.width/2;
+    p.y=b.y+b.height/2;
+    return p.matrixTransform(m);
+  }
+  function drawRouteLine(from,to){
+    var svg=routeSvg(),a=prefCenter(from),b=prefCenter(to);
+    if(!svg||!a||!b)return;
+    var line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("class","route-line");
+    line.setAttribute("x1",a.x);
+    line.setAttribute("y1",a.y);
+    line.setAttribute("x2",b.x);
+    line.setAttribute("y2",b.y);
+    line.setAttribute("stroke",getComputedStyle(from).fill);
+    line.setAttribute("stroke-width","3");
+    line.setAttribute("stroke-linecap","round");
+    line.setAttribute("stroke-dasharray","2 6");
+    line.setAttribute("opacity","0.9");
+    line.setAttribute("fill","none");
+    line.setAttribute("pointer-events","none");
+    svg.appendChild(line);
+  }
   if(!box||prefs.length===0){/* no map */}
   else if(saved.length>0){
     saved.forEach(function(c){var g=byCode(c);if(g)g.classList.add("on")});
@@ -115,17 +147,23 @@
     var route=[11,9,7,6,4,3,2]; // 埼玉→栃木→福島→山形→宮城→岩手→青森
     if(cap)cap.textContent=demoCaption;
     var i=0;
+    var prev=null;
     var t=setInterval(function(){
-      if(demoDone){clearInterval(t);return} // ユーザーが先に触ったら譲る
+      if(demoDone){clearRouteLines();clearInterval(t);return} // ユーザーが先に触ったら譲る
       if(i<route.length){
         var g=byCode(route[i++]);
-        if(g)g.classList.add("on");
+        if(g){
+          g.classList.add("on");
+          if(prev)drawRouteLine(prev,g);
+          prev=g;
+        }
         update();
       }else{
         clearInterval(t);
         setTimeout(function(){
-          if(demoDone)return;
+          if(demoDone){clearRouteLines();return}
           prefs.forEach(function(g){g.classList.remove("on")});
+          clearRouteLines();
           demoDone=true;
           update();
         },1400);

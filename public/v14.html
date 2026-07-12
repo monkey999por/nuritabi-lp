@@ -213,7 +213,7 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
     <p class="prompt"><span class="d">$</span> <span class="c">nuritabi --paint --target=japan</span></p>
     <p class="readout num"><span class="k">JAPAN_COVERAGE:</span> <b id="pct">0.0%</b><span class="cursor" aria-hidden="true"></span></p>
     <h1>上げ方は、<em>行くだけ</em>。</h1>
-    <p class="lede">旅程づくりから訪問の記録まで、旅のすべてが地図の上に積もっていく。都道府県で47、市区町村なら約1,700。粒度を上げるほど制覇は遠くなる。</p>
+    <p class="lede">地図上で場所と場所をつなぐと、旅行単位・日単位の旅程と記録が生成される。訪問済みノードは塗られ、訪問回数はインクリメントされる。都道府県で47、市区町村なら約1,700。</p>
     <p class="code-cmt">テストカバレッジは上げても褒められない。こっちは上げるたび、知らない景色が増える。</p>
     <a class="btn" href="#join">$ register --free</a>
     <p class="wl-note">メールアドレスだけで登録できます。βの招待と開発報のお知らせにのみ使います。</p>
@@ -467,23 +467,23 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
   <section>
     <div class="wrap">
       <p class="mod">MODULE 01 // CONCEPT</p>
-      <h2><span class="cm">//</span> まだ白い領域が、次の目的地。</h2>
-      <p class="sec-lede">その旅行で何をしたかより、どこへ行ったか。塗り旅は「行った」という事実を資産にする、旅の記録サービスです。ログは嘘をつかない。</p>
+      <h2><span class="cm">//</span> edge があるから、旅程になる。</h2>
+      <p class="sec-lede">場所をつなぐ。回数を積む。その結果として地図を塗る。塗り旅は「行った」という事実を資産にする、旅の記録サービスです。ログは嘘をつかない。</p>
       <div class="cols">
+        <div class="card panel">
+          <p class="fn">connect()</p>
+          <h3>つなぐ</h3>
+          <p>地図上で場所と場所を線でつなぐ。立ち寄りを日単位に整列すると、旅行全体が一枚の itinerary log になる。</p>
+        </div>
+        <div class="card panel">
+          <p class="fn">increment()</p>
+          <h3>かさねる</h3>
+          <p>同じ場所への二度目、三度目をカウントする。訪問回数は旅の年輪であり、ログの厚みである。</p>
+        </div>
         <div class="card panel">
           <p class="fn">paint()</p>
           <h3>塗る</h3>
-          <p>訪問した場所で地図が塗られていく。都道府県で47、市区町村なら約1,700。粒度を上げるほど制覇は遠くなり、旅は続いていく。</p>
-        </div>
-        <div class="card panel">
-          <p class="fn">sort()</p>
-          <h3>並べる</h3>
-          <p>行った場所を、自分の手で順位付けする。他人のレビューの星の数より、「自分の中の一位」を持っている旅のほうが、ずっと面白い。</p>
-        </div>
-        <div class="card panel">
-          <p class="fn">discover()</p>
-          <h3>見つける</h3>
-          <p>検索しても出てこない場所に、誰かの足あとが残っている。映えないスポットの「行った」という記録が、次の誰かの行く理由になる。</p>
+          <p>つないだ記録の結果として地図を塗る。都道府県で47、市区町村なら約1,700。制覇マップは itinerary log の派生ビューである。</p>
         </div>
       </div>
     </div>
@@ -522,7 +522,7 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
         <div class="step panel">
           <p class="cmd num"><b>nuritabi</b> plan</p>
           <h3>計画する</h3>
-          <p>日程・立ち寄り・ルートを一枚の旅程に。移動時間や費用も自動で積み上がる、ロングドライブ向けのプランナー。</p>
+          <p>地図上で場所と場所をつなぎ、日ごとの立ち寄りを一枚の旅程に。移動時間や費用も自動で積み上がる、ロングドライブ向けのプランナー。</p>
         </div>
         <div class="step panel">
           <p class="cmd num"><b>nuritabi</b> drive</p>
@@ -532,7 +532,7 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
         <div class="step panel">
           <p class="cmd num"><b>nuritabi</b> paint</p>
           <h3>塗る</h3>
-          <p>帰る頃には、地図が塗り替わっている。まだ白い場所を眺めながら、次の行き先を決める。</p>
+          <p>帰る頃には、地図が塗り替わり、訪問回数も increment 済み。まだ白い場所を眺めながら、次の行き先を決める。</p>
         </div>
       </div>
     </div>
@@ -696,7 +696,7 @@ window.NURITABI_THEME={
     g.setAttribute("role","button");
     g.setAttribute("tabindex","0");
     g.setAttribute("aria-label",NAMES[code]||"");
-    function toggle(){g.classList.toggle("on");demoDone=true;update();save()}
+    function toggle(){g.classList.toggle("on");clearRouteLines();demoDone=true;update();save()}
     g.addEventListener("click",toggle);
     g.addEventListener("keydown",function(e){
       if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}
@@ -707,6 +707,38 @@ window.NURITABI_THEME={
   var saved=loadSaved();
   var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function byCode(c){return box.querySelector('.prefecture[data-code="'+c+'"]')}
+  function routeSvg(){return box&&box.querySelector("svg")}
+  function clearRouteLines(){
+    var svg=routeSvg();
+    if(!svg)return;
+    [].forEach.call(svg.querySelectorAll(".route-line"),function(line){line.remove()});
+  }
+  function prefCenter(g){
+    var svg=routeSvg();
+    if(!svg||!g||!g.getBBox||!g.getCTM)return null;
+    var b=g.getBBox(),m=g.getCTM(),p=svg.createSVGPoint();
+    p.x=b.x+b.width/2;
+    p.y=b.y+b.height/2;
+    return p.matrixTransform(m);
+  }
+  function drawRouteLine(from,to){
+    var svg=routeSvg(),a=prefCenter(from),b=prefCenter(to);
+    if(!svg||!a||!b)return;
+    var line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("class","route-line");
+    line.setAttribute("x1",a.x);
+    line.setAttribute("y1",a.y);
+    line.setAttribute("x2",b.x);
+    line.setAttribute("y2",b.y);
+    line.setAttribute("stroke",getComputedStyle(from).fill);
+    line.setAttribute("stroke-width","3");
+    line.setAttribute("stroke-linecap","round");
+    line.setAttribute("stroke-dasharray","2 6");
+    line.setAttribute("opacity","0.9");
+    line.setAttribute("fill","none");
+    line.setAttribute("pointer-events","none");
+    svg.appendChild(line);
+  }
   if(!box||prefs.length===0){/* no map */}
   else if(saved.length>0){
     saved.forEach(function(c){var g=byCode(c);if(g)g.classList.add("on")});
@@ -721,17 +753,23 @@ window.NURITABI_THEME={
     var route=[11,9,7,6,4,3,2]; // 埼玉→栃木→福島→山形→宮城→岩手→青森
     if(cap)cap.textContent=demoCaption;
     var i=0;
+    var prev=null;
     var t=setInterval(function(){
-      if(demoDone){clearInterval(t);return} // ユーザーが先に触ったら譲る
+      if(demoDone){clearRouteLines();clearInterval(t);return} // ユーザーが先に触ったら譲る
       if(i<route.length){
         var g=byCode(route[i++]);
-        if(g)g.classList.add("on");
+        if(g){
+          g.classList.add("on");
+          if(prev)drawRouteLine(prev,g);
+          prev=g;
+        }
         update();
       }else{
         clearInterval(t);
         setTimeout(function(){
-          if(demoDone)return;
+          if(demoDone){clearRouteLines();return}
           prefs.forEach(function(g){g.classList.remove("on")});
+          clearRouteLines();
           demoDone=true;
           update();
         },1400);

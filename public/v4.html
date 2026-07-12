@@ -313,7 +313,7 @@ footer a{color:var(--red);font-weight:900}
           <p class="kyatch">週刊・制覇系ロードムービー、開幕</p>
           <h1>全国制覇、<br>してみたく<em>ない？</em></h1>
           <div class="bubble">
-            <p>旅程を組んで、走って、行った県から地図を塗る。都道府県で47、市区町村なら約1,700。……キミの地図はまだ47分の0。<b>最高だろ？</b></p>
+            <p>地図の上で場所と場所をつなげ。旅行ごと、日ごとの旅程が記録になり、行った場所は塗られ、回数は重なる。……キミの地図はまだ47分の0。<b>最高だろ？</b></p>
           </div>
           <a class="btn" href="#join">事前登録する（無料）</a>
           <p class="wl-note">メールアドレスだけでエントリー完了。βの招待と開発報にしか使わない。約束だ。</p>
@@ -563,20 +563,20 @@ footer a{color:var(--red);font-weight:900}
     <div class="wrap">
       <div class="panel tilt-l">
         <p class="koma-label">第1話 ── コンセプト</p>
-        <h2>白い場所が、<em>次の戦場</em>だ。</h2>
-        <p class="sec-lede">その旅で何をしたかより、どこまで行ったか。塗り旅は「行った」という事実を経験値に変える、旅の記録サービスだ。</p>
+        <h2>つないだ線が、<em>旅の軌跡</em>だ。</h2>
+        <p class="sec-lede">立ち寄りをつなげ。回数を重ねろ。その先で地図が塗られる。塗り旅は「行った」という事実を経験値に変える、旅の記録サービスだ。</p>
         <div class="cols">
           <div class="card">
+            <h3><span class="kanji">繋</span>つなぐ</h3>
+            <p>地図の上で、場所と場所を線でつなげ。立ち寄りを日ごとに並べれば、旅行まるごとが一枚の旅程と記録になる。</p>
+          </div>
+          <div class="card">
+            <h3><span class="kanji">重</span>かさねる</h3>
+            <p>同じ場所へ二度、三度。何度行ったかが積み上がる。回数は旅の年輪だ。刻んだ奴ほど、断然つよい。</p>
+          </div>
+          <div class="card">
             <h3><span class="kanji">塗</span>塗る</h3>
-            <p>行った場所で地図が塗られていく。都道府県で47、市区町村なら約1,700。粒度を上げるほど制覇は遠のく——つまり、旅は終わらない。</p>
-          </div>
-          <div class="card">
-            <h3><span class="kanji">並</span>並べる</h3>
-            <p>行った場所を、自分の手で番付にする。他人のレビューの星より、「オレの中の一位」を持ってる奴のほうが、断然つよい。</p>
-          </div>
-          <div class="card">
-            <h3><span class="kanji">見</span>見つける</h3>
-            <p>検索しても出てこない場所に、誰かの足あとが残っている。映えないスポットの「行った」の一撃が、次の誰かの行く理由になる。</p>
+            <p>つないだ記録の先で地図が塗られていく。都道府県で47、市区町村なら約1,700。制覇は旅程の上に乗る、次のステージだ。</p>
           </div>
         </div>
       </div>
@@ -616,7 +616,7 @@ footer a{color:var(--red);font-weight:900}
           <div class="step">
             <span class="n" aria-hidden="true">01</span>
             <h3><span>計画</span>する</h3>
-            <p>日程・立ち寄り・ルートを一枚の旅程に。移動時間も費用も自動で積み上がる、ロングドライブ特化のプランナーだ。</p>
+            <p>地図の上で場所と場所をつなぎ、日ごとの立ち寄りを一枚の旅程に。移動時間も費用も自動で積み上がる、ロングドライブ特化のプランナーだ。</p>
           </div>
           <div class="step">
             <span class="n" aria-hidden="true">02</span>
@@ -626,7 +626,7 @@ footer a{color:var(--red);font-weight:900}
           <div class="step">
             <span class="n" aria-hidden="true">03</span>
             <h3><span>塗</span>る</h3>
-            <p>帰る頃には、地図が塗り替わってる。まだ白い場所を睨みながら、次の行き先を決めろ。</p>
+            <p>帰る頃には、地図が塗り替わり、訪ねた回数も重なってる。まだ白い場所を睨みながら、次の行き先を決めろ。</p>
           </div>
         </div>
       </div>
@@ -792,7 +792,7 @@ window.NURITABI_THEME={
     g.setAttribute("role","button");
     g.setAttribute("tabindex","0");
     g.setAttribute("aria-label",NAMES[code]||"");
-    function toggle(){g.classList.toggle("on");demoDone=true;update();save()}
+    function toggle(){g.classList.toggle("on");clearRouteLines();demoDone=true;update();save()}
     g.addEventListener("click",toggle);
     g.addEventListener("keydown",function(e){
       if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}
@@ -803,6 +803,38 @@ window.NURITABI_THEME={
   var saved=loadSaved();
   var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function byCode(c){return box.querySelector('.prefecture[data-code="'+c+'"]')}
+  function routeSvg(){return box&&box.querySelector("svg")}
+  function clearRouteLines(){
+    var svg=routeSvg();
+    if(!svg)return;
+    [].forEach.call(svg.querySelectorAll(".route-line"),function(line){line.remove()});
+  }
+  function prefCenter(g){
+    var svg=routeSvg();
+    if(!svg||!g||!g.getBBox||!g.getCTM)return null;
+    var b=g.getBBox(),m=g.getCTM(),p=svg.createSVGPoint();
+    p.x=b.x+b.width/2;
+    p.y=b.y+b.height/2;
+    return p.matrixTransform(m);
+  }
+  function drawRouteLine(from,to){
+    var svg=routeSvg(),a=prefCenter(from),b=prefCenter(to);
+    if(!svg||!a||!b)return;
+    var line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("class","route-line");
+    line.setAttribute("x1",a.x);
+    line.setAttribute("y1",a.y);
+    line.setAttribute("x2",b.x);
+    line.setAttribute("y2",b.y);
+    line.setAttribute("stroke",getComputedStyle(from).fill);
+    line.setAttribute("stroke-width","3");
+    line.setAttribute("stroke-linecap","round");
+    line.setAttribute("stroke-dasharray","2 6");
+    line.setAttribute("opacity","0.9");
+    line.setAttribute("fill","none");
+    line.setAttribute("pointer-events","none");
+    svg.appendChild(line);
+  }
   if(!box||prefs.length===0){/* no map */}
   else if(saved.length>0){
     saved.forEach(function(c){var g=byCode(c);if(g)g.classList.add("on")});
@@ -817,17 +849,23 @@ window.NURITABI_THEME={
     var route=[11,9,7,6,4,3,2]; // 埼玉→栃木→福島→山形→宮城→岩手→青森
     if(cap)cap.textContent=demoCaption;
     var i=0;
+    var prev=null;
     var t=setInterval(function(){
-      if(demoDone){clearInterval(t);return} // ユーザーが先に触ったら譲る
+      if(demoDone){clearRouteLines();clearInterval(t);return} // ユーザーが先に触ったら譲る
       if(i<route.length){
         var g=byCode(route[i++]);
-        if(g)g.classList.add("on");
+        if(g){
+          g.classList.add("on");
+          if(prev)drawRouteLine(prev,g);
+          prev=g;
+        }
         update();
       }else{
         clearInterval(t);
         setTimeout(function(){
-          if(demoDone)return;
+          if(demoDone){clearRouteLines();return}
           prefs.forEach(function(g){g.classList.remove("on")});
+          clearRouteLines();
           demoDone=true;
           update();
         },1400);
