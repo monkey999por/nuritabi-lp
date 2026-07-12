@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>塗り旅（ヌリタビ）— ピンをつないで、旅行記録を完成させる。</title>
+<title>ミチップ— ピンをつないで、旅行記録を完成させる。</title>
 <meta name="description" content="スポットにピンを立て、ピンとピンを道順の線でつなぐ。旅行単位・日単位の記録が一枚の地図に残る、ロングドライブのための旅程記録サービス。">
 <!-- OGP はローダーに置く（クローラは JS を実行しないため、共有カードはここから出る）。
      カスタムドメイン移行時は og:url / og:image を差し替え -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="塗り旅（ヌリタビ）— ピンをつないで、旅行記録を完成させる。">
+<meta property="og:title" content="ミチップ— ピンをつないで、旅行記録を完成させる。">
 <meta property="og:description" content="スポットにピンを立て、ピンとピンを道順の線でつなぐ。旅行単位・日単位の記録が一枚の地図に残る、ロングドライブのための旅程記録サービス。">
-<meta property="og:url" content="https://nuritabi-lp.pages.dev/">
-<meta property="og:image" content="https://nuritabi-lp.pages.dev/ogp.png">
+<meta property="og:url" content="https://michip-lp.pages.dev/">
+<meta property="og:image" content="https://michip-lp.pages.dev/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='3' fill='%23E05A3F'/%3E%3C/svg%3E">
 <style>body{margin:0;background:#0E141E}</style>
@@ -22,7 +22,7 @@
 // ?v=N で固定（SNS 投稿でターゲット別に出し分ける用）。指定なしは前回と違うものをランダム
 (function(){
   var N=10; // build.mjs が実数に置換
-  var KEY="nuritabi.lastv";
+  var KEY="michip.lastv";
   var q=+(new URLSearchParams(location.search).get("v")||0);
   var v=(q>=1&&q<=N)?q:0;
   if(!v){
@@ -36,7 +36,7 @@
 </script>
 <noscript>
   <p style="color:#E9EEF4;font-family:sans-serif;padding:24px">
-    塗り旅（ヌリタビ）— ピンをつないで、旅行記録を完成させる。<br>
+    ミチップ— ピンをつないで、旅行記録を完成させる。<br>
     <a href="v1.html" style="color:#F0A63A">ページを開く</a>
   </p>
 </noscript>

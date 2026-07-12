@@ -1,4 +1,4 @@
-// 塗り旅 LP 共通コア（全バリアント共通・build.mjs が <!--CORE_JS--> に注入する）
+// ミチップ LP 共通コア（全バリアント共通・build.mjs が <!--CORE_JS--> に注入する）
 // 必須 DOM: #tripbox(中に Mock の trip-map.svg) #tmDay #tmSpots #tmKm #tmCaption
 (function(){
   "use strict";
@@ -172,7 +172,7 @@
     b.addEventListener("click",function(){
       var n;
       do{n=1+Math.floor(Math.random()*VARIANTS)}while(n===cur&&VARIANTS>1);
-      try{localStorage.setItem("nuritabi.lastv",String(n))}catch(e){}
+      try{localStorage.setItem("michip.lastv",String(n))}catch(e){}
       location.href="v"+n+".html";
     });
     document.body.appendChild(b);
