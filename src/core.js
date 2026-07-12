@@ -22,7 +22,7 @@
     return "称号: "+b;
   }
   function defMsg(n){
-    if(n===0)return "行ったことのある県をタップ。あなたの地図は、まだ真っ白。";
+    if(n===0)return "行った県をタップ。（本番はスポット＝ピン単位。ここでは県でお試し）";
     if(n<10)return "まだ日本は広い。";
     if(n<20)return "いい旅、してますね。";
     if(n<35)return "かなりの塗り師。";
@@ -90,7 +90,7 @@
     g.setAttribute("role","button");
     g.setAttribute("tabindex","0");
     g.setAttribute("aria-label",NAMES[code]||"");
-    function toggle(){g.classList.toggle("on");clearRouteLines();demoDone=true;update();save()}
+    function toggle(){g.classList.toggle("on");clearDemoArt();demoDone=true;update();save()}
     g.addEventListener("click",toggle);
     g.addEventListener("keydown",function(e){
       if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}
@@ -102,36 +102,65 @@
   var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function byCode(c){return box.querySelector('.prefecture[data-code="'+c+'"]')}
   function routeSvg(){return box&&box.querySelector("svg")}
-  function clearRouteLines(){
+  function clearDemoArt(){
     var svg=routeSvg();
     if(!svg)return;
     [].forEach.call(svg.querySelectorAll(".route-line"),function(line){line.remove()});
+    [].forEach.call(svg.querySelectorAll(".spot-pin"),function(pin){pin.remove()});
+  }
+  function clearRouteLines(){
+    clearDemoArt();
   }
   function prefCenter(g){
     var svg=routeSvg();
-    if(!svg||!g||!g.getBBox||!g.getCTM)return null;
-    var b=g.getBBox(),m=g.getCTM(),p=svg.createSVGPoint();
-    p.x=b.x+b.width/2;
-    p.y=b.y+b.height/2;
-    return p.matrixTransform(m);
+    if(!svg||!g||!g.getBBox||!g.getCTM||!svg.getCTM)return null;
+    var b=g.getBBox(),pt=svg.createSVGPoint();
+    pt.x=b.x+b.width/2; pt.y=b.y+b.height/2;
+    var m=svg.getCTM();
+    if(!m)return null;
+    var toRoot=m.inverse().multiply(g.getCTM());
+    return pt.matrixTransform(toRoot);
   }
-  function drawRouteLine(from,to){
-    var svg=routeSvg(),a=prefCenter(from),b=prefCenter(to);
-    if(!svg||!a||!b)return;
+  function demoPaintColor(g){
+    return g?getComputedStyle(g).fill:"currentColor";
+  }
+  function drawSpotPin(g){
+    var svg=routeSvg(),p=prefCenter(g);
+    if(!svg||!p)return null;
+    var pin=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    pin.setAttribute("class","spot-pin");
+    pin.setAttribute("cx",p.x);
+    pin.setAttribute("cy",p.y);
+    pin.setAttribute("r","5");
+    pin.setAttribute("fill",demoPaintColor(g));
+    pin.setAttribute("stroke","#fff");
+    pin.setAttribute("stroke-width","1.5");
+    pin.setAttribute("opacity","0.95");
+    pin.setAttribute("pointer-events","none");
+    svg.appendChild(pin);
+    setTimeout(function(){if(pin.parentNode)pin.setAttribute("r","8")},20);
+    setTimeout(function(){if(pin.parentNode)pin.setAttribute("r","5")},150);
+    return {x:p.x,y:p.y,el:pin};
+  }
+  function drawRouteLine(from,to,color){
+    var svg=routeSvg();
+    if(!svg||!from||!to)return;
     var line=document.createElementNS("http://www.w3.org/2000/svg","line");
     line.setAttribute("class","route-line");
-    line.setAttribute("x1",a.x);
-    line.setAttribute("y1",a.y);
-    line.setAttribute("x2",b.x);
-    line.setAttribute("y2",b.y);
-    line.setAttribute("stroke",getComputedStyle(from).fill);
+    line.setAttribute("x1",from.x);
+    line.setAttribute("y1",from.y);
+    line.setAttribute("x2",to.x);
+    line.setAttribute("y2",to.y);
+    line.setAttribute("stroke",color);
     line.setAttribute("stroke-width","3");
     line.setAttribute("stroke-linecap","round");
     line.setAttribute("stroke-dasharray","2 6");
     line.setAttribute("opacity","0.9");
     line.setAttribute("fill","none");
     line.setAttribute("pointer-events","none");
-    svg.appendChild(line);
+    var firstPin=svg.querySelector(".spot-pin");
+    if(firstPin)svg.insertBefore(line,firstPin);
+    else svg.appendChild(line);
   }
   if(!box||prefs.length===0){/* no map */}
   else if(saved.length>0){
@@ -149,21 +178,22 @@
     var i=0;
     var prev=null;
     var t=setInterval(function(){
-      if(demoDone){clearRouteLines();clearInterval(t);return} // ユーザーが先に触ったら譲る
+      if(demoDone){clearDemoArt();clearInterval(t);return} // ユーザーが先に触ったら譲る
       if(i<route.length){
         var g=byCode(route[i++]);
         if(g){
           g.classList.add("on");
-          if(prev)drawRouteLine(prev,g);
-          prev=g;
+          var pin=drawSpotPin(g);
+          if(prev&&pin)drawRouteLine(prev,pin,demoPaintColor(g));
+          if(pin)prev=pin;
         }
         update();
       }else{
         clearInterval(t);
         setTimeout(function(){
-          if(demoDone){clearRouteLines();return}
+          if(demoDone){clearDemoArt();return}
           prefs.forEach(function(g){g.classList.remove("on")});
-          clearRouteLines();
+          clearDemoArt();
           demoDone=true;
           update();
         },1400);

@@ -213,7 +213,7 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
     <p class="prompt"><span class="d">$</span> <span class="c">nuritabi --paint --target=japan</span></p>
     <p class="readout num"><span class="k">JAPAN_COVERAGE:</span> <b id="pct">0.0%</b><span class="cursor" aria-hidden="true"></span></p>
     <h1>上げ方は、<em>行くだけ</em>。</h1>
-    <p class="lede">地図上で場所と場所をつなぐと、旅行単位・日単位の旅程と記録が生成される。訪問済みノードは塗られ、訪問回数はインクリメントされる。都道府県で47、市区町村なら約1,700。</p>
+    <p class="lede">地図上でスポット（ピン）をつなぐと、旅行単位・日単位の itinerary log が生成される。観光地でも路肩でもノード化でき、県・市区町村の塗りはピン集合から導出される派生ビューである。</p>
     <p class="code-cmt">テストカバレッジは上げても褒められない。こっちは上げるたび、知らない景色が増える。</p>
     <a class="btn" href="#join">$ register --free</a>
     <p class="wl-note">メールアドレスだけで登録できます。βの招待と開発報のお知らせにのみ使います。</p>
@@ -239,7 +239,7 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
         <span class="rank num" id="rank">RANK: UNINITIALIZED (0/47)</span>
         <a class="share-x" id="shareX" href="#" target="_blank" rel="noopener">$ post --to=X</a>
       </div>
-      <p class="map-cta" id="mapCta">// この続きを、市区町村・スポット単位で。<a href="#join">→ 事前登録</a></p>
+      <p class="map-cta" id="mapCta">// 本番は、pin 1件ごとの単位で塗れる。<a href="#join">→ 事前登録</a></p>
     </div>
   </div>
 
@@ -247,22 +247,22 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
     <div class="wrap">
       <p class="mod">MODULE 01 // CONCEPT</p>
       <h2><span class="cm">//</span> edge があるから、旅程になる。</h2>
-      <p class="sec-lede">場所をつなぐ。回数を積む。その結果として地図を塗る。塗り旅は「行った」という事実を資産にする、旅の記録サービスです。ログは嘘をつかない。</p>
+      <p class="sec-lede">スポットのピンをつなぐ。回数を積む。その結果として地図を塗る。塗り旅は「行った」という事実を資産にする、旅の記録サービスです。ログは嘘をつかない。</p>
       <div class="cols">
         <div class="card panel">
           <p class="fn">connect()</p>
           <h3>つなぐ</h3>
-          <p>地図上で場所と場所を線でつなぐ。立ち寄りを日単位に整列すると、旅行全体が一枚の itinerary log になる。</p>
+          <p>spot = map pin。有名観光地でも、READMEの無い展望地でもよい。ピンとピンを日単位に整列すると、旅行全体が一枚の itinerary log になる。</p>
         </div>
         <div class="card panel">
           <p class="fn">increment()</p>
           <h3>かさねる</h3>
-          <p>同じ場所への二度目、三度目をカウントする。訪問回数は旅の年輪であり、ログの厚みである。</p>
+          <p>同じ spot への二度目、三度目をカウントする。訪問回数はピンごとの履歴であり、ログの厚みである。</p>
         </div>
         <div class="card panel">
           <p class="fn">paint()</p>
           <h3>塗る</h3>
-          <p>つないだ記録の結果として地図を塗る。都道府県で47、市区町村なら約1,700。制覇マップは itinerary log の派生ビューである。</p>
+          <p>ピンが増えた結果として地図を塗る。都道府県や市区町村は derived view。制覇マップは itinerary log の派生ビューである。</p>
         </div>
       </div>
     </div>
@@ -301,7 +301,7 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
         <div class="step panel">
           <p class="cmd num"><b>nuritabi</b> plan</p>
           <h3>計画する</h3>
-          <p>地図上で場所と場所をつなぎ、日ごとの立ち寄りを一枚の旅程に。移動時間や費用も自動で積み上がる、ロングドライブ向けのプランナー。</p>
+          <p>地図上にピンを並べ、日ごとの立ち寄りを一枚の旅程に。移動時間や費用も自動で積み上がる、ロングドライブ向けのプランナー。</p>
         </div>
         <div class="step panel">
           <p class="cmd num"><b>nuritabi</b> drive</p>
@@ -311,7 +311,7 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
         <div class="step panel">
           <p class="cmd num"><b>nuritabi</b> paint</p>
           <h3>塗る</h3>
-          <p>帰る頃には、地図が塗り替わり、訪問回数も increment 済み。まだ白い場所を眺めながら、次の行き先を決める。</p>
+          <p>帰る頃には、ピンの分だけ地図が塗り替わり、訪問回数も increment 済み。まだ白い場所を眺めながら、次の行き先を決める。</p>
         </div>
       </div>
     </div>
@@ -329,7 +329,9 @@ footer .row span::before{content:"// ";color:var(--cyan-dim)}
       <p class="wl-note">登録は無料。いつでも解除できます。フォームが表示されない場合は <a href="GOOGLE_FORM_EMBED_URL" target="_blank" rel="noopener">新しいタブで開く</a>。</p>
 
       <dl class="faq">
-        <dt>いつから使えますか？</dt>
+        <dt>どんな場所を記録できますか？</dt>
+        <dd>Google マップにピンを打てる場所ならどこでも。観光地から、名前のない展望地・お気に入りの路肩まで、spot として commit できます。</dd>
+<dt>いつから使えますか？</dt>
         <dd>2026年内のβ公開を目標に開発中です。進捗はXで公開しています。</dd>
         <dt>料金はかかりますか？</dt>
         <dd>基本無料で使えます。AIによる旅程提案など、一部の機能は将来有料になる予定です。</dd>
@@ -363,7 +365,7 @@ window.NURITABI_THEME={
     return "RANK: "+b+" ("+n+"/47)";
   },
   msg:function(n){
-    if(n===0)return "[INIT] canvas=blank // 行ったことのある県をタップ。あなたの地図は、まだ真っ白。";
+    if(n===0)return "[INIT] canvas=blank // 行った県をタップ。本番は spot=pin 単位、ここは県で demo。";
     if(n<10)return "[INFO] painted="+n+" remaining="+(47-n)+" // 日本はまだ広い。";
     if(n<20)return "[INFO] painted="+n+" remaining="+(47-n)+" // いいログ、積んでますね。";
     if(n<35)return "[INFO] painted="+n+" remaining="+(47-n)+" // かなりのカバレッジ。";

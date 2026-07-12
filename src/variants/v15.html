@@ -275,7 +275,7 @@ a:focus-visible,.stamp:focus-visible,.share-x:focus-visible{outline:3px solid va
           <span class="t-cls">通年有効</span>
         </div>
         <h1>下車した駅の数だけ、<br>日本は<em>塗れる</em>。</h1>
-        <p class="lede">この切符一枚で、駅と駅、場所と場所を地図の上で結びます。旅行単位・日単位の旅程が記録になり、降りた場所は塗られ、下車回数も重なってまいります。</p>
+        <p class="lede">この切符一枚で、駅と駅、スポットのピンを地図の上で結びます。旅行単位・日単位の旅程が記録になり、降りた県や市区町村は、そのピンから導かれて塗られてまいります。</p>
         <div class="t-foot">
           <span class="t-fare mono">¥0<small>β事前登録 無料</small></span>
           <a class="btn" href="#join">この切符を受け取る</a>
@@ -286,7 +286,7 @@ a:focus-visible,.stamp:focus-visible,.share-x:focus-visible{outline:3px solid va
 
     <!-- 路線図掲示板（地図） -->
     <div class="board">
-      <div class="board-title"><b>塗り旅線　全線路線図</b><span>下車した県をタップ</span></div>
+      <div class="board-title"><b>塗り旅線　全線路線図</b><span>下車した県をタップ（本線はピン単位）</span></div>
       <div class="board-inner">
         <div class="mapbox" id="mapbox" aria-label="日本地図。都道府県をタップすると塗れます">
           <!--JAPAN_MAP_SVG-->
@@ -301,7 +301,7 @@ a:focus-visible,.stamp:focus-visible,.share-x:focus-visible{outline:3px solid va
           <span class="rank" id="rank">0駅下車 — 発車前</span>
           <a class="share-x" id="shareX" href="#" target="_blank" rel="noopener">この路線図を X で見せる</a>
         </div>
-        <p class="map-cta" id="mapCta">この先は、市区町村・スポット単位の各駅停車で。<a href="#join">→ 事前登録</a></p>
+        <p class="map-cta" id="mapCta">本線は、ピン1本1本の単位で塗れる各駅停車へ。<a href="#join">→ 事前登録</a></p>
       </div>
     </div>
   </div>
@@ -317,19 +317,19 @@ a:focus-visible,.stamp:focus-visible,.share-x:focus-visible{outline:3px solid va
         <div class="e-bar"><span>◀ きっぷ</span><span>えんせんあんない ▶</span></div>
       </div>
       <h2>次は、つないだ旅程〜、<br>つないだ旅程〜。</h2>
-      <p class="sec-lede">降りた駅を結び、回数を重ね、その先で路線図が塗られます。塗り旅は「行った」という事実を切符のように集めていく、旅の記録サービスです。</p>
+      <p class="sec-lede">降りたスポットのピンを結び、回数を重ね、その先で路線図が塗られます。塗り旅は「行った」という事実を切符のように集めていく、旅の記録サービスです。</p>
       <div class="cols">
         <div class="card">
           <h3><span>結</span>つなぐ</h3>
-          <p>地図の上で、駅と駅、場所と場所を線で結びます。立ち寄りを日ごとに並べれば、一旅まるごと旅程と記録になります。</p>
+          <p>スポットは、地図に打つピンでございます。有名駅でも、名前のない展望地でも、お気に入りの路肩でも結構。ピンとピンを日ごとに結べば、一旅まるごと旅程と記録になります。</p>
         </div>
         <div class="card">
           <h3><span>重</span>かさねる</h3>
-          <p>同じ駅へ二度目、三度目のご乗車。何度降りたかが積み上がります。下車回数は、旅の年輪でございます。</p>
+          <p>同じスポットへ二度目、三度目のご乗車。何度降りたかがピンごとに積み上がります。下車回数は、旅の年輪でございます。</p>
         </div>
         <div class="card">
           <h3><span>塗</span>塗る</h3>
-          <p>結んだ記録の先で、路線図が塗られていきます。都道府県で47駅、市区町村なら約1,700駅。完乗は、この旅程の上に到着いたします。</p>
+          <p>ピンが増えるほど、県や市区町村の路線図が塗られていきます。完乗は、これまで打ってきたピンの影絵として到着いたします。</p>
         </div>
       </div>
     </div>
@@ -393,7 +393,7 @@ a:focus-visible,.stamp:focus-visible,.share-x:focus-visible{outline:3px solid va
           <span class="dot" aria-hidden="true"></span>
           <span class="n mono">第1駅</span>
           <h3>計画する</h3>
-          <p>地図の上で駅と駅、場所と場所を結び、日ごとの立ち寄りを一枚の旅程に。移動時間や費用も自動で積み上がる、ロングドライブ向けのプランナーです。</p>
+          <p>地図の上に駅やスポットのピンを並べ、日ごとの立ち寄りを一枚の旅程に。移動時間や費用も自動で積み上がる、ロングドライブ向けのプランナーです。</p>
         </div>
         <div class="station">
           <span class="dot" aria-hidden="true"></span>
@@ -405,7 +405,7 @@ a:focus-visible,.stamp:focus-visible,.share-x:focus-visible{outline:3px solid va
           <span class="dot" aria-hidden="true"></span>
           <span class="n mono">終着</span>
           <h3>塗る</h3>
-          <p>帰る頃には、路線図が塗り替わり、下車回数も重なっています。まだ白い駅を眺めながら、次の行き先をお決めください。</p>
+          <p>帰る頃には、ピンの分だけ路線図が塗り替わり、下車回数も重なっています。まだ白い駅を眺めながら、次の行き先をお決めください。</p>
         </div>
       </div>
     </div>
@@ -433,7 +433,9 @@ a:focus-visible,.stamp:focus-visible,.share-x:focus-visible{outline:3px solid va
       <p class="wl-note">登録は無料。いつでも下車（解除）できます。フォームが表示されない場合は <a href="GOOGLE_FORM_EMBED_URL" target="_blank" rel="noopener">新しいタブで開く</a>。</p>
 
       <dl class="faq">
-        <dt>いつから乗れますか？</dt>
+        <dt>どんな場所を記録できますか？</dt>
+        <dd>Google マップにピンを打てる場所ならどこでも。有名な駅や観光地から、名前のない展望地・お気に入りの路肩まで、あなたの途中下車として記録できます。</dd>
+<dt>いつから乗れますか？</dt>
         <dd>2026年内のβ開業を目標に開発中です。進捗はXで公開しています。</dd>
         <dt>運賃はかかりますか？</dt>
         <dd>基本無料でご乗車いただけます。AIによる旅程提案など、一部の機能は将来有料になる予定です。</dd>
@@ -467,7 +469,7 @@ window.NURITABI_THEME={
     return n+"駅下車 — "+b;
   },
   msg:function(n){
-    if(n===0)return "まもなく発車いたします。下車したことのある県に、タップでご乗車ください。";
+    if(n===0)return "下車したことのある県に、タップでご乗車ください。本番はスポット＝ピン単位、ここは県でお試しです。";
     if(n<10)return "次は、まだ白い県〜、まだ白い県〜。";
     if(n<20)return "いい旅をされていますね。この先も、白い駅に停まってまいります。";
     if(n<35)return "快調に進んでおります。かなりの塗り師でいらっしゃいます。";
