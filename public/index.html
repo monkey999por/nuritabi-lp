@@ -21,7 +21,7 @@
 // 開くたびに違うデザインへ振り分けるマイクロローダー
 // ?v=N で固定（SNS 投稿でターゲット別に出し分ける用）。指定なしは前回と違うものをランダム
 (function(){
-  var N=10; // build.mjs が実数に置換
+  var N=5; // build.mjs が実数に置換
   var KEY="michip.lastv";
   var q=+(new URLSearchParams(location.search).get("v")||0);
   var v=(q>=1&&q<=N)?q:0;
