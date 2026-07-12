@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>塗り旅（ヌリタビ）— 行った場所で、日本を塗れ。</title>
+<meta name="description" content="旅程づくりから訪問の記録、地図の塗りつぶしまで。ロングドライブのための旅程×制覇記録サービス「塗り旅」。βの事前登録を受付中。">
+<!-- OGP: カスタムドメイン移行時は og:image / og:url のドメインを差し替えること（シェア文面のURLもここから読む） -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="塗り旅（ヌリタビ）— 行った場所で、日本を塗れ。">
+<meta property="og:description" content="旅の計画から訪問の記録、そして地図の塗りつぶしへ。ロングドライブのための制覇マップ。β事前登録受付中。">
+<meta property="og:url" content="https://nuritabi-lp.pages.dev/">
+<meta property="og:image" content="https://nuritabi-lp.pages.dev/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='3' fill='%23C73E2E'/%3E%3C/svg%3E">
+<style>
+/* ── 昭和レトロ: 湯屋クリーム地 × 暖簾藍 × 朱 × 金茶（単一ライトテーマ固定） ── */
+:root{
+  --cream:#F6EEDC; --cream-raise:#FFFDF6; --cream-deep:#EFE3C8;
+  --ai:#27476E; --ai-deep:#1B3552; --ai-soft:#4A6B94;
+  --shu:#C73E2E; --shu-deep:#8E2A1D; --shu-btn:#B23222;
+  --kin:#A8842C;
+  --ink:#243447; --ink-mute:#5A6373;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream); color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+  font-size:16px; line-height:1.9; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP","BIZ UDMincho",serif;font-weight:700}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1020px;margin:0 auto;padding:0 24px}
+a{color:var(--shu)}
+::selection{background:var(--shu);color:var(--cream-raise)}
+:focus-visible{outline:3px solid var(--shu);outline-offset:2px}
+
+/* 銭湯タイルの帯 */
+.tile-strip{height:12px;background:
+  repeating-linear-gradient(90deg,
+    var(--ai) 0 26px, var(--cream) 26px 30px,
+    var(--shu) 30px 44px, var(--cream) 44px 48px,
+    var(--ai) 48px 74px, var(--cream) 74px 78px,
+    var(--kin) 78px 92px, var(--cream) 92px 96px)}
+.tile-strip.thin{height:7px}
+
+/* ── header（商店の軒先） ── */
+header{background:var(--cream-raise);border-bottom:3px double var(--ai)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ai)}
+.yu-badge{
+  width:44px;height:44px;flex:none;border-radius:50%;
+  background:var(--ai);color:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;font-size:23px;
+  box-shadow:inset 0 0 0 2px var(--cream), inset 0 0 0 4px var(--ai-soft);
+}
+.brand b{font-size:22px;letter-spacing:.14em}
+.brand span{font-size:10.5px;color:var(--kin);letter-spacing:.3em;margin-top:6px}
+.pill{
+  font-size:12.5px;font-weight:700;letter-spacing:.1em;white-space:nowrap;text-decoration:none;
+  color:var(--shu-deep);background:var(--cream);border:2px solid var(--shu);border-radius:6px;
+  padding:6px 14px;box-shadow:2px 2px 0 rgba(142,42,29,.35);
+  transition:background .2s,color .2s;
+}
+.pill:hover{background:var(--shu);color:var(--cream-raise)}
+
+/* ── hero: 中央看板型 ── */
+.hero{padding:44px 0 30px;text-align:center}
+.kanban{
+  position:relative;background:var(--ai);color:var(--cream-raise);
+  border-radius:16px;padding:52px 30px 46px;overflow:hidden;
+  box-shadow:inset 0 0 0 3px var(--cream-raise), inset 0 0 0 6px var(--ai),
+             inset 0 0 0 8px rgba(246,238,220,.4), 0 4px 0 var(--ai-deep);
+}
+.rivet{position:absolute;width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #E7CE8F, var(--kin) 65%, #6E5518);}
+.rivet.tl{top:16px;left:16px}.rivet.tr{top:16px;right:16px}
+.rivet.bl{bottom:16px;left:16px}.rivet.br{bottom:16px;right:16px}
+.eyebrow{
+  display:inline-block;font-size:12.5px;letter-spacing:.32em;color:var(--cream);
+  border-top:1px solid rgba(246,238,220,.55);border-bottom:1px solid rgba(246,238,220,.55);
+  padding:5px 14px;margin-bottom:26px;
+}
+h1{
+  font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-weight:800;
+  font-size:clamp(32px,5.4vw,54px);line-height:1.55;letter-spacing:.12em;
+  text-wrap:balance;margin-bottom:20px;color:#FFFDF6;
+}
+h1 em{font-style:normal;color:#F1B13F;text-shadow:0 0 1px rgba(0,0,0,.2)}
+.lede{color:#DCE4EE;font-size:15.5px;max-width:36em;margin:0 auto 30px}
+.btn{
+  display:inline-block;padding:15px 42px;font-size:16px;font-weight:800;letter-spacing:.14em;
+  background:var(--shu-btn);color:#FFF8E7;text-decoration:none;cursor:pointer;
+  border:2px solid var(--shu-deep);border-radius:10px;
+  box-shadow:0 4px 0 var(--shu-deep);
+  transition:transform .15s,box-shadow .15s,background .2s;
+}
+.btn:hover{background:var(--shu)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shu-deep)}
+.btn:focus-visible{outline:3px solid var(--cream-raise);outline-offset:3px}
+.wl-note{font-size:12.5px;color:#C4D0DE;margin-top:14px}
+.hanko{
+  position:absolute;top:22px;right:26px;transform:rotate(7deg);
+  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;
+  font-size:13px;letter-spacing:.2em;color:var(--shu);
+  background:rgba(255,253,246,.94);border:3px double var(--shu);border-radius:8px;
+  padding:7px 9px;line-height:1.5;writing-mode:vertical-rl;opacity:.95;
+}
+
+/* ── 壁画（銭湯の壁の日本地図） ── */
+.mural{
+  max-width:860px;margin:34px auto 0;background:var(--cream-raise);
+  border:2px solid var(--ai);border-radius:14px;padding:12px;
+  box-shadow:4px 4px 0 rgba(39,71,110,.22);
+}
+.mural-frame{
+  border-radius:8px;padding:22px 18px 20px;
+  background:
+    repeating-linear-gradient(90deg, rgba(39,71,110,.08) 0 22px, rgba(39,71,110,0) 22px 24px),
+    repeating-linear-gradient(0deg, rgba(39,71,110,.08) 0 22px, rgba(39,71,110,0) 22px 24px),
+    #FDF9EE;
+}
+.mural-title{
+  display:inline-block;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;
+  font-size:15px;letter-spacing:.3em;color:var(--cream-raise);background:var(--ai);
+  border-radius:6px;padding:6px 20px;margin-bottom:16px;
+  box-shadow:inset 0 0 0 2px var(--cream-raise), inset 0 0 0 3px var(--ai);
+}
+.mapbox svg{width:100%;height:auto;max-height:64vh;display:block}
+.prefecture{fill:#F3E9CF;stroke:var(--ai-soft);stroke-width:1;cursor:pointer;transition:fill .3s ease}
+.prefecture:hover{fill:#E4C7A8}
+.prefecture:focus-visible{outline:none;stroke:var(--shu);stroke-width:2.5}
+.prefecture.on{fill:var(--shu);stroke:var(--shu-deep)}
+.prefecture.on:hover{fill:var(--shu-deep)}
+.boundary-line{stroke:var(--kin);fill:none;opacity:.5;stroke-dasharray:4 7}
+.map-caption{font-size:13.5px;color:var(--ink-mute);text-align:center;margin-top:10px;min-height:1.7em}
+.map-caption b{color:var(--ai);font-weight:700}
+
+/* 湯加減メーター */
+.meter{display:flex;align-items:baseline;justify-content:center;gap:14px;margin-top:12px}
+.meter .big{font-size:30px;letter-spacing:.06em;color:var(--ai);font-weight:700}
+.meter .big b{color:var(--shu)}
+.meter .pct{font-size:15px;color:var(--ink-mute)}
+.gauge{
+  height:12px;background:var(--cream);border:2px solid var(--ai);border-radius:999px;
+  margin:12px auto 0;max-width:360px;overflow:hidden;padding:2px;
+}
+.gauge i{display:block;height:100%;width:0;border-radius:999px;
+  background:repeating-linear-gradient(135deg, var(--shu) 0 10px, var(--shu-btn) 10px 20px);
+  transition:width .4s ease}
+.rank-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:16px;min-height:2.4em;flex-wrap:wrap}
+.rank{
+  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;
+  font-size:13.5px;letter-spacing:.14em;color:var(--shu-deep);background:var(--cream-raise);
+  border:2px solid var(--shu);border-radius:6px;padding:5px 16px;
+  box-shadow:2px 2px 0 rgba(142,42,29,.3);
+}
+.share-x{
+  display:none;font-size:13px;font-weight:700;letter-spacing:.06em;text-decoration:none;
+  color:var(--cream-raise);background:var(--ai);border:2px solid var(--ai-deep);
+  border-radius:999px;padding:7px 20px;box-shadow:0 3px 0 var(--ai-deep);
+  transition:transform .15s,box-shadow .15s;
+}
+.share-x:hover{background:var(--ai-soft)}
+.share-x:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ai-deep)}
+.share-x.show{display:inline-block}
+.map-cta{display:none;text-align:center;font-size:13.5px;margin-top:14px}
+.map-cta.show{display:block}
+
+/* ── sections ── */
+section{padding:66px 0}
+.legend{
+  display:inline-block;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;
+  font-size:12.5px;letter-spacing:.3em;color:var(--ai);background:var(--cream-raise);
+  border:2px solid var(--ai);padding:6px 18px;margin-bottom:26px;
+  clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
+  padding-right:26px;
+}
+h2{
+  font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-weight:800;
+  font-size:clamp(26px,3.8vw,38px);line-height:1.6;letter-spacing:.1em;
+  text-wrap:balance;margin-bottom:16px;color:var(--ai);
+}
+h2 .shu{color:var(--shu)}
+.sec-lede{color:var(--ink-mute);max-width:40em;margin-bottom:40px;font-size:15px}
+
+/* ホーロー看板ふうカード */
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{
+  background:var(--cream-raise);border:2px solid var(--ai);border-radius:12px;padding:26px 24px;
+  box-shadow:inset 0 0 0 3px var(--cream-raise), inset 0 0 0 4px rgba(39,71,110,.35),
+             3px 3px 0 rgba(39,71,110,.18);
+}
+.card h3{
+  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;
+  font-size:19px;letter-spacing:.14em;color:var(--ai);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.card h3 .maru{
+  width:34px;height:34px;flex:none;border-radius:50%;background:var(--shu);color:#FFF8E7;
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+  box-shadow:inset 0 0 0 2px #FFF8E7, inset 0 0 0 3px var(--shu);
+}
+.card p{font-size:14px;color:var(--ink-mute)}
+
+/* ニッチスポット（品書き札） */
+.niche{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.spot{
+  background:var(--cream-raise);border:1px solid var(--kin);border-top:6px solid var(--shu);
+  border-radius:0 0 10px 10px;padding:22px;box-shadow:2px 3px 0 rgba(168,132,44,.25);
+}
+.spot h3{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;
+  font-size:15.5px;line-height:1.8;letter-spacing:.06em;color:var(--ink);margin-bottom:10px}
+.spot p{font-size:13.5px;color:var(--ink-mute)}
+
+/* 使い方（番号札） */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.step{background:var(--cream-raise);border:2px solid var(--ai);border-radius:12px;padding:24px;position:relative}
+.step .n{
+  width:40px;height:40px;border-radius:50%;background:var(--ai);color:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;font-size:16px;
+  box-shadow:inset 0 0 0 2px var(--cream), inset 0 0 0 4px var(--ai-soft);margin-bottom:14px;
+}
+.step h3{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;
+  font-size:19px;letter-spacing:.16em;color:var(--ai);margin-bottom:8px}
+.step p{font-size:14px;color:var(--ink-mute)}
+
+/* ── join ── */
+.cta-sec{text-align:center;background:var(--cream-deep)}
+.form-embed{
+  max-width:640px;margin:0 auto;background:var(--cream-raise);
+  border:2px solid var(--ai);border-radius:12px;padding:10px;overflow:hidden;
+  box-shadow:4px 4px 0 rgba(39,71,110,.22);
+}
+.form-embed iframe{display:block;width:100%;height:900px;border:none;border-radius:6px;background:#fff}
+.cta-sec .wl-note{color:var(--ink-mute);text-align:center}
+.faq dt{font-weight:700;margin-top:24px;font-size:15.5px;color:var(--ai)}
+.faq dt::before{content:"問. ";color:var(--shu);font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800}
+.faq dd{color:var(--ink-mute);font-size:14.5px;margin-top:4px}
+.faq dd::before{content:"答. ";color:var(--kin);font-weight:700}
+
+/* ── footer ── */
+footer{background:var(--ai);color:#C4D0DE;padding:34px 0 58px;font-size:13px}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:#F1B13F}
+
+@media (max-width:820px){
+  .hero{padding:28px 0 22px}
+  .kanban{padding:44px 20px 40px}
+  .hanko{top:14px;right:12px;font-size:11.5px;padding:6px 7px}
+  .cols,.niche,.steps{grid-template-columns:1fr}
+  section{padding:52px 0}
+  .form-embed iframe{height:960px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="tile-strip" aria-hidden="true"></div>
+<header>
+  <div class="wrap hd">
+    <a class="brand" href="#">
+      <span class="yu-badge" aria-hidden="true">塗</span>
+      <b class="mincho">塗り旅</b>
+      <span>NURITABI</span>
+    </a>
+    <a class="pill" href="#join">β事前登録 承り中</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div class="kanban">
+      <span class="rivet tl" aria-hidden="true"></span><span class="rivet tr" aria-hidden="true"></span>
+      <span class="rivet bl" aria-hidden="true"></span><span class="rivet br" aria-hidden="true"></span>
+      <span class="hanko" aria-hidden="true">受付中</span>
+      <p class="eyebrow">ロングドライブのための、旅程と制覇の記録</p>
+      <h1>いい湯の数だけ、<br><em>塗れて</em>いく。</h1>
+      <p class="lede">旅の支度から訪問の記録まで、ぜんぶ地図の上に積もってまいります。都道府県から市区町村、そしてスポットへ——塗れば塗るほど、日本はまだ広うございます。</p>
+      <a class="btn" href="#join">事前登録、承ります（無料）</a>
+      <p class="wl-note">メールアドレスひとつでご登録いただけます。βのご案内と開発だよりにのみ使わせていただきます。</p>
+    </div>
+
+    <div class="mural">
+      <div class="mural-frame">
+        <p class="mural-title">本日も日本、営業中。</p>
+        <div class="mapbox" id="mapbox" aria-label="日本地図。都道府県をタップすると塗れます">
+          <!--JAPAN_MAP_SVG-->
+        </div>
+        <p class="map-caption" id="mapCaption">&nbsp;</p>
+        <div class="meter num">
+          <span class="big"><b id="cnt">00</b> / 47</span>
+          <span class="pct" id="pct">0.0%</span>
+        </div>
+        <div class="gauge"><i id="gauge"></i></div>
+        <div class="rank-row">
+          <span class="rank" id="rank">番付: 序ノ口・まっさら</span>
+          <a class="share-x" id="shareX" href="#" target="_blank" rel="noopener">この地図、X でひけらかす</a>
+        </div>
+        <p class="map-cta" id="mapCta">この続きは、市区町村・スポットの細かさで。<a href="#join">→ 事前登録</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tile-strip thin" aria-hidden="true"></div>
+
+  <section>
+    <div class="wrap">
+      <p class="legend">効能</p>
+      <h2>まだ<span class="shu">白い</span>のが、明日の楽しみ。</h2>
+      <p class="sec-lede">その旅で何をしたかより、どこへ行ったか。塗り旅は「行った」の一言を末代までの資産にする、旅の記録帳でございます。</p>
+      <div class="cols">
+        <div class="card">
+          <h3><span class="maru" aria-hidden="true">塗</span>塗る</h3>
+          <p>行った先から、地図が塗り上がってまいります。都道府県で47、市区町村なら約1,700。細かくするほど道のりは遠く、旅はいつまでも終わりません。</p>
+        </div>
+        <div class="card">
+          <h3><span class="maru" aria-hidden="true">並</span>並べる</h3>
+          <p>行った場所に、ご自身の手で番付をおつけください。他人様の星の数より「自分の中の一位」を持つ旅のほうが、よっぽど面白うございます。</p>
+        </div>
+        <div class="card">
+          <h3><span class="maru" aria-hidden="true">見</span>見つける</h3>
+          <p>検索に出てこない場所にも、誰かの足あとが残っております。映えない場所の「行った」の一筆が、次のお客の行く理由になるのです。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tile-strip thin" aria-hidden="true"></div>
+
+  <section>
+    <div class="wrap">
+      <p class="legend">品書き</p>
+      <h2>映えなくて、<span class="shu">結構</span>。</h2>
+      <p class="sec-lede">ガイドブックに載らない場所ほど、行った人にしか語れません。塗り旅が書き留めたいのは、たとえばこんな場所でございます。</p>
+      <div class="niche">
+        <div class="spot">
+          <h3>地形図で見つけた、名前のない展望地</h3>
+          <p>看板も駐車場もございません。けれど、そこからの眺めはあなただけのもの。</p>
+        </div>
+        <div class="spot">
+          <h3>国道沿いに突然あらわれる巨大観音</h3>
+          <p>どなたが、何ゆえ建てたのか。通り過ぎずに停まった人だけが、記録を残せます。</p>
+        </div>
+        <div class="spot">
+          <h3>線路の果ての、誰もいない終着駅</h3>
+          <p>降りたことに意味のある場所。最初の記録者は、あなたかもしれません。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tile-strip thin" aria-hidden="true"></div>
+
+  <section>
+    <div class="wrap">
+      <p class="legend">お作法</p>
+      <h2>計画して、走って、<span class="shu">塗る</span>。</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="n num" aria-hidden="true">一</span>
+          <h3>計画する</h3>
+          <p>日程・立ち寄り・道順を、一枚の旅程に。移動時間もお代の勘定も自動で積み上がる、長距離向けの旅支度でございます。</p>
+        </div>
+        <div class="step">
+          <span class="n num" aria-hidden="true">二</span>
+          <h3>走る</h3>
+          <p>旅程のとおりに走るだけ。立ち寄った場所が、そのまま訪問の記録に。昔の旅をあとから書き付けていただいても結構です。</p>
+        </div>
+        <div class="step">
+          <span class="n num" aria-hidden="true">三</span>
+          <h3>塗る</h3>
+          <p>お帰りの頃には、地図の色が変わっております。まだ白い場所を眺めながら、次の行き先をお決めください。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tile-strip thin" aria-hidden="true"></div>
+
+  <section id="join" class="cta-sec">
+    <div class="wrap">
+      <p class="legend">事前登録</p>
+      <h2>白い地図、<span class="shu">塗り</span>にまいりましょう。</h2>
+      <p class="sec-lede" id="joinLede" style="margin-left:auto;margin-right:auto">2026年内のβ開業を目指し、ただいま仕込みの真っ最中。事前登録の方から順にご案内いたします。</p>
+      <!-- Google Form 埋め込み: GOOGLE_FORM_EMBED_URL を実URL（…/viewform?embedded=true）に差し替えて node src/build.mjs -->
+      <div class="form-embed">
+        <iframe src="GOOGLE_FORM_EMBED_URL" title="塗り旅 β事前登録フォーム" loading="lazy">読み込んでおります…</iframe>
+      </div>
+      <p class="wl-note">登録は無料、いつでもお暇いただけます。フォームが表示されない場合は <a href="GOOGLE_FORM_EMBED_URL" target="_blank" rel="noopener">新しいタブで開く</a>。</p>
+
+      <dl class="faq" style="max-width:560px;margin:56px auto 0;text-align:left">
+        <dt>いつから使えますか？</dt>
+        <dd>2026年内のβ公開を目標に、鋭意仕込み中でございます。進み具合はXにてご覧いただけます。</dd>
+        <dt>料金はかかりますか？</dt>
+        <dd>基本は無料でお使いいただけます。AIによる旅程の提案など、一部の機能は将来有料とさせていただく予定です。</dd>
+        <dt>アプリのインストールは必要ですか？</dt>
+        <dd>ご不要です。スマホ・PCのブラウザから、そのままどうぞ。</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<div class="tile-strip" aria-hidden="true"></div>
+<footer>
+  <div class="wrap row">
+    <span>塗り旅（ヌリタビ）— 個人で営んでおります</span>
+    <!-- TODO: 公開前にXアカウントのURLへ差し替え -->
+    <a href="https://x.com/" rel="noopener">X にて開発だより、発行中</a>
+  </div>
+</footer>
+
+<script>
+window.NURITABI_THEME={
+  rank:function(n){
+    var b;
+    if(n===0)b="序ノ口・まっさら";
+    else if(n<5)b="序二段・旅のたまご";
+    else if(n<10)b="幕下・湯めぐり見習い";
+    else if(n<20)b="前頭・週末の塗り師";
+    else if(n<30)b="小結・本格塗り師";
+    else if(n<40)b="大関・日本を巡る者";
+    else if(n<47)b="横綱まであと"+(47-n)+"県";
+    else b="横綱・全国制覇";
+    return "番付: "+b;
+  },
+  msg:function(n){
+    if(n===0)return "行ったことのある県を、ぽんと押してください。あなたの地図は、まだ湯を張る前。";
+    if(n<10)return "まだまだ日本は広うございます。";
+    if(n<20)return "ほほう、いい旅してますなあ。";
+    if(n<35)return "こいつは大した塗りっぷりだ。";
+    if(n<47)return "全国制覇、もう見えてまいりました。";
+    return "全国制覇、あっぱれ。お次は市区町村でどうぞ。";
+  },
+  demoCaption:"たとえば、東北一周 1,600km。湯をたどる長旅でございます。",
+  share:function(n,p,rank){
+    return "わたくしの日本制覇率、"+n+"/47（"+p+"%）。番付は「"+rank.replace(/^番付: /,"")+"」でございます。さて、あなたの地図はどこまで塗れてますかな。 #塗り旅";
+  },
+  joinLede:function(n){
+    if(n===0)return "2026年内のβ開業を目指し、ただいま仕込みの真っ最中。事前登録の方から順にご案内いたします。";
+    if(n<47)return "あなたの地図、残り "+(47-n)+" 県でございます。ぜんぶ塗りにまいりましょう——β開業の一番札、お取り置きいたします。";
+    return "47都道府県、見事な全国制覇。お次は市区町村、約1,700枚の地図でお待ちしております。";
+  }
+};
+</script>
+<!--CORE_JS-->
+</body>
+</html>

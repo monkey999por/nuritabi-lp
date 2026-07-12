@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>塗り旅（ヌリタビ）— 行った場所で、日本を塗れ。</title>
+<meta name="description" content="旅程づくりから訪問の記録、地図の塗りつぶしまで。ロングドライブのための旅程×制覇記録サービス「塗り旅」。βの事前登録を受付中。">
+<!-- OGP: カスタムドメイン移行時は og:image / og:url のドメインを差し替えること（シェア文面のURLもここから読む） -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="塗り旅（ヌリタビ）— 行った場所で、日本を塗れ。">
+<meta property="og:description" content="旅の計画から訪問の記録、そして地図の塗りつぶしへ。ロングドライブのための制覇マップ。β事前登録受付中。">
+<meta property="og:url" content="https://nuritabi-lp.pages.dev/">
+<meta property="og:image" content="https://nuritabi-lp.pages.dev/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='5' fill='%2300693E' stroke='%23FFFFFF' stroke-width='2.5'/%3E%3C/svg%3E">
+</head>
+<body>
+<style>
+/* ============ v9: 高速道路標識 ============
+   標識グリーンの方面看板が、夜の路面に次々あらわれる。単一テーマ固定。 */
+:root{
+  --road:#14181C;          /* 夜の路面 */
+  --road-line:#2A3138;     /* 路面の継ぎ目 */
+  --sign:#00693E;          /* 標識グリーン（地） */
+  --sign-deep:#004D2D;     /* 看板の陰・未塗り */
+  --sign-blue:#0A57A4;     /* 補助・案内の青看板 */
+  --sign-blue-deep:#08417B;
+  --wht:#FFFFFF;           /* 文字・枠 */
+  --wht-dim:rgba(255,255,255,.72);
+  --wht-faint:rgba(255,255,255,.34);
+  --caution:#F7C948;       /* 注意喚起の黄 */
+  --caution-deep:#E0AF25;
+  --on-caution:#181300;
+  --aux-ink:#15181B;       /* 補助看板（白地）の黒 */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    /* 中央線: 走行中のレーンマーク */
+    repeating-linear-gradient(to bottom, transparent 0 46px, var(--road-line) 46px 78px) 50% 0/4px 100% no-repeat,
+    var(--road);
+  color:var(--wht);
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+  font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.mono{font-family:ui-monospace,"SF Mono","Consolas",monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+a{color:var(--caution)}
+::selection{background:var(--caution);color:var(--on-caution)}
+
+/* ── 看板パネル: 白枠2〜3px＋角丸。標識の基本形 ── */
+.sign{
+  background:var(--sign);
+  border:3px solid var(--wht);
+  border-radius:16px;
+  box-shadow:0 10px 34px rgba(0,0,0,.5), inset 0 0 0 2px rgba(255,255,255,.12);
+  padding:28px;
+}
+.sign-blue{background:var(--sign-blue)}
+/* 補助看板: 白地に黒 */
+.aux{
+  background:var(--wht);color:var(--aux-ink);
+  border:2px solid var(--aux-ink);border-radius:8px;
+  box-shadow:0 6px 20px rgba(0,0,0,.4);
+}
+
+/* ── 路線番号バッジ（六角形風・E4スタイル） ── */
+.rno{display:inline-block;background:var(--wht);clip-path:polygon(10% 0,90% 0,100% 50%,90% 100%,10% 100%,0 50%);padding:3px;line-height:1}
+.rno b{
+  display:inline-block;background:var(--sign);color:var(--wht);
+  clip-path:polygon(10% 0,90% 0,100% 50%,90% 100%,10% 100%,0 50%);
+  font-family:ui-monospace,"SF Mono","Consolas",monospace;font-weight:700;
+  font-size:15px;letter-spacing:.02em;padding:5px 16px;
+}
+.rno.y b{background:var(--caution);color:var(--on-caution)}
+
+/* ── 方面矢印（CSS三角＋軸） ── */
+.arw{display:inline-block;position:relative;width:30px;height:52px;flex:none}
+.arw::before{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:7px;height:32px;background:var(--wht)}
+.arw::after{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);border-left:15px solid transparent;border-right:15px solid transparent;border-bottom:22px solid var(--wht)}
+.arw.r{transform:rotate(90deg)}
+.arw.sm{width:20px;height:34px}
+.arw.sm::before{width:5px;height:20px}
+.arw.sm::after{border-left-width:10px;border-right-width:10px;border-bottom-width:15px}
+
+/* ── header: 標識ゲート（ガントリー） ── */
+header{
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 12px, transparent 12px 24px),
+    #1B2126;
+  border-bottom:4px solid #3A424A;
+}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:var(--wht)}
+.brand .chip{
+  display:inline-flex;align-items:baseline;gap:9px;
+  background:var(--sign);border:2px solid var(--wht);border-radius:9px;padding:7px 14px;
+}
+.brand .chip b{font-size:18px;font-weight:700;letter-spacing:.14em}
+.brand .chip span{font-size:10px;letter-spacing:.16em;color:var(--wht-dim)}
+.hd .pill{
+  font-size:12.5px;font-weight:700;letter-spacing:.08em;text-decoration:none;white-space:nowrap;
+  color:var(--on-caution);background:var(--caution);border:2px solid var(--on-caution);
+  border-radius:6px;padding:6px 14px;transition:background .2s;
+}
+.hd .pill:hover{background:var(--caution-deep)}
+.hd .pill:focus-visible{outline:2px solid var(--wht);outline-offset:2px}
+
+/* ── hero: 巨大方面看板 ── */
+.hero{padding:56px 0 44px}
+.hero-grid{display:grid;grid-template-columns:1.04fr 1fr;gap:28px;align-items:stretch}
+.board{display:flex;flex-direction:column}
+.board-top{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid var(--wht-faint);padding-bottom:14px;margin-bottom:20px}
+.board-top .dest{font-size:13px;letter-spacing:.3em;color:var(--wht-dim);font-weight:700}
+h1{
+  font-size:clamp(32px,4.9vw,50px);font-weight:700;line-height:1.4;
+  letter-spacing:.01em;text-wrap:balance;margin-bottom:6px;
+}
+h1 em{font-style:normal;color:var(--caution)}
+.dist-row{display:flex;align-items:center;gap:18px;margin:18px 0 20px}
+.dist-row .km{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.dist-row .km small{font-size:14px;font-weight:700;margin-left:2px}
+.lede{color:var(--wht-dim);font-size:15px;max-width:34em;margin-bottom:26px}
+.btn{
+  display:inline-block;padding:15px 34px;font-size:15.5px;font-weight:700;letter-spacing:.08em;
+  background:var(--caution);color:var(--on-caution);border:2px solid var(--on-caution);
+  border-radius:8px;text-decoration:none;cursor:pointer;transition:transform .15s,background .2s;
+}
+.btn:hover{background:var(--caution-deep)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible{outline:3px solid var(--wht);outline-offset:2px}
+.wl-note{font-size:12.5px;color:var(--wht-dim);margin-top:12px}
+.sign .wl-note a{color:var(--caution)}
+
+/* ── 路線図看板（地図） ── */
+.map-title{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:2px solid var(--wht-faint);padding-bottom:12px;margin-bottom:14px}
+.map-title b{font-size:14px;letter-spacing:.26em;font-weight:700}
+.map-title span{font-size:10.5px;letter-spacing:.2em;color:var(--wht-dim)}
+.mapbox{position:relative}
+.mapbox svg{width:100%;height:auto;display:block;max-height:60vh}
+.prefecture{fill:var(--sign-deep);stroke:var(--wht-faint);stroke-width:1;cursor:pointer;transition:fill .3s ease}
+.prefecture:hover{fill:#0E7F52}
+.prefecture:focus-visible{outline:none;stroke:var(--caution);stroke-width:2.5}
+.prefecture.on{fill:var(--wht);stroke:var(--caution);stroke-width:1.2}
+.prefecture.on:hover{fill:#EDEBE2}
+.boundary-line{stroke:var(--wht-faint);fill:none;opacity:.55;stroke-dasharray:4 7}
+.map-caption{font-size:13px;color:var(--wht-dim);text-align:center;margin-top:8px;min-height:1.6em}
+.map-caption b{color:var(--wht);font-weight:700}
+
+/* 通過カウンタ（距離標風） */
+.meter{display:flex;align-items:baseline;justify-content:center;gap:14px;margin-top:12px}
+.meter .big{font-size:29px;letter-spacing:-.01em;font-weight:700}
+.meter .big b{color:var(--caution)}
+.meter .pct{font-size:14px;color:var(--wht-dim)}
+.gauge{height:5px;background:rgba(0,0,0,.35);border:1px solid var(--wht-faint);border-radius:3px;margin:12px auto 0;max-width:340px;overflow:hidden}
+.gauge i{display:block;height:100%;width:0;background:var(--caution);transition:width .4s ease}
+
+/* 称号（案内表示）＋ X シェア */
+.rank-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;min-height:2.3em;flex-wrap:wrap}
+.rank{
+  font-size:12.5px;font-weight:700;letter-spacing:.06em;
+  color:var(--wht);border:2px solid var(--wht);border-radius:7px;padding:4px 14px;
+  font-variant-numeric:tabular-nums;
+}
+.share-x{
+  display:none;font-size:13px;font-weight:700;letter-spacing:.04em;text-decoration:none;
+  color:var(--on-caution);background:var(--caution);border:2px solid var(--on-caution);
+  border-radius:7px;padding:5px 16px;transition:transform .15s,background .2s;
+}
+.share-x:hover{background:var(--caution-deep)}
+.share-x:active{transform:scale(.97)}
+.share-x:focus-visible{outline:2px solid var(--wht);outline-offset:2px}
+.share-x.show{display:inline-block}
+.map-cta{display:none;text-align:center;font-size:13px;margin-top:12px;color:var(--wht-dim)}
+.map-cta.show{display:block}
+.map-cta a{color:var(--caution);font-weight:700}
+
+/* ── sections: この先の標識群 ── */
+section{padding:72px 0}
+.kp{ /* 距離標（キロポスト）: セクション見出しの前置き */
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;
+  background:var(--wht);color:var(--aux-ink);border:2px solid var(--aux-ink);
+  border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;letter-spacing:.18em;
+}
+.kp i{font-style:normal;font-family:ui-monospace,"SF Mono","Consolas",monospace;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+h2{font-size:clamp(25px,3.5vw,34px);font-weight:700;line-height:1.5;letter-spacing:.02em;text-wrap:balance;margin-bottom:14px}
+.sec-lede{color:var(--wht-dim);max-width:40em;margin-bottom:36px;font-size:15px}
+
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{padding:24px 22px;border-radius:14px}
+.card .lane{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.card h3{font-size:19px;font-weight:700;letter-spacing:.06em}
+.card p{font-size:13.5px;color:var(--wht-dim)}
+.card .num{font-size:11px;letter-spacing:.14em;color:var(--wht-dim);display:block;margin-top:10px;border-top:1px solid var(--wht-faint);padding-top:10px}
+
+/* ニッチスポット: 青の案内看板（SA/PA風） */
+.niche{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.spot{padding:22px;border-radius:14px}
+.spot .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.2em;color:var(--sign-blue);background:var(--wht);border-radius:4px;padding:2px 10px;margin-bottom:12px}
+.spot h3{font-size:15.5px;font-weight:700;line-height:1.7;margin-bottom:8px}
+.spot p{font-size:13px;color:var(--wht-dim)}
+.spot .exit{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;color:var(--wht-dim);margin-top:14px;border-top:1px solid var(--wht-faint);padding-top:12px}
+.tri-r{width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid var(--wht);flex:none}
+
+/* 使い方: 3枚看板 */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{padding:24px 22px;border-radius:14px}
+.step .head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.step h3{font-size:19px;font-weight:700;letter-spacing:.06em}
+.step p{font-size:13.5px;color:var(--wht-dim)}
+
+/* ── #join: 料金所ゲート ── */
+.cta-sec{text-align:center}
+.cta-sec .sign{max-width:720px;margin:0 auto;text-align:center}
+.form-embed{max-width:640px;margin:22px auto 0;padding:10px;border-radius:10px}
+.form-embed iframe{display:block;width:100%;height:900px;border:none;border-radius:6px;background:#fff}
+.faq{max-width:560px;margin:52px auto 0;text-align:left}
+.faq dt{font-weight:700;margin-top:22px;font-size:15.5px}
+.faq dt::before{content:"Q";color:var(--on-caution);background:var(--caution);border-radius:4px;font-size:12px;padding:1px 7px;margin-right:9px;vertical-align:1px}
+.faq dd{color:var(--wht-dim);font-size:14px;margin-top:5px}
+
+footer{border-top:4px solid #3A424A;padding:34px 0 60px;font-size:13px;color:var(--wht-dim);background:#101418}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:820px){
+  body{background:var(--road)} /* モバイルはレーンマーク無し（横幅事故防止＆可読優先） */
+  .hero{padding:36px 0 28px}
+  .hero-grid{grid-template-columns:1fr;gap:20px}
+  .sign{padding:22px 18px}
+  .cols,.niche,.steps{grid-template-columns:1fr}
+  section{padding:52px 0}
+  .form-embed iframe{height:960px}
+  h1{font-size:clamp(30px,8.6vw,40px)}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+
+<header>
+  <div class="wrap hd">
+    <a class="brand" href="#">
+      <span class="chip"><b>塗り旅</b><span>NURITABI</span></span>
+    </a>
+    <a class="pill" href="#join">β事前登録 受付中</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div class="hero-grid">
+
+      <!-- 巨大方面看板 -->
+      <div class="sign board">
+        <div class="board-top">
+          <span class="dest">日本&nbsp;JAPAN&nbsp;方面</span>
+          <span class="rno"><b>E47</b></span>
+        </div>
+        <h1>次の出口は、<br>まだ<em>白い県</em>。</h1>
+        <div class="dist-row">
+          <span class="arw" aria-hidden="true"></span>
+          <span class="km mono">まだ白い県&nbsp;40<small>km</small></span>
+        </div>
+        <p class="lede">旅程づくり → 走行 → 訪問記録 → 地図の塗りつぶし。都道府県 47、市区町村 約1,700。塗るほどに、日本はまだ広い。</p>
+        <div>
+          <a class="btn" href="#join">事前登録する（無料） →</a>
+          <p class="wl-note">メールアドレスのみ。βの招待と開発報の案内にだけ使用。</p>
+        </div>
+      </div>
+
+      <!-- 路線図看板 -->
+      <div class="sign board">
+        <div class="map-title">
+          <b>路線図</b>
+          <span>ROUTE MAP — 通過県 塗りつぶし</span>
+        </div>
+        <div class="mapbox" id="mapbox" aria-label="日本地図。都道府県をタップすると塗れます">
+          <!--JAPAN_MAP_SVG-->
+        </div>
+        <p class="map-caption" id="mapCaption">&nbsp;</p>
+        <div class="meter mono">
+          <span class="big"><b id="cnt">00</b> / 47</span>
+          <span class="pct" id="pct">0.0%</span>
+        </div>
+        <div class="gauge"><i id="gauge"></i></div>
+        <div class="rank-row">
+          <span class="rank mono" id="rank">0/47 通過 — 出発前</span>
+          <a class="share-x" id="shareX" href="#" target="_blank" rel="noopener">この路線図を X に掲示 →</a>
+        </div>
+        <p class="map-cta" id="mapCta">この先、市区町村・スポット単位の路線図へ。<a href="#join">→ 事前登録</a></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- この先: コンセプト -->
+  <section>
+    <div class="wrap">
+      <p class="kp">この先<i>&nbsp;—&nbsp;</i>コンセプト<i>&nbsp;2km</i></p>
+      <h2>まだ白い場所が、次の目的地。</h2>
+      <p class="sec-lede">何をしたか、より、どこへ行ったか。「行った」という事実を資産にする、旅の記録サービス。</p>
+      <div class="cols">
+        <div class="sign card">
+          <div class="lane"><span class="arw sm" aria-hidden="true"></span><h3>塗る</h3></div>
+          <p>訪問した場所で地図が塗られていく。都道府県で 47。市区町村なら約 1,700。粒度を上げるほど制覇は遠く、旅は続く。</p>
+          <span class="num mono">47 → 1,700</span>
+        </div>
+        <div class="sign card">
+          <div class="lane"><span class="arw sm" aria-hidden="true"></span><h3>並べる</h3></div>
+          <p>行った場所を、自分の手で順位付け。他人のレビューの星より、「自分の中の一位」を持つ旅のほうが面白い。</p>
+          <span class="num mono">MY RANKING No.1</span>
+        </div>
+        <div class="sign card">
+          <div class="lane"><span class="arw sm" aria-hidden="true"></span><h3>見つける</h3></div>
+          <p>検索に出ない場所に、誰かの足あと。映えないスポットの「行った」が、次の誰かの行く理由になる。</p>
+          <span class="num mono">NEXT EXIT →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- この先: ニッチスポット（青看板） -->
+  <section>
+    <div class="wrap">
+      <p class="kp">この先<i>&nbsp;—&nbsp;</i>ニッチスポット<i>&nbsp;5km</i></p>
+      <h2>映えなくていい。</h2>
+      <p class="sec-lede">ガイドブックに載らない場所ほど、行った人にしか語れない。塗り旅が記録したいのは、こんな場所。</p>
+      <div class="niche">
+        <div class="sign sign-blue spot">
+          <span class="tag">展望地</span>
+          <h3>地形図で見つけた、名前のない展望地</h3>
+          <p>看板なし。駐車場なし。そこから見えた景色は、あなたしか知らない。</p>
+          <span class="exit"><span class="tri-r" aria-hidden="true"></span>次の側道を右</span>
+        </div>
+        <div class="sign sign-blue spot">
+          <span class="tag">巨大建造物</span>
+          <h3>国道沿いに突然あらわれる巨大観音</h3>
+          <p>誰が、なぜ建てたのか。通り過ぎずに停まった人だけが、記録を残せる。</p>
+          <span class="exit"><span class="tri-r" aria-hidden="true"></span>国道沿い 直進 3km</span>
+        </div>
+        <div class="sign sign-blue spot">
+          <span class="tag">終着駅</span>
+          <h3>線路の果ての、誰もいない終着駅</h3>
+          <p>降りたことに意味がある場所。最初の記録者は、あなたかもしれない。</p>
+          <span class="exit"><span class="tri-r" aria-hidden="true"></span>この先 行き止まり</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- この先: 使い方 -->
+  <section>
+    <div class="wrap">
+      <p class="kp">この先<i>&nbsp;—&nbsp;</i>使い方<i>&nbsp;3km</i></p>
+      <h2>計画 → 走行 → 塗り。</h2>
+      <div class="steps">
+        <div class="sign step">
+          <div class="head"><span class="rno"><b>01</b></span><h3>計画する</h3></div>
+          <p>日程・立ち寄り・ルートを一枚の旅程に。移動時間と費用は自動で積算。ロングドライブ向けプランナー。</p>
+        </div>
+        <div class="sign step">
+          <div class="head"><span class="rno"><b>02</b></span><h3>走る</h3></div>
+          <p>旅程に沿って走るだけ。立ち寄った場所が、そのまま訪問記録に。過去の旅のさかのぼり登録も可。</p>
+        </div>
+        <div class="sign step">
+          <div class="head"><span class="rno y"><b>03</b></span><h3>塗る</h3></div>
+          <p>帰る頃には、路線図が塗り替わっている。まだ白い区間を眺めて、次の行き先を決める。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 出口: 事前登録 -->
+  <section id="join" class="cta-sec">
+    <div class="wrap">
+      <p class="kp">出口<i>&nbsp;—&nbsp;</i>事前登録<i>&nbsp;この先すぐ</i></p>
+      <div class="sign">
+        <h2>ここで降りる。<br>白い地図を、埋めにいく。</h2>
+        <p class="sec-lede" id="joinLede" style="margin:0 auto 4px;max-width:34em">2026年内 β開通予定。事前登録の方から順にご案内します。</p>
+        <!-- Google Form 埋め込み: GOOGLE_FORM_EMBED_URL を実URL（…/viewform?embedded=true）に差し替えて node src/build.mjs -->
+        <div class="aux form-embed">
+          <iframe src="GOOGLE_FORM_EMBED_URL" title="塗り旅 β事前登録フォーム" loading="lazy">読み込んでいます…</iframe>
+        </div>
+        <p class="wl-note">登録無料・解除自由。フォームが表示されない場合は <a href="GOOGLE_FORM_EMBED_URL" target="_blank" rel="noopener">新しいタブで開く</a>。</p>
+      </div>
+
+      <dl class="faq">
+        <dt>いつから使えますか？</dt>
+        <dd>2026年内のβ開通が目標です。進捗はXで公開しています。</dd>
+        <dt>料金はかかりますか？</dt>
+        <dd>基本無料。AIによる旅程提案など一部機能は、将来有料になる予定です。</dd>
+        <dt>アプリのインストールは必要ですか？</dt>
+        <dd>不要です。スマホ・PCのブラウザからそのまま走り出せます。</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <span>塗り旅（ヌリタビ）— 個人開発のサービスです</span>
+    <!-- TODO: 公開前にXアカウントのURLへ差し替え -->
+    <a href="https://x.com/" rel="noopener">X で開発ログを公開中</a>
+  </div>
+</footer>
+
+<script>
+window.NURITABI_THEME={
+  rank:function(n){
+    var b;
+    if(n===0)b="出発前";
+    else if(n<5)b="最初のインター";
+    else if(n<10)b="旅のはじまり";
+    else if(n<20)b="週末の塗り師";
+    else if(n<30)b="本格塗り師";
+    else if(n<40)b="日本を巡る者";
+    else if(n<47)b="全線走破まで あと"+(47-n)+"県";
+    else b="全線走破";
+    return n+"/47 通過 — "+b;
+  },
+  msg:function(n){
+    if(n===0)return "行った県をタップ。この先 47県、すべて未通過。";
+    if(n<10)return "この先 まだ "+(47-n)+"県。";
+    if(n<20)return "順調に通過中。この先 "+(47-n)+"県。";
+    if(n<35)return "かなりの走行距離。この先 "+(47-n)+"県。";
+    if(n<47)return "終点まで あと "+(47-n)+"県。";
+    return "全線走破。次は市区町村、約1,700区間へ。";
+  },
+  demoCaption:"たとえば、東北まわり 1,600km の走行記録。",
+  share:function(n,p,rank){
+    return "日本制覇率 "+n+"/47（"+p+"%）。次の出口で降りてみませんか。 #塗り旅";
+  },
+  joinLede:function(n){
+    if(n===0)return "2026年内 β開通予定。事前登録の方から順にご案内します。";
+    if(n<47)return "この先 まだ "+(47-n)+"県。β開通の案内を受け取って、次の出口へ。";
+    return "全線走破のあなたへ。次は市区町村、約1,700区間の路線図で。";
+  }
+};
+</script>
+<!--CORE_JS-->
+</body>
+</html>

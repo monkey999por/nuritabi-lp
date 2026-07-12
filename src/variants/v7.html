@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>塗り旅（ヌリタビ）— 行った場所で、日本を塗れ。</title>
+<meta name="description" content="旅程づくりから訪問の記録、地図の塗りつぶしまで。ロングドライブのための旅程×制覇記録サービス「塗り旅」。βの事前登録を受付中。">
+<!-- OGP: カスタムドメイン移行時は og:image / og:url のドメインを差し替えること（シェア文面のURLもここから読む） -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="塗り旅（ヌリタビ）— 行った場所で、日本を塗れ。">
+<meta property="og:description" content="旅の計画から訪問の記録、そして地図の塗りつぶしへ。ロングドライブのための制覇マップ。β事前登録受付中。">
+<meta property="og:url" content="https://nuritabi-lp.pages.dev/">
+<meta property="og:image" content="https://nuritabi-lp.pages.dev/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='3' fill='%23E8FF2B'/%3E%3C/svg%3E">
+</head>
+<body>
+<style>
+/* ============================================================
+   v7「フルスロットル」— 漆黒×蛍光イエロー×危険赤 / 単一ダーク固定
+   ============================================================ */
+:root{
+  --bg:#0A0A0C;            /* 漆黒 */
+  --panel:#1C1C22;         /* チャコール面 */
+  --panel-2:#15151A;
+  --ink:#F2F2EE;
+  --mute:#9C9CA6;
+  --line:#2B2B33;
+  --volt:#E8FF2B;          /* 蛍光イエロー */
+  --volt-deep:#C8DD0E;
+  --danger:#FF2E2E;        /* 危険赤 */
+  --on-volt:#0A0A0C;
+  --map-fill:#1C1C22;
+  --map-stroke:#3A3A44;
+  --glow:rgba(232,255,43,.4);
+  --hazard:repeating-linear-gradient(45deg,var(--volt) 0 12px,var(--bg) 12px 24px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html,body{overflow-x:clip}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+  font-size:16px; line-height:1.8; -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SF Mono","Consolas","Courier New",monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+a{color:var(--volt)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--volt);outline-offset:3px}
+::selection{background:var(--volt);color:var(--on-volt)}
+
+/* 煽りラベル（英大文字） */
+.tagline{
+  display:inline-block;font-weight:900;font-style:italic;font-size:12px;
+  letter-spacing:.34em;text-transform:uppercase;color:var(--volt);
+  padding:4px 14px 4px 12px;border:1px solid var(--volt);
+  clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);
+  margin-bottom:20px;
+}
+.tagline.red{color:var(--danger);border-color:var(--danger)}
+
+/* 見出し: 斜体×超極太 */
+h1,h2{
+  font-weight:900;font-style:italic;letter-spacing:.01em;line-height:1.24;
+  text-wrap:balance;
+}
+h1{font-size:clamp(40px,6.4vw,72px);margin-bottom:22px}
+h1 em{font-style:italic;color:var(--volt);text-shadow:0 0 22px var(--glow)}
+h2{font-size:clamp(28px,4.4vw,46px);margin-bottom:16px}
+h2 em{font-style:italic;color:var(--volt);text-shadow:0 0 18px var(--glow)}
+
+/* ── ハザードバー ── */
+.hazard{height:10px;background:var(--hazard)}
+
+/* ── header ── */
+header{border-bottom:1px solid var(--line);background:var(--bg);position:relative;z-index:2}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink)}
+.brand .flag{
+  width:18px;height:18px;flex:none;align-self:center;
+  background:conic-gradient(var(--volt) 0 25%,var(--bg) 0 50%,var(--volt) 0 75%,var(--bg) 0);
+  border:1px solid var(--volt);
+}
+.brand b{font-size:21px;font-weight:900;font-style:italic;letter-spacing:.05em}
+.brand span{font-size:10px;font-weight:900;letter-spacing:.3em;color:var(--mute)}
+.hd-cta{
+  font-size:12px;font-weight:900;font-style:italic;letter-spacing:.14em;text-decoration:none;
+  color:var(--danger);border:1px solid var(--danger);padding:7px 16px;white-space:nowrap;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+  transition:background .2s,color .2s;
+}
+.hd-cta:hover{background:var(--danger);color:#fff}
+
+/* ── hero ── */
+.hero{
+  position:relative;padding:72px 0 88px;overflow:clip;
+  background:
+    /* スピード線 */
+    repeating-linear-gradient(-12deg,transparent 0 46px,rgba(232,255,43,.05) 46px 47px,transparent 47px 110px),
+    radial-gradient(120% 90% at 78% 30%,rgba(232,255,43,.07),transparent 55%),
+    var(--bg);
+  /* 斜めカット */
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 3.5vw),0 100%);
+}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:44px;align-items:center}
+.lede{color:var(--mute);font-size:15.5px;max-width:32em;margin-bottom:30px}
+.lede b{color:var(--ink)}
+
+/* CTA: 参戦する */
+.btn{
+  display:inline-block;padding:17px 44px;font-size:17px;font-weight:900;font-style:italic;letter-spacing:.1em;
+  background:var(--volt);color:var(--on-volt);text-decoration:none;cursor:pointer;
+  clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);
+  box-shadow:0 0 26px var(--glow);
+  transition:transform .15s,background .2s,box-shadow .2s;
+}
+.btn:hover{background:var(--volt-deep);box-shadow:0 0 34px var(--glow)}
+.btn:active{transform:scale(.96)}
+.btn .en{font-size:11px;letter-spacing:.3em;display:block;margin-top:2px}
+.wl-note{font-size:12.5px;color:var(--mute);margin-top:14px}
+
+/* ── 地図 × 巨大47 ── */
+.map-stage{position:relative}
+.big47{
+  position:absolute;inset:auto 0 0 0;top:50%;transform:translateY(-58%);
+  font-family:ui-monospace,"SF Mono","Consolas",monospace;font-variant-numeric:tabular-nums;
+  font-weight:900;font-style:italic;font-size:clamp(180px,26vw,340px);line-height:1;
+  text-align:center;color:transparent;-webkit-text-stroke:2px rgba(232,255,43,.22);
+  letter-spacing:-.04em;pointer-events:none;user-select:none;z-index:0;
+}
+.mapbox{position:relative;z-index:1}
+.mapbox svg{width:100%;height:auto;display:block;max-height:62vh}
+.prefecture{fill:var(--map-fill);stroke:var(--map-stroke);stroke-width:1;cursor:pointer;transition:fill .2s ease}
+.prefecture:hover{fill:#33331a}
+.prefecture:focus-visible{outline:none;stroke:var(--volt);stroke-width:2.6}
+.prefecture.on{fill:var(--volt);stroke:var(--volt-deep);filter:drop-shadow(0 0 7px var(--glow))}
+.prefecture.on:hover{fill:var(--volt-deep)}
+.boundary-line{stroke:var(--map-stroke);fill:none;opacity:.5;stroke-dasharray:3 8}
+.map-caption{font-size:13px;color:var(--mute);text-align:center;margin-top:8px;min-height:1.7em}
+.map-caption b{color:var(--volt);font-weight:700;font-style:italic}
+
+/* ── 大型メーター ── */
+.meter-unit{
+  margin-top:16px;background:var(--panel);border:1px solid var(--line);
+  padding:18px 20px 20px;position:relative;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%);
+}
+.meter-unit::before{
+  content:"PAINT METER";position:absolute;top:10px;right:16px;
+  font-size:9px;font-weight:900;letter-spacing:.34em;color:var(--mute);font-style:italic;
+}
+.meter-read{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.meter-read .big{font-size:clamp(44px,6vw,58px);font-weight:900;line-height:1;letter-spacing:-.02em}
+.meter-read .big b{color:var(--volt);font-weight:900;text-shadow:0 0 20px var(--glow)}
+.meter-read .big .den{font-size:.42em;color:var(--mute);font-weight:700}
+.meter-read .pct{font-size:17px;color:var(--danger);font-weight:700}
+.gauge-track{
+  margin-top:14px;height:16px;background:var(--bg);border:1px solid var(--line);
+  overflow:hidden;position:relative;
+  /* 目盛り */
+  background-image:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),var(--line) calc(10% - 1px) 10%);
+}
+.gauge-track i{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--volt-deep),var(--volt) 70%,#fbff9b);
+  box-shadow:0 0 16px var(--glow);
+  transition:width .4s ease;
+}
+.gauge-scale{display:flex;justify-content:space-between;font-size:10px;color:var(--mute);letter-spacing:.14em;margin-top:6px;font-weight:700}
+.gauge-scale .max{color:var(--danger)}
+
+/* 称号 + シェア */
+.rank-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:16px;min-height:2.4em;flex-wrap:wrap}
+.rank{
+  font-size:12.5px;font-weight:900;font-style:italic;letter-spacing:.12em;
+  color:var(--on-volt);background:var(--volt);padding:6px 18px;
+  clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);
+}
+.share-x{
+  display:none;font-size:13px;font-weight:900;font-style:italic;letter-spacing:.06em;text-decoration:none;
+  color:#fff;background:var(--danger);padding:8px 20px;
+  clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);
+  transition:transform .15s,opacity .2s;
+}
+.share-x:hover{opacity:.85}
+.share-x:active{transform:scale(.96)}
+.share-x.show{display:inline-block}
+.map-cta{display:none;text-align:center;font-size:13.5px;margin-top:12px;color:var(--mute)}
+.map-cta.show{display:block}
+.map-cta a{font-weight:900;font-style:italic}
+
+/* ── sections ── */
+section{padding:84px 0;position:relative}
+.sec-alt{
+  background:var(--panel-2);
+  clip-path:polygon(0 3.5vw,100% 0,100% 100%,0 calc(100% - 3.5vw));
+  padding:calc(84px + 3.5vw) 0;
+}
+.sec-lede{color:var(--mute);max-width:38em;margin-bottom:44px;font-size:15px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--volt);
+  padding:26px 24px;position:relative;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%);
+}
+.card .k{
+  font-size:10px;font-weight:900;font-style:italic;letter-spacing:.3em;color:var(--volt);
+  display:block;margin-bottom:10px;
+}
+.card h3{font-size:20px;font-weight:900;font-style:italic;margin-bottom:10px;letter-spacing:.04em}
+.card p{font-size:14px;color:var(--mute)}
+
+/* niche */
+.niche{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.spot{
+  background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--danger);
+  padding:22px;position:relative;
+}
+.spot::before{
+  content:"OFF THE MAP";position:absolute;top:10px;right:12px;
+  font-size:9px;font-weight:900;font-style:italic;letter-spacing:.26em;color:var(--danger);opacity:.8;
+}
+.spot h3{font-size:15.5px;font-weight:900;line-height:1.65;margin:14px 0 8px;font-style:italic}
+.spot p{font-size:13px;color:var(--mute)}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:var(--panel);border:1px solid var(--line);padding:24px 22px;position:relative;overflow:clip}
+.step::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--hazard);opacity:.9;
+}
+.step .n{
+  font-size:clamp(40px,5vw,52px);font-weight:900;font-style:italic;line-height:1;
+  color:transparent;-webkit-text-stroke:1.5px var(--volt);display:block;margin-bottom:12px;letter-spacing:-.02em;
+}
+.step h3{font-size:20px;font-weight:900;font-style:italic;margin-bottom:8px;letter-spacing:.06em}
+.step h3 span{font-size:10px;letter-spacing:.3em;color:var(--volt);display:block;margin-bottom:4px}
+.step p{font-size:14px;color:var(--mute);padding-bottom:10px}
+
+/* join */
+.cta-sec{text-align:center}
+.cta-sec .sec-lede{margin-left:auto;margin-right:auto}
+.form-embed{
+  max-width:640px;margin:0 auto;background:var(--panel);
+  border:1px solid var(--volt);padding:10px;overflow:hidden;position:relative;
+  box-shadow:0 0 40px rgba(232,255,43,.12);
+}
+.form-embed::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:8px;background:var(--hazard);
+}
+.form-embed iframe{display:block;width:100%;height:900px;border:none;background:#fff;margin-top:8px}
+.cta-sec .wl-note{text-align:center}
+
+/* FAQ */
+.faq{max-width:560px;margin:56px auto 0;text-align:left}
+.faq dt{font-weight:900;font-style:italic;margin-top:24px;font-size:15.5px}
+.faq dt::before{content:"Q ";color:var(--danger);font-weight:900}
+.faq dd{color:var(--mute);font-size:14.5px;margin-top:4px}
+
+footer{border-top:1px solid var(--line);padding:36px 0 56px;font-size:13px;color:var(--mute)}
+footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:820px){
+  .hero{padding:48px 0 72px;clip-path:polygon(0 0,100% 0,100% calc(100% - 6vw),0 100%)}
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .cols,.niche,.steps{grid-template-columns:1fr}
+  section{padding:60px 0}
+  .sec-alt{clip-path:polygon(0 6vw,100% 0,100% 100%,0 calc(100% - 6vw));padding:calc(60px + 6vw) 0}
+  .form-embed iframe{height:960px}
+  .big47{font-size:clamp(150px,40vw,240px)}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+
+<div class="hazard" aria-hidden="true"></div>
+<header>
+  <div class="wrap hd">
+    <a class="brand" href="#">
+      <span class="flag" aria-hidden="true"></span>
+      <b>塗り旅</b>
+      <span>NURITABI</span>
+    </a>
+    <a class="hd-cta" href="#join">β ENTRY 受付中</a>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="tagline">Full Throttle — 47 Prefectures</p>
+        <h1>全県制覇、<br><em>やってやれ。</em></h1>
+        <p class="lede">旅程を組む。走る。塗る。行った県から日本地図が塗り替わっていく、ロングドライブのための<b>旅程×制覇記録</b>。都道府県で47、市区町村なら約1,700。ゴールはまだ先だ。</p>
+        <a class="btn" href="#join">参戦する（無料）<span class="en">JOIN THE GRID</span></a>
+        <p class="wl-note">メールアドレスだけでエントリー完了。βの招待と開発報にのみ使う。</p>
+      </div>
+      <div>
+        <div class="map-stage">
+          <div class="big47 mono" aria-hidden="true">47</div>
+          <div class="mapbox" id="mapbox" aria-label="日本地図。都道府県をタップすると塗れます">
+            <!--JAPAN_MAP_SVG-->
+          </div>
+        </div>
+        <p class="map-caption" id="mapCaption">&nbsp;</p>
+        <div class="meter-unit mono">
+          <div class="meter-read">
+            <span class="big"><b id="cnt">00</b><span class="den"> / 47</span></span>
+            <span class="pct" id="pct">0.0%</span>
+          </div>
+          <div class="gauge-track"><i id="gauge"></i></div>
+          <div class="gauge-scale" aria-hidden="true"><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span class="max">MAX</span></div>
+        </div>
+        <div class="rank-row">
+          <span class="rank" id="rank">LEVEL 0 — 未点火</span>
+          <a class="share-x" id="shareX" href="#" target="_blank" rel="noopener">X で見せつける</a>
+        </div>
+        <p class="map-cta" id="mapCta">この続きは市区町村・スポット単位で。<a href="#join">→ 参戦する</a></p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <p class="tagline">Concept</p>
+      <h2>白い県は、<em>燃料だ。</em></h2>
+      <p class="sec-lede">その旅で何をしたかより、どこまで行ったか。「行った」という事実を燃やして、次の走りに変える。それが塗り旅。</p>
+      <div class="cols">
+        <div class="card">
+          <span class="k">PAINT</span>
+          <h3>塗る</h3>
+          <p>走った場所から地図が塗り替わる。都道府県で47、市区町村なら約1,700。粒度を上げるほどゴールは遠のく。つまり、走る理由が増える。</p>
+        </div>
+        <div class="card">
+          <span class="k">RANK</span>
+          <h3>並べる</h3>
+          <p>行った場所を自分の手で順位付け。他人のレビューの星なんか要らない。「自分の中の一位」を握ってる旅のほうが、圧倒的に強い。</p>
+        </div>
+        <div class="card">
+          <span class="k">SCOUT</span>
+          <h3>見つける</h3>
+          <p>検索に出ない場所に、誰かの足あとが残ってる。映えないスポットの「行った」という記録が、次の誰かのアクセルになる。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-alt">
+    <div class="wrap">
+      <p class="tagline red">Hidden Spots</p>
+      <h2>映えは、<em>要らない。</em></h2>
+      <p class="sec-lede">ガイドブックに載らない場所ほど、行った奴にしか語れない。塗り旅が記録したいのは、たとえばこんな場所だ。</p>
+      <div class="niche">
+        <div class="spot">
+          <h3>地形図で見つけた、名前のない展望地</h3>
+          <p>看板なし。駐車場なし。でも、そこから見えた景色はおまえしか知らない。</p>
+        </div>
+        <div class="spot">
+          <h3>国道沿いに突然あらわれる巨大観音</h3>
+          <p>誰が、なぜ建てた。通り過ぎずに停まった奴だけが記録を残せる。</p>
+        </div>
+        <div class="spot">
+          <h3>線路の果ての、誰もいない終着駅</h3>
+          <p>降りたことに意味がある場所。最初の記録者になるのは、おまえかもしれない。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="tagline">How to Run</p>
+      <h2>計画。走行。<em>塗装。</em></h2>
+      <div class="steps">
+        <div class="step">
+          <span class="n mono">01</span>
+          <h3><span>PLAN</span>計画する</h3>
+          <p>日程・立ち寄り・ルートを一枚の旅程に。移動時間も費用も自動で積み上がる、ロングドライブ仕様のプランナー。</p>
+        </div>
+        <div class="step">
+          <span class="n mono">02</span>
+          <h3><span>DRIVE</span>走る</h3>
+          <p>旅程どおりに走るだけ。立ち寄った場所がそのまま訪問記録になる。過去の旅をさかのぼって記録してもいい。</p>
+        </div>
+        <div class="step">
+          <span class="n mono">03</span>
+          <h3><span>PAINT</span>塗る</h3>
+          <p>帰る頃には地図が塗り替わってる。まだ白い場所を睨みながら、次の行き先を決めろ。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="join" class="cta-sec sec-alt">
+    <div class="wrap">
+      <p class="tagline red">Join the Grid</p>
+      <h2>エントリー、<em>受付中。</em></h2>
+      <p class="sec-lede" id="joinLede">2026年内のβ公開へ全開で開発中。エントリーした順にグリッドへ並べていく。</p>
+      <!-- Google Form 埋め込み: GOOGLE_FORM_EMBED_URL を実URL（…/viewform?embedded=true）に差し替えて node src/build.mjs -->
+      <div class="form-embed">
+        <iframe src="GOOGLE_FORM_EMBED_URL" title="塗り旅 β事前登録フォーム" loading="lazy">読み込んでいます…</iframe>
+      </div>
+      <p class="wl-note">登録は無料。いつでも解除できる。フォームが表示されない場合は <a href="GOOGLE_FORM_EMBED_URL" target="_blank" rel="noopener">新しいタブで開く</a>。</p>
+
+      <dl class="faq">
+        <dt>いつから使えますか？</dt>
+        <dd>2026年内のβ公開が目標です。進捗はXで全部公開しています。</dd>
+        <dt>料金はかかりますか？</dt>
+        <dd>基本無料。AIによる旅程提案など、一部の機能は将来有料になる予定です。</dd>
+        <dt>アプリのインストールは必要ですか？</dt>
+        <dd>不要。スマホ・PCのブラウザからそのまま走り出せます。</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <span>塗り旅（ヌリタビ）— 個人開発のサービスです</span>
+    <!-- TODO: 公開前にXアカウントのURLへ差し替え -->
+    <a href="https://x.com/" rel="noopener">X で開発ログを公開中</a>
+  </div>
+</footer>
+
+<script>
+window.NURITABI_THEME={
+  rank:function(n){
+    var b;
+    if(n===0)b="未点火";
+    else if(n<5)b="点火完了";
+    else if(n<10)b="暖機おわり";
+    else if(n<20)b="週末の塗り師";
+    else if(n<30)b="フルブースト";
+    else if(n<40)b="日本を喰う者";
+    else if(n<47)b="残り"+(47-n)+"県、全開";
+    else return "LEVEL MAX — 全国制覇";
+    return "LEVEL "+n+" — "+b;
+  },
+  msg:function(n){
+    if(n===0)return "行った県を叩け。おまえの地図は、まだ冷えてる。";
+    if(n<10)return "まだ日本は広い。アクセルはこれからだ。";
+    if(n<20)return "いいペースだ。止まるな。";
+    if(n<35)return "かなり飛ばしてるな、塗り師。";
+    if(n<47)return "全国制覇、射程圏内。";
+    return "LEVEL MAX。次は市区町村、約1,700ピースだ。";
+  },
+  demoCaption:"たとえば、東北一周 1,600km 全開ラン。",
+  share:function(n,p,rank){
+    if(n>=47)return "日本制覇率 47/47（100.0%）。LEVEL MAX、全国制覇。次は市区町村だ。おまえはどこまで塗れてる？ #塗り旅";
+    return "日本制覇率 "+n+"/47（"+p+"%）。まだ全開じゃない。おまえの地図はどこまで塗れてる？ #塗り旅";
+  },
+  joinLede:function(n){
+    if(n===0)return "2026年内のβ公開へ全開で開発中。エントリーした順にグリッドへ並べていく。";
+    if(n<47)return "残り "+(47-n)+" 県。燃料は満タンか？ β招待、先に受け取れ。";
+    return "47都道府県、完走済みのおまえへ。次のコースは市区町村、約1,700ピース。";
+  }
+};
+</script>
+<!--CORE_JS-->
+</body>
+</html>
