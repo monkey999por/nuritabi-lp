@@ -23,15 +23,15 @@
 <main>
   <div class="wrap hero">
     <div class="copy">
-      <p class="eyebrow">TRIP PLAYBACK / REAL ROUTE</p>
+      <p class="eyebrow">TRIP PLAYBACK / MOCK ROUTE</p>
       <h1>spotをpush。<br>routeがcommitされる。</h1>
-      <p class="lede">地図上のスポットをピンとして保存し、日単位の道順ルートで接続する。旅行が終わると、実走ログのように再生できる記録が残ります。</p>
+      <p class="lede">地図上のスポットをピンとして保存し、日単位の道順ルートで接続する。旅行が終わると、走行ログのように再生できる記録が残ります。</p>
       <a class="btn" href="#join">join --beta</a>
       <p class="note">メール登録のみ。招待と開発ログを送ります。</p>
     </div>
     <div class="map-panel">
-      <p class="panel-title">RUN ./tohoku-2026-04 --playback</p>
-      <div class="tripbox" id="tripbox" aria-label="2026年4月の東北旅行。実名スポットのピンと道なりルートを再生する地図">
+      <p class="panel-title">RUN ./mock-route --playback</p>
+      <div class="tripbox" id="tripbox" aria-label="Mock旅程。サンプルスポットのピンと道なりルートを再生する地図">
         <!--TRIP_MAP_SVG-->
       </div>
       <div class="tm-hud">
@@ -39,7 +39,7 @@
         <span class="tm-stat"><b id="tmSpots">0</b> スポット</span>
         <span class="tm-stat"><b id="tmKm">0</b> km</span>
       </div>
-      <p class="tm-caption" id="tmCaption">2026年4月・東北 5日間 — これは実際の旅行データ。</p>
+      <p class="tm-caption" id="tmCaption">Mock旅程 5日間 — フロントエンドだけで描いたサンプル地図。</p>
     </div>
   </div>
   <section><div class="wrap"><div class="section-head"><p class="tag">CONCEPT</p><h2>point, route, archive.</h2><p>扱うデータは面ではなく座標です。スポットの点と Directions 由来の線を積み重ね、旅行単位のアーカイブにします。</p></div>

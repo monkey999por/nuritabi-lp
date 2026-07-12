@@ -1,18 +1,18 @@
 // 塗り旅 LP 共通コア（全バリアント共通・build.mjs が <!--CORE_JS--> に注入する）
-// 必須 DOM: #tripbox(中に trip-map.svg) #tmDay #tmSpots #tmKm #tmCaption
+// 必須 DOM: #tripbox(中に Mock の trip-map.svg) #tmDay #tmSpots #tmKm #tmCaption
 (function(){
   "use strict";
 
   var VARIANTS=__VARIANT_COUNT__; // build.mjs が実数に置換
-  var TOTAL_KM=1140;
-  var FINAL_CAPTION="5日間・26スポット・1,140km — 旅行がまるごと、一枚の記録になった。";
-  var START_CAPTION="2026年4月・東北 5日間 — これは実際の旅行データ。";
+  var TOTAL_KM=420;
+  var FINAL_CAPTION="5日間・15スポット・420km — サンプルの旅程が、一枚の記録になった。";
+  var START_CAPTION="Mock旅程 5日間 — フロントエンドだけで描いたサンプル地図。";
   var DAY_CAPTIONS={
     1:"1日目、最初のピンを立てる。",
-    2:"2日目、海沿いのスポットを道なりにつなぐ。",
-    3:"3日目、立ち寄りが線になって伸びていく。",
-    4:"4日目、ピンとルートが旅の密度を上げる。",
-    5:"5日目、最後のスポットまで記録する。"
+    2:"2日目、海沿いの寄り道をつなぐ。",
+    3:"3日目、山あいの立ち寄りを追加する。",
+    4:"4日目、戻り道にもピンを増やす。",
+    5:"5日目、最後のスポットまでサンプルで記録する。"
   };
 
   var reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -66,7 +66,7 @@
       });
       setText(dayEl,"5日目");
       setText(spotsEl,String(pins.length));
-      setText(kmEl,"1,140");
+      setText(kmEl,"420");
       setText(capEl,FINAL_CAPTION);
     }
 
@@ -133,7 +133,7 @@
 
       setText(dayEl,"5日目");
       setText(spotsEl,String(pins.length));
-      setText(kmEl,"1,140");
+      setText(kmEl,"420");
       setText(capEl,FINAL_CAPTION);
       await sleep(4000);
       if(myToken===token&&!document.hidden)play();

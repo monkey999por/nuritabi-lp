@@ -4,7 +4,8 @@
 //   src/ogp-card.html → src/ogp-built.html（OGP 画像の元）
 //   src/form-url.txt があれば GOOGLE_FORM_EMBED_URL を全ページ一括置換
 //     node src/build.mjs   （リポジトリルートから実行）
-// 地図 SVG: geolonia/japanese-prefectures (MIT) https://github.com/geolonia/japanese-prefectures
+// 日本地図 SVG: geolonia/japanese-prefectures (MIT) https://github.com/geolonia/japanese-prefectures
+// 旅程 SVG: フロントエンド完結の Mock 地図
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
