@@ -29,9 +29,32 @@ const COUNT = variantFiles.length;
 const formUrlPath = join(src, "form-url.txt");
 const formUrl = existsSync(formUrlPath) ? readFileSync(formUrlPath, "utf8").trim() : null;
 
+// ── 不変契約ガード ──
+// 各バリアントが core.js / ビルドの前提を満たしているか検査し、違反があれば書き込まずに落とす。
+// 契約の全文は README「LP を編集するには」を参照。
+function count(html, needle) {
+  return html.split(needle).length - 1;
+}
+function checkContract(name, html) {
+  const errors = [];
+  if (count(html, "<!--TRIP_MAP_SVG-->") !== 1) errors.push("<!--TRIP_MAP_SVG--> はちょうど1回必要（replace は最初の1回しか置換しない）");
+  if (count(html, "<!--CORE_JS-->") !== 1) errors.push("<!--CORE_JS--> はちょうど1回必要");
+  for (const id of ["tripbox", "tmDay", "tmSpots", "tmKm", "tmCaption"]) {
+    if (!html.includes(`id="${id}"`)) errors.push(`必須 ID #${id} がない（core.js の DOM 契約）`);
+  }
+  if (count(html, "GOOGLE_FORM_EMBED_URL") < 2) errors.push("GOOGLE_FORM_EMBED_URL は iframe src とフォールバックリンクの2箇所以上必要");
+  if (count(html, "開発中") < 3) errors.push("COMING SOON 3カードすべてに「開発中」バッジが必要（誤認防止）");
+  if (errors.length) {
+    console.error(`契約違反: ${name}\n` + errors.map((e) => `  - ${e}`).join("\n"));
+    process.exit(1);
+  }
+}
+
 const coreJs = core.replace("__VARIANT_COUNT__", String(COUNT));
 for (const f of variantFiles) {
-  let html = readFileSync(join(src, "variants", f), "utf8")
+  const raw = readFileSync(join(src, "variants", f), "utf8");
+  checkContract(f, raw);
+  let html = raw
     .replace("<!--JAPAN_MAP_SVG-->", () => svg)
     .replace("<!--TRIP_MAP_SVG-->", () => tripMapSvg)
     .replace("<!--CORE_JS-->", () => "<script>\n" + coreJs + "</script>");

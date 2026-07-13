@@ -11,90 +11,650 @@
 <meta property="og:url" content="https://michip-lp.pages.dev/">
 <meta property="og:image" content="https://michip-lp.pages.dev/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='3' fill='%23E05A3F'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='6' width='26' height='20' rx='3' fill='%230a6b3d' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M16 21 V13 M16 13 L12 16 M16 13 L20 16' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@600;800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f7f0df;--paper:#fffaf0;--ink:#253041;--muted:#687184;--line:#d8cab0;--accent:#d84d35;--accent2:#27606d;--sea:#d8edf0;--land:#fff6dc;--route:#d84d35;--pin:#d84d35;--radius:8px;--shadow:0 18px 44px rgba(31,36,48,.16)}
-.highway{--bg:#e8efe8;--paper:#f9fff8;--ink:#12281d;--muted:#4f6458;--line:#0b623f;--accent:#ffd447;--accent2:#0b623f;--sea:#c8e5e2;--land:#f7f1d1;--route:#0b623f;--pin:#ffd447;--label:#10281d;--label-stroke:#f9fff8;--panel-bg:#0b623f;--panel-border:0;--map-bg:#f9fff8;--hud-bg:#0b623f;--hud-border:#ffd447;--btn-ink:#12301f;--card-border:2px solid #0b623f;--button-shadow:0 4px 0 #083b28;}
-*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Noto Sans JP",system-ui,sans-serif;line-height:1.85;overflow-x:hidden}a{color:inherit}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}.serif{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif}.mono{font-family:ui-monospace,"SF Mono",Consolas,monospace;font-variant-numeric:tabular-nums}header{border-bottom:var(--head-border,2px solid var(--line));background:var(--head-bg,var(--paper));position:sticky;top:0;z-index:10}.hd{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}.brand{display:flex;align-items:center;gap:11px;text-decoration:none}.mark{width:40px;height:40px;border-radius:var(--mark-radius,8px);display:grid;place-items:center;background:var(--accent);color:var(--mark-ink,#fff);font-weight:900;box-shadow:var(--mark-shadow,none)}.brand b{font-size:21px;letter-spacing:.08em}.brand span:last-child{font-size:11px;color:var(--muted);letter-spacing:.22em}.top-cta,.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-weight:800;letter-spacing:.06em;border-radius:var(--radius);border:2px solid var(--accent);background:var(--accent);color:var(--btn-ink,#fff);box-shadow:var(--button-shadow,none)}.top-cta{font-size:13px;padding:7px 14px}.btn{padding:14px 28px;margin-top:22px}.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(340px,1.1fr);gap:34px;align-items:center;padding:54px 0 42px}.copy{position:relative}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.24em;color:var(--accent2);margin-bottom:18px;text-transform:uppercase}h1{font-family:var(--h-font,"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif);font-size:clamp(36px,5vw,64px);line-height:1.28;letter-spacing:0;margin-bottom:20px}h1 em{font-style:normal;color:var(--accent)}.lede{font-size:16px;color:var(--muted);max-width:39em}.note{font-size:12.5px;color:var(--muted);margin-top:12px}.map-panel{background:var(--panel-bg,var(--paper));border:var(--panel-border,2px solid var(--line));border-radius:var(--panel-radius,var(--radius));box-shadow:var(--shadow);padding:16px;position:relative;overflow:hidden}.panel-title{font-size:12px;font-weight:900;letter-spacing:.16em;color:var(--accent2);margin-bottom:10px}.tripbox{background:var(--map-bg,#eef6f2);border-radius:calc(var(--panel-radius,var(--radius)) - 2px);padding:10px;overflow:hidden}.tripbox svg{width:100%;height:auto;display:block;max-height:66vh;margin:auto}.tm-sea{fill:var(--sea)}.tm-land path{fill:var(--land);stroke:var(--map-line,var(--line));stroke-width:1}.tm-route{fill:none;stroke:var(--route);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:0;filter:var(--route-filter,none)}.tm-route.show{opacity:1}.tm-pin{opacity:0}.tm-pin.show{opacity:1}.tm-dot{fill:var(--pin);stroke:var(--paper);stroke-width:2;transform-box:fill-box;transform-origin:center;transform:scale(.35);transition:transform .22s ease}.tm-pin.show .tm-dot{transform:scale(1)}.tm-label{font-size:9.5px;fill:var(--label,#253041);stroke:var(--label-stroke,var(--paper));stroke-width:3;paint-order:stroke;opacity:0;transition:opacity .25s ease .08s}.tm-pin.show .tm-label{opacity:1}.tm-hud{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}.tm-day,.tm-stat{display:inline-flex;align-items:baseline;gap:5px;border:1px solid var(--hud-border,var(--line));background:var(--hud-bg,rgba(255,255,255,.65));border-radius:999px;padding:6px 12px;font-size:13px;font-weight:800}.tm-stat b{font-size:18px;color:var(--accent)}.tm-caption{min-height:1.8em;margin-top:10px;color:var(--muted);font-size:13.5px}section{padding:60px 0;border-top:1px solid var(--line)}.section-head{max-width:720px;margin-bottom:28px}.tag{font-size:12px;font-weight:900;letter-spacing:.2em;color:var(--accent2);margin-bottom:10px}h2{font-family:var(--h-font,"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif);font-size:clamp(26px,3.5vw,40px);line-height:1.45;margin-bottom:10px}.section-head p{color:var(--muted)}.cards,.spot-grid,.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.cards article,.spot-grid article,.step{background:var(--card-bg,var(--paper));border:var(--card-border,1px solid var(--line));border-radius:var(--card-radius,var(--radius));padding:22px;box-shadow:var(--card-shadow,none)}.cards strong{display:inline-grid;place-items:center;min-width:38px;height:34px;padding:0 9px;margin-bottom:14px;background:var(--accent);color:var(--btn-ink,#fff);border-radius:var(--strong-radius,999px);font-size:13px}.cards h3,.spot-grid h3,.step h3{font-size:18px;line-height:1.55;margin-bottom:8px}.cards p,.spot-grid p,.step p{font-size:14px;color:var(--muted)}.step .num{display:block;color:var(--accent);font-weight:900;letter-spacing:.12em;margin-bottom:8px}.cta-sec{background:var(--cta-bg,var(--paper));text-align:center}.cta-sec .section-head{margin-left:auto;margin-right:auto}.form-embed{max-width:660px;margin:24px auto 0;background:var(--paper);border:2px solid var(--line);border-radius:var(--radius);padding:10px;overflow:hidden}.form-embed iframe{display:block;width:100%;height:900px;border:0;border-radius:calc(var(--radius) - 2px);background:#fff}.faq{max-width:680px;margin:48px auto 0;text-align:left}.faq dt{font-weight:900;margin-top:22px;color:var(--accent2)}.faq dd{color:var(--muted);font-size:14px;margin-top:3px}footer{padding:30px 0 56px;color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}.comic .map-panel,.tsukkomi .map-panel{transform:rotate(var(--tilt,0deg))}.pixel *{image-rendering:pixelated}.hud .tripbox,.hud .map-panel{box-shadow:0 0 28px rgba(59,255,176,.18)}.ticket .map-panel:before{content:"";position:absolute;inset:10px;border:1px dashed rgba(90,55,35,.35);pointer-events:none}.sticker .cards article:nth-child(2){transform:rotate(-1deg)}.sticker .cards article:nth-child(3){transform:rotate(1.2deg)}@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:34px}.cards,.spot-grid,.steps{grid-template-columns:1fr}.tripbox svg{max-height:58vh}.top-cta{display:none}.form-embed iframe{height:960px}}@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+/* ═══ v4 高速道路標識 — 緑看板システム ═══ */
+:root{
+  --bg:#e8efe7;
+  --asphalt:#2c3134;
+  --asphalt2:#22262a;
+  --green:#0a6b3d;
+  --green-deep:#07502d;
+  --green-edge:#0d7a46;
+  --blue:#1e5fa8;
+  --blue-deep:#164a85;
+  --brown:#6f4c2c;
+  --brown-deep:#573a20;
+  --yellow:#ffd447;
+  --white:#fdfefd;
+  --ink:#22302a;
+  --muted:#5c6b62;
+  --sea:#cfe2ea;
+  --land:#f2f6ea;
+  --sans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --num:"Overpass","Zen Kaku Gothic New",sans-serif;
+  --shuffle-bg:#0a6b3d;
+  --shuffle-ink:#fdfefd;
+  --shuffle-border:rgba(253,254,253,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);font-weight:500;
+  line-height:1.9;
+  overflow-x:hidden;
+  position:relative;
+}
+body::before{ /* 左端の路肩+センターライン */
+  content:"";position:fixed;top:0;bottom:0;left:0;width:26px;z-index:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(180deg,#fdfefd 0 46px,transparent 46px 78px) 17px 0/4px 100% no-repeat,
+    linear-gradient(90deg,var(--asphalt),var(--asphalt2));
+}
+a{color:inherit}
+.wrap{width:min(1120px,calc(100% - 72px));margin:auto;position:relative}
+b,strong,h1,h2,h3,dt{font-weight:700}
+.en{font-family:var(--num);letter-spacing:.08em}
 
-/* ── この先の機能（SNS/カレンダー/共有）── */
-.soon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.soon-card{position:relative;background:var(--card-bg,var(--paper));border:var(--card-border,1px solid var(--line));border-radius:var(--card-radius,var(--radius));padding:22px;box-shadow:var(--card-shadow,none)}
-.soon-badge{position:absolute;top:14px;right:14px;font-size:10.5px;font-weight:900;letter-spacing:.14em;color:var(--accent2);border:1px solid currentColor;border-radius:999px;padding:3px 10px;background:var(--paper)}
-.soon-card h3{font-size:18px;line-height:1.5;margin:14px 0 8px}
-.soon-card>p{font-size:14px;color:var(--muted)}
-.soon-mock{background:var(--map-bg,#eef6f2);border:1px solid var(--line);border-radius:calc(var(--radius,8px) - 2px);padding:12px;min-height:158px;display:flex;flex-direction:column;gap:8px;justify-content:center}
-.feed-item{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
-.avatar{width:22px;height:22px;border-radius:50%;background:var(--accent);flex:none;opacity:.9}
-.feed-item:nth-child(2) .avatar{background:var(--accent2)}
+/* ── data-reveal: 看板が下からスッと立つ ── */
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .55s ease,transform .55s cubic-bezier(.18,.8,.28,1)}
+[data-reveal].is-in{opacity:1;transform:none}
+
+/* ── ヘッダー: 路面ステータスバー ── */
+header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#33393d,var(--asphalt2));color:var(--white);box-shadow:0 2px 10px rgba(20,26,30,.4)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.mark{
+  min-width:46px;height:38px;padding:0 8px;display:grid;place-items:center;
+  background:var(--green);border:2px solid var(--white);border-radius:6px;
+  font-family:var(--num);font-weight:800;font-size:15px;color:var(--white);letter-spacing:.04em;
+}
+.brand b{font-size:20px;letter-spacing:.14em}
+.brand .romaji{font-family:var(--num);font-size:9.5px;letter-spacing:.3em;opacity:.7}
+.brand-col{display:flex;flex-direction:column;line-height:1.35}
+.top-cta{
+  font-weight:700;font-size:13px;letter-spacing:.08em;text-decoration:none;
+  color:#3a3100;background:linear-gradient(180deg,#ffe07a,var(--yellow));
+  border:2px solid var(--white);border-radius:6px;padding:7px 16px;
+  box-shadow:0 3px 0 rgba(0,0,0,.35);
+}
+.top-cta:hover{filter:brightness(1.06)}
+
+/* ── ヒーロー: 方面看板 ── */
+.hero{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(340px,.98fr);gap:40px;align-items:start;padding:60px 0 52px}
+.signboard{
+  position:relative;
+  background:linear-gradient(174deg,var(--green-edge),var(--green) 55%,var(--green-deep));
+  border:4px solid var(--white);border-radius:14px;
+  outline:2px solid rgba(10,60,35,.5);
+  box-shadow:0 24px 44px rgba(20,40,30,.35),inset 0 1px 0 rgba(255,255,255,.25);
+  color:var(--white);
+  padding:30px 32px 26px;
+}
+.route-no{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--num);font-weight:800;font-size:13px;letter-spacing:.14em;
+  margin-bottom:14px;
+}
+.route-no .shield{
+  display:inline-grid;place-items:center;min-width:52px;height:30px;padding:2px 10px 0;
+  background:var(--green-deep);border:2px solid var(--white);border-radius:15px 15px 6px 6px;
+  font-size:15px;
+}
+h1{font-size:clamp(30px,3.6vw,47px);line-height:1.5;letter-spacing:.04em;margin-bottom:8px}
+h1 em{font-style:normal;color:var(--yellow)}
+.h1-sub{font-family:var(--num);font-weight:600;font-size:12px;letter-spacing:.3em;opacity:.75;text-transform:uppercase;margin-bottom:18px}
+.lede{font-size:14.5px;line-height:2;color:rgba(253,254,253,.88);max-width:36em}
+.dir-rows{display:flex;flex-direction:column;gap:10px;margin-top:22px;border-top:2px solid rgba(253,254,253,.35);padding-top:18px}
+.dir{
+  display:flex;align-items:center;gap:14px;
+  font-weight:700;font-size:16px;letter-spacing:.06em;
+}
+.dir .arrow{font-family:var(--num);font-weight:800;font-size:22px;width:34px;text-align:center;flex:none}
+.dir .dist{margin-left:auto;font-family:var(--num);font-weight:800;font-size:15px;letter-spacing:.1em}
+.dir .dist small{font-size:11px;margin-left:2px}
+.dir.hot{color:var(--yellow)}
+.btn{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;
+  margin-top:22px;padding:15px 22px;
+  background:linear-gradient(180deg,#ffe07a,var(--yellow));color:#3a3100;
+  border:3px solid var(--white);border-radius:10px;
+  box-shadow:0 5px 0 rgba(0,0,0,.35);
+  font-weight:700;font-size:16.5px;letter-spacing:.08em;
+  transition:transform .12s ease,box-shadow .12s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.35)}
+.btn .en{font-size:12px;font-weight:800;opacity:.75}
+.note{font-size:12px;color:rgba(253,254,253,.62);margin-top:12px}
+
+/* ── 案内標識筐体（trip-map パネル）── */
+.map-panel{
+  background:linear-gradient(174deg,var(--green-edge),var(--green) 55%,var(--green-deep));
+  border:4px solid var(--white);border-radius:14px;
+  outline:2px solid rgba(10,60,35,.5);
+  box-shadow:0 24px 44px rgba(20,40,30,.35),inset 0 1px 0 rgba(255,255,255,.25);
+  padding:16px;position:relative;
+}
+.panel-title{
+  display:flex;align-items:center;gap:10px;
+  color:var(--white);font-weight:700;font-size:13.5px;letter-spacing:.16em;
+  margin-bottom:12px;
+}
+.panel-title .en{margin-left:auto;font-size:10px;font-weight:800;opacity:.7}
+.panel-title::before{
+  content:"";width:12px;height:12px;border-radius:50%;flex:none;
+  background:var(--yellow);border:2px solid var(--white);
+}
+.tripbox{background:var(--sea);border-radius:8px;overflow:hidden;border:2px solid rgba(255,255,255,.8)}
+.tripbox svg{width:100%;height:auto;display:block;max-height:62vh;margin:auto}
+.tm-sea{fill:var(--sea)}
+.tm-land path{fill:var(--land);stroke:#b9c8b4;stroke-width:1.2}
+.tm-route{fill:none;stroke:#fdfefd;stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round;opacity:0;filter:drop-shadow(0 0 1.6px rgba(10,107,61,.9))}
+.tm-route.show{opacity:1}
+.tm-pin{opacity:0}
+.tm-pin.show{opacity:1}
+.tm-dot{fill:var(--yellow);stroke:var(--green-deep);stroke-width:2.2;transform-box:fill-box;transform-origin:center;transform:scale(.35);transition:transform .22s ease}
+.tm-pin.show .tm-dot{transform:scale(1)}
+.tm-label{font-family:var(--sans);font-weight:700;font-size:9.5px;fill:#2a3c30;stroke:var(--land);stroke-width:3;paint-order:stroke;opacity:0;transition:opacity .25s ease .08s}
+.tm-pin.show .tm-label{opacity:1}
+.tm-hud{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px}
+.tm-day,.tm-stat{
+  display:inline-flex;align-items:baseline;gap:6px;
+  font-family:var(--num);font-weight:800;font-size:12.5px;letter-spacing:.08em;
+  background:var(--green-deep);color:var(--white);
+  border:2px solid rgba(253,254,253,.85);border-radius:7px;padding:4px 13px;
+}
+.tm-day{background:var(--yellow);color:#3a3100;border-color:var(--white)}
+.tm-stat b{font-size:19px;font-variant-numeric:tabular-nums}
+.tm-caption{min-height:1.9em;margin-top:10px;color:rgba(253,254,253,.8);font-size:12.5px;letter-spacing:.04em}
+
+/* ── セクション共通: EXIT 標識ヘッダー ── */
+section{padding:72px 0}
+.exit-sign{
+  display:inline-flex;align-items:stretch;gap:0;margin-bottom:18px;
+  border:3px solid var(--white);border-radius:10px;overflow:hidden;
+  box-shadow:0 10px 22px rgba(20,40,30,.25);
+  font-family:var(--num);
+}
+.exit-sign .no{
+  display:grid;place-items:center;padding:8px 14px;
+  background:var(--yellow);color:#3a3100;
+  font-weight:800;font-size:15px;letter-spacing:.06em;
+}
+.exit-sign .name{
+  display:flex;flex-direction:column;justify-content:center;padding:7px 20px;
+  background:linear-gradient(174deg,var(--green-edge),var(--green));color:var(--white);
+  font-weight:800;font-size:15px;letter-spacing:.18em;line-height:1.4;
+}
+.exit-sign .name small{font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.26em;opacity:.8}
+h2{font-size:clamp(25px,3.3vw,39px);line-height:1.55;letter-spacing:.04em;margin-bottom:10px}
+h2 em{font-style:normal;color:var(--green)}
+.section-head{max-width:780px;margin-bottom:34px}
+.section-head p{color:var(--muted);max-width:46em}
+
+/* ── CONCEPT: 標識ピクト カード ── */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{
+  background:var(--white);border-radius:12px;overflow:hidden;
+  border:2px solid #cfdccc;
+  box-shadow:0 12px 26px rgba(30,50,40,.12);
+}
+.card-head{
+  display:flex;align-items:center;gap:12px;
+  background:linear-gradient(174deg,var(--green-edge),var(--green));color:var(--white);
+  padding:13px 18px;
+}
+.card-head .pict{width:40px;height:40px;flex:none;border:2px solid rgba(253,254,253,.9);border-radius:8px;display:grid;place-items:center;background:var(--green-deep)}
+.card-head .pict svg{width:24px;height:24px}
+.card-head .pict path,.card-head .pict circle,.card-head .pict rect{fill:none;stroke:var(--white);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card-head .pict circle.fill{fill:var(--yellow);stroke:none}
+.card-head h3{font-size:17.5px;letter-spacing:.2em}
+.card-head .en{margin-left:auto;font-size:10px;font-weight:800;opacity:.7}
+.card>p{font-size:13.5px;color:#49584e;padding:16px 18px 20px}
+
+/* ── NICHE SPOTS: 茶色の観光標識 ── */
+.spot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.kanko{
+  background:linear-gradient(174deg,#7d5732,var(--brown) 55%,var(--brown-deep));
+  border:3px solid var(--white);border-radius:12px;
+  outline:2px solid rgba(60,38,18,.5);
+  box-shadow:0 14px 28px rgba(50,35,20,.3);
+  color:var(--white);padding:12px;
+}
+.kanko .scene{position:relative;height:136px;border-radius:7px;overflow:hidden;border:2px solid rgba(253,254,253,.85)}
+.kanko .scene svg{position:absolute;inset:0;width:100%;height:100%}
+.kanko .scene.sunset{background:linear-gradient(180deg,#f3ddae 0%,#e9bd82 48%,#cf8d55 62%,#7c6a50 62.5%,#5d5140 100%)}
+.kanko .scene.kannon{background:linear-gradient(180deg,#dde7ea 0%,#cbd9d4 55%,#8ba086 55.5%,#6d8569 100%)}
+.kanko .scene.station{background:linear-gradient(180deg,#eae2ca 0%,#dccfa8 58%,#8c8160 58.5%,#6b6248 100%)}
+.kanko h3{font-size:15.5px;line-height:1.7;letter-spacing:.04em;margin:12px 4px 4px}
+.kanko p{font-size:12.5px;color:rgba(253,254,253,.82);margin:0 4px 6px;line-height:1.85}
+.kanko .dist{
+  display:inline-block;font-family:var(--num);font-weight:800;font-size:11px;letter-spacing:.12em;
+  border:1.6px solid rgba(253,254,253,.7);border-radius:5px;padding:1px 9px;margin:0 4px 6px;
+}
+
+/* ── HOW IT WORKS: キロポスト ── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;position:relative}
+.steps::before{ /* 路面の車線 */
+  content:"";position:absolute;left:2%;right:2%;top:34px;height:10px;z-index:0;
+  background:
+    repeating-linear-gradient(90deg,#fdfefd 0 26px,transparent 26px 46px) 0 center/100% 3px no-repeat,
+    linear-gradient(180deg,#3a4044,var(--asphalt));
+  border-radius:5px;
+}
+.step{position:relative;z-index:1;padding-top:0}
+.step .kp{
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  width:78px;height:78px;margin-left:14px;
+  background:linear-gradient(174deg,var(--green-edge),var(--green));
+  border:3px solid var(--white);border-radius:50%;
+  outline:2px solid rgba(10,60,35,.45);
+  color:var(--white);font-family:var(--num);font-weight:800;
+  box-shadow:0 8px 18px rgba(20,40,30,.3);
+}
+.step .kp b{font-size:22px;line-height:1}
+.step .kp small{font-size:8.5px;letter-spacing:.22em;margin-top:3px;opacity:.8}
+.step-body{
+  background:var(--white);border:2px solid #cfdccc;border-radius:12px;
+  padding:18px 20px;margin-top:14px;
+  box-shadow:0 10px 22px rgba(30,50,40,.1);
+}
+.step-body h3{font-size:17px;letter-spacing:.12em;margin-bottom:6px;color:var(--green-deep)}
+.step-body h3 .en{font-size:10.5px;color:var(--muted);margin-left:8px}
+.step-body p{font-size:13.5px;color:#49584e}
+
+/* ── COMING SOON: SA/PA 予告標識（青看板）── */
+.soon-board{
+  background:linear-gradient(174deg,#2569b5,var(--blue) 55%,var(--blue-deep));
+  border:4px solid var(--white);border-radius:14px;
+  outline:2px solid rgba(12,40,75,.5);
+  box-shadow:0 24px 44px rgba(15,35,65,.32);
+  color:var(--white);padding:26px 26px 22px;
+}
+.soon-board-head{
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  border-bottom:2px solid rgba(253,254,253,.4);padding-bottom:12px;margin-bottom:20px;
+}
+.soon-board-head h3{font-size:19px;letter-spacing:.14em}
+.soon-board-head .en{font-size:11px;font-weight:800;opacity:.7}
+.soon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.soon-card{
+  position:relative;background:rgba(253,254,253,.08);
+  border:2px solid rgba(253,254,253,.4);border-radius:10px;
+  padding:16px;
+}
+.soon-badge{ /* 工事帯バッジ */
+  position:absolute;top:-13px;right:12px;z-index:3;
+  font-weight:700;font-size:11.5px;letter-spacing:.14em;color:#3a3100;
+  background:
+    repeating-linear-gradient(-45deg,rgba(34,38,42,.9) 0 6px,transparent 6px 12px) 0 0/100% 4px no-repeat,
+    repeating-linear-gradient(-45deg,rgba(34,38,42,.9) 0 6px,transparent 6px 12px) 0 100%/100% 4px no-repeat,
+    var(--yellow);
+  border:2px solid #22262a;border-radius:5px;padding:5px 12px;
+  box-shadow:0 3px 8px rgba(0,0,0,.35);
+}
+.soon-mock{background:rgba(253,254,253,.92);border-radius:7px;padding:12px;min-height:158px;display:flex;flex-direction:column;gap:8px;justify-content:center;color:var(--ink)}
+.soon-card h3{display:flex;align-items:baseline;gap:10px;font-size:16.5px;letter-spacing:.08em;line-height:1.6;margin:14px 0 6px}
+.soon-card h3 .dist{margin-left:auto;font-family:var(--num);font-weight:800;font-size:13px;flex:none}
+.soon-card>p{font-size:12.5px;color:rgba(253,254,253,.85);line-height:1.9}
+.feed-item{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #d3ddd0;border-radius:8px;padding:7px 10px}
+.avatar{width:24px;height:24px;border-radius:50%;background:var(--green);flex:none;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--green)}
+.feed-item:nth-child(2) .avatar{background:var(--blue);box-shadow:0 0 0 1.5px var(--blue)}
 .feed-body{min-width:0;flex:1}
-.feed-body b{font-size:12px;display:block;line-height:1.4}
+.feed-body b{font-size:12px;display:block;line-height:1.5}
 .feed-meta{font-size:10.5px;color:var(--muted);display:block}
 .mini-route{width:100%;height:20px;margin-top:3px}
-.mini-route polyline{fill:none;stroke:var(--route,var(--accent));stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.mini-route circle{fill:var(--pin,var(--accent))}
-.feed-foot{font-size:10.5px;color:var(--muted);white-space:nowrap;align-self:flex-end}
-.cal-head{font-size:12px;font-weight:800;letter-spacing:.08em;text-align:center}
+.mini-route polyline{fill:none;stroke:var(--green);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.mini-route circle{fill:#e8a80c}
+.feed-foot{font-size:10.5px;color:var(--muted);white-space:nowrap;align-self:flex-end;font-family:var(--num);font-weight:800}
+.cal-head{font-family:var(--num);font-weight:800;font-size:12px;letter-spacing:.1em;text-align:center}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal-grid i{display:block;aspect-ratio:1;border-radius:4px;background:var(--paper);border:1px solid var(--line)}
+.cal-grid i{display:block;aspect-ratio:1;border-radius:3px;background:#fff;border:1px solid #d3ddd0}
 .cal-grid i.out{opacity:.3}
-.cal-grid i.trip{background:var(--accent);border-color:var(--accent)}
-.cal-grid i.pin{background:var(--accent2);border-color:var(--accent2)}
+.cal-grid i.trip{background:var(--green);border-color:var(--green-deep)}
+.cal-grid i.pin{background:var(--yellow);border-color:#d4a800}
 .cal-note{font-size:10.5px;color:var(--muted);text-align:center}
-.share-thumb{height:58px;background:var(--paper);border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;padding:4px 12px}
+.share-thumb{height:58px;background:#fff;border:1.5px solid #d3ddd0;border-radius:8px;display:grid;place-items:center;padding:4px 12px}
 .share-thumb .mini-route{height:38px;margin:0}
-.share-url{font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:11.5px;background:var(--paper);border:1px dashed var(--accent2);border-radius:999px;padding:6px 12px;text-align:center;color:var(--accent2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.share-url{font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:11.5px;background:#fff;border:1.5px dashed var(--blue);border-radius:999px;padding:6px 12px;text-align:center;color:var(--blue);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .share-people{display:flex;align-items:center;gap:7px;justify-content:center}
-.share-people .avatar+.avatar{background:var(--accent2);margin-left:-12px;border:2px solid var(--paper)}
+.share-people .avatar+.avatar{background:var(--blue);box-shadow:0 0 0 1.5px var(--blue);margin-left:-12px}
 .share-note{font-size:11px;color:var(--muted)}
-@media(max-width:860px){.soon-grid{grid-template-columns:1fr}}
+
+/* ── WAITING LIST: 料金所 ── */
+.cta-sec{
+  background:
+    radial-gradient(120% 90% at 50% 0%,rgba(70,80,86,.55),transparent 60%),
+    linear-gradient(180deg,#33393d,var(--asphalt2));
+  color:var(--white);text-align:center;padding:84px 0 90px;position:relative;
+}
+.cta-sec::before{ /* 路面のゼブラ */
+  content:"";position:absolute;top:0;left:0;right:0;height:14px;
+  background:repeating-linear-gradient(-45deg,var(--yellow) 0 18px,#22262a 18px 36px);
+  opacity:.9;
+}
+.cta-sec .section-head{margin:0 auto 28px}
+.cta-sec h2{color:var(--white)}
+.cta-sec h2 em{color:var(--yellow)}
+.cta-sec .section-head p{color:rgba(253,254,253,.75)}
+.gate{
+  display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:36px;
+}
+.lane{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  min-width:150px;padding:12px 20px 10px;
+  border:2px solid rgba(253,254,253,.55);border-radius:10px;
+  background:rgba(253,254,253,.06);
+}
+.lane .lamp{font-family:var(--num);font-weight:800;font-size:14px;letter-spacing:.12em;color:#7ef2a0}
+.lane b{font-size:14px;letter-spacing:.08em}
+.lane small{font-size:11px;color:rgba(253,254,253,.6)}
+.form-embed{
+  max-width:680px;margin:0 auto;position:relative;
+  background:linear-gradient(174deg,var(--green-edge),var(--green) 55%,var(--green-deep));
+  border:4px solid var(--white);border-radius:14px;
+  outline:2px solid rgba(10,60,35,.5);
+  padding:14px;
+  box-shadow:0 26px 48px rgba(0,0,0,.5);
+}
+.gate-bar{ /* 開いたゲートバー */
+  position:absolute;left:-18px;top:-30px;width:15px;height:104px;z-index:3;
+  background:repeating-linear-gradient(-45deg,var(--yellow) 0 13px,#22262a 13px 26px);
+  border:2px solid #22262a;border-radius:8px;
+  transform:rotate(-14deg);transform-origin:bottom center;
+  box-shadow:0 6px 14px rgba(0,0,0,.4);
+}
+.form-head{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  color:var(--white);font-weight:700;font-size:14.5px;letter-spacing:.2em;
+  padding-bottom:12px;
+}
+.form-head .en{font-size:10px;font-weight:800;opacity:.7}
+.form-inner{background:#fff;border-radius:8px;overflow:hidden;border:2px solid rgba(253,254,253,.85)}
+.form-embed iframe{display:block;width:100%;height:900px;border:0;background:#fff}
+.open-tab{color:rgba(253,254,253,.66);font-size:12.5px;margin-top:16px;display:inline-block}
+.faq{max-width:680px;margin:56px auto 0;text-align:left}
+.faq-title{
+  display:inline-block;font-weight:700;font-size:13.5px;letter-spacing:.24em;color:#3a3100;
+  background:var(--yellow);border-radius:6px;padding:4px 18px;margin-bottom:12px;
+}
+.faq dt{margin-top:24px;display:flex;gap:11px;align-items:baseline;font-size:15px}
+.faq dt::before{
+  content:"Q";flex:none;width:26px;height:26px;border-radius:6px;
+  display:grid;place-items:center;font-family:var(--num);font-weight:800;font-size:13px;
+  color:#3a3100;background:var(--yellow);transform:translateY(4px);
+}
+.faq dd{color:rgba(253,254,253,.72);font-size:13.5px;margin-top:5px;padding-left:37px}
+
+/* ── 日本地図の帯 ── */
+.japan-band{padding:64px 0 30px;text-align:center;overflow:hidden}
+.japan-band h3{font-size:19px;letter-spacing:.2em;color:var(--green-deep);margin-bottom:4px}
+.japan-band p{font-size:13px;color:var(--muted);margin-bottom:18px}
+.japan-map{max-width:640px;margin:auto;opacity:.9}
+.japan-map svg{width:100%;height:auto;display:block}
+.japan-map .prefecture{fill:#cfe0c8;stroke:#fdfefd;stroke-width:1.2}
+.japan-map .boundary-line{stroke:#9db894;stroke-width:1;fill:none}
+
+/* ── フッター ── */
+footer{background:var(--asphalt2);color:rgba(253,254,253,.6);font-size:12.5px;padding:24px 0 60px}
+.foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+.foot a{color:var(--yellow)}
+
+@media(max-width:860px){
+  body::before{width:14px;background:repeating-linear-gradient(180deg,#fdfefd 0 34px,transparent 34px 58px) 9px 0/3px 100% no-repeat,linear-gradient(90deg,var(--asphalt),var(--asphalt2))}
+  .wrap{width:min(1120px,calc(100% - 44px));margin-left:auto}
+  .hero{grid-template-columns:1fr;padding-top:36px;gap:34px}
+  .signboard{padding:24px 20px 20px}
+  .cards,.spot-grid,.steps,.soon-grid{grid-template-columns:1fr}
+  .steps::before{content:none}
+  .tripbox svg{max-height:56vh}
+  .top-cta{display:none}
+  .form-embed iframe{height:960px}
+  section{padding:54px 0}
+  .gate-bar{left:-10px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+  [data-reveal]{opacity:1;transform:none}
+}
 </style>
 </head>
 <body class="highway">
-<header><div class="wrap hd"><a class="brand" href="#"><span class="mark" aria-hidden="true">IC</span><b>ミチップ</b><span>MICHIP</span></a><a class="top-cta" href="#join">β事前登録</a></div></header>
+<header>
+  <div class="wrap hd">
+    <a class="brand" href="#">
+      <span class="mark" aria-hidden="true">道 IC</span>
+      <span class="brand-col"><b>ミチップ</b><span class="romaji">MICHIP EXPWY</span></span>
+    </a>
+    <a class="top-cta" href="#join">β事前登録 この先</a>
+  </div>
+</header>
 <main>
   <div class="wrap hero">
-    <div class="copy">
-      <p class="eyebrow">ROUTE MAP FOR LONG DRIVE</p>
-      <h1>次のピンまで、<br>道なりに進む。</h1>
-      <p class="lede">立ち寄りをピンにして、日ごとの順路でつなぐ。高速の出口から港町の路地まで、走ったルートがそのまま旅程記録になります。</p>
-      <a class="btn" href="#join">β事前登録へ進む</a>
-      <p class="note">登録は無料です。招待と開発だよりだけをお送りします。</p>
+    <div class="signboard">
+      <p class="route-no"><span class="shield">道 1</span><span>MICHIP EXPRESSWAY</span></p>
+      <p class="h1-sub en">ROUTE MAP FOR LONG DRIVE</p>
+      <h1>次のピンまで、<br><em>道なり</em>に進む。</h1>
+      <p class="lede">スポットにピンを立て、ピンとピンを道順の線でつなぐ。旅行単位・日単位の記録が、一枚の地図に残ります。ロングドライブ・車中泊の長い道のりのために。</p>
+      <div class="dir-rows">
+        <p class="dir"><span class="arrow" aria-hidden="true">↑</span>β公開<span class="dist en">2026<small>年内</small></span></p>
+        <p class="dir hot"><span class="arrow" aria-hidden="true">←</span>β事前登録（無料）<span class="dist en">300<small>m</small></span></p>
+      </div>
+      <a class="btn" href="#join"><span>事前登録レーンに入る</span><span class="en">FREE / 300m AHEAD</span></a>
+      <p class="note">メールアドレスのみで登録できます。βのご案内と開発だより以外には使いません。</p>
     </div>
     <div class="map-panel">
-      <p class="panel-title">サンプル方面 5日間 Mockルート</p>
+      <p class="panel-title">走行ルート案内<span class="en">SAMPLE TRIP — 5 DAYS</span></p>
       <div class="tripbox" id="tripbox" aria-label="Mock旅程。サンプルスポットのピンと道なりルートを再生する地図">
         <!--TRIP_MAP_SVG-->
       </div>
       <div class="tm-hud">
-        <span class="tm-day" id="tmDay">1日目</span>
-        <span class="tm-stat"><b id="tmSpots">0</b> スポット</span>
+        <span class="tm-day" id="tmDay">DAY 1</span>
+        <span class="tm-stat"><b id="tmSpots">0</b> SPOTS</span>
         <span class="tm-stat"><b id="tmKm">0</b> km</span>
       </div>
-      <p class="tm-caption" id="tmCaption">Mock旅程 5日間 — フロントエンドだけで描いたサンプル地図。</p>
+      <p class="tm-caption" id="tmCaption">サンプル走行 5日間 — 画面の中だけで描いたルート図。</p>
     </div>
   </div>
-  <section><div class="wrap"><div class="section-head"><p class="tag">CONCEPT</p><h2>目的地ではなく、立ち寄りの連なりを残す。</h2><p>ピンはスポット単位。線は道順単位。長距離ドライブの「どこからどこへ」を、あとで迷わず見返せます。</p></div>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="exit-sign"><span class="no">出口 1</span><span class="name">CONCEPT<small>コンセプト</small></span></p>
+        <h2>まず立てる。そこから、旅が<em>一本</em>につながる。</h2>
+        <p>ミチップが扱うのは面ではなく、あなたが立ち寄った点です。点が増え、線で結ばれ、あとから眺めると旅の跡が地図いっぱいに残ります。</p>
+      </div>
       <div class="cards">
-        <article><strong>立てる</strong><h3>立てる</h3><p>スポットはGoogle マップのピンのような一点。名所でも、名前のない展望地でも、気になった場所をそのまま残せます。</p></article>
-        <article><strong>つなぐ</strong><h3>つなぐ</h3><p>ピンとピンを道順の線でつなぎます。1日ごと、旅行ごとにまとまるので、長い移動もあとから追えます。</p></article>
-        <article><strong>たまる</strong><h3>たまる</h3><p>旅のたびにピンと線が増えていきます。ふり返ると、地図は自分の旅の跡でいっぱいになります。</p></article>
-      </div></div></section>
-  <section><div class="wrap"><div class="section-head"><p class="tag">NICHE SPOTS</p><h2>次の出口で、少し寄り道する。</h2><p>ガイドブックに載らない場所ほど、行った人にしか語れません。ミチップが残したいのは、たとえばこんな立ち寄りです。</p></div>
+        <article class="card" data-reveal>
+          <div class="card-head">
+            <span class="pict" aria-hidden="true"><svg viewBox="0 0 24 24"><circle class="fill" cx="12" cy="9" r="3.2"/><path d="M12 21 C12 21 5 13.5 5 9 a7 7 0 0 1 14 0 C19 13.5 12 21 12 21 Z"/></svg></span>
+            <h3>立てる</h3><span class="en">PIN</span>
+          </div>
+          <p>スポットはGoogle マップのピンのような一点。名所でも、名前のない展望地でも、気になった場所をそのまま残せます。</p>
+        </article>
+        <article class="card" data-reveal data-reveal-delay="120">
+          <div class="card-head">
+            <span class="pict" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19 C8 15 8 9 12 9 s4 8 8 4"/><circle class="fill" cx="4" cy="19" r="2.4"/><circle class="fill" cx="20" cy="13" r="2.4"/></svg></span>
+            <h3>つなぐ</h3><span class="en">ROUTE</span>
+          </div>
+          <p>ピンとピンを道順の線でつなぎます。1日ごと、旅行ごとにまとまるので、長い移動もあとから追えます。</p>
+        </article>
+        <article class="card" data-reveal data-reveal-delay="240">
+          <div class="card-head">
+            <span class="pict" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10 h16 M9 5 v-2 M15 5 v-2"/></svg></span>
+            <h3>たまる</h3><span class="en">ARCHIVE</span>
+          </div>
+          <p>旅のたびにピンと線が増えていきます。ふり返ると、地図は自分の旅の跡でいっぱいになります。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="exit-sign"><span class="no">出口 2</span><span class="name">NICHE SPOTS<small>この先 見どころ</small></span></p>
+        <h2>映えなくて、結構。</h2>
+        <p>ガイドブックに載らない場所ほど、行った人にしか語れません。ミチップが残したいのは、たとえばこんな立ち寄りです。</p>
+      </div>
       <div class="spot-grid">
-        <article><h3>地形図で見つけた、名前のない展望地</h3><p>看板も駐車場もない。けれど、そこからの眺めを知っているのは行った人だけです。</p></article>
-        <article><h3>国道沿いに突然あらわれる巨大観音</h3><p>通り過ぎる予定だった場所ほど、あとで話したくなる。そんな寄り道もピンで残せます。</p></article>
-        <article><h3>線路の果ての、誰もいない終着駅</h3><p>目的地ではない場所に降りたことも、旅の記録としてちゃんと残ります。</p></article>
-      </div></div></section>
-  <section><div class="wrap"><div class="section-head"><p class="tag">HOW IT WORKS</p><h2>計画 → 走行 → 記録</h2></div><div class="steps"><article class="step"><span class="num">01</span><h3>計画する</h3><p>行きたいスポットにピンを並べ、日ごとの順路でつなぎます。長距離の立ち寄りも一枚の旅程になります。</p></article><article class="step"><span class="num">02</span><h3>走る</h3><p>旅程どおりに走り、立ち寄った場所を記録します。予定外の寄り道も、その場でピンとして残せます。</p></article><article class="step"><span class="num">03</span><h3>残る</h3><p>帰るころには、旅行がまるごと一枚の地図になります。次の旅を考えるときにも、その跡を見返せます。</p></article></div></div></section>
-  <section><div class="wrap"><div class="section-head"><p class="tag">この先</p><h2>この先、順次開通。</h2><p>以下、開発中区間。βの供用開始にあわせて順次通行可能になります。</p></div>
-      <div class="soon-grid">
-        <article class="soon-card"><span class="soon-badge">開発中</span><div class="soon-mock" aria-hidden="true"><div class="feed-item"><span class="avatar"></span><div class="feed-body"><b>先行車</b><span class="feed-meta">東北 5日間・26スポット</span><svg class="mini-route" viewBox="0 0 120 26" aria-hidden="true"><polyline points="8,20 30,14 48,19 70,8 92,13 112,6"/><circle cx="8" cy="20" r="2.6"/><circle cx="48" cy="19" r="2.6"/><circle cx="70" cy="8" r="2.6"/><circle cx="112" cy="6" r="2.6"/></svg></div><span class="feed-foot">通過 12</span></div><div class="feed-item"><span class="avatar"></span><div class="feed-body"><b>対向車</b><span class="feed-meta">日帰り・4スポット</span><svg class="mini-route" viewBox="0 0 120 26" aria-hidden="true"><polyline points="8,20 30,14 48,19 70,8 92,13 112,6"/><circle cx="8" cy="20" r="2.6"/><circle cx="48" cy="19" r="2.6"/><circle cx="70" cy="8" r="2.6"/><circle cx="112" cy="6" r="2.6"/></svg></div><span class="feed-foot">通過 5</span></div></div><h3>みんなの走行ルート</h3><p>他のドライバーの旅程が流れてきます。案内標識に載らない立ち寄りポイントに、先行車の記録あり。次の行き先の参考に。</p></article>
-        <article class="soon-card"><span class="soon-badge">開発中</span><div class="soon-mock" aria-hidden="true"><div class="cal-head">2026年4月</div><div class="cal-grid"><i class="out"></i><i class="out"></i><i class="out"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="pin"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="trip"></i><i class="trip"></i><i class="trip"></i><i class="trip"></i><i class="trip"></i><i></i><i class="out"></i><i class="out"></i></div><p class="cal-note">4/25–29 東北方面・4/12 日帰り走行</p></div><h3>運行カレンダー</h3><p>走行した旅行は日付の帯で記録されます。月間表示で、いつ・どの路線を走ったかを確認できます。</p></article>
-        <article class="soon-card"><span class="soon-badge">開発中</span><div class="soon-mock" aria-hidden="true"><div class="share-thumb"><svg class="mini-route" viewBox="0 0 120 26" aria-hidden="true"><polyline points="8,20 30,14 48,19 70,8 92,13 112,6"/><circle cx="8" cy="20" r="2.6"/><circle cx="48" cy="19" r="2.6"/><circle cx="70" cy="8" r="2.6"/><circle cx="112" cy="6" r="2.6"/></svg></div><div class="share-url">michip.app/t/tohoku-line</div><div class="share-people"><span class="avatar"></span><span class="avatar"></span><span class="share-note">同乗者と共同編集 可</span></div></div><h3>相乗り共有</h3><p>旅程はURLで同乗者へ配布できます。同じ路線図を見ながら計画し、走行後は同じ記録が全員に残ります。</p></article>
-      </div></div></section>
-  <section id="join" class="cta-sec"><div class="wrap"><div class="section-head"><p class="tag">WAITING LIST</p><h2>次のルートを、ここから。</h2><p>2026年内のβ公開を目指して開発中です。登録いただいた方から順にご案内します。</p></div><div class="form-embed"><iframe src="GOOGLE_FORM_EMBED_URL" title="ミチップ β事前登録フォーム" loading="lazy">読み込み中です…</iframe></div><p class="note">フォームが表示されない場合は <a href="GOOGLE_FORM_EMBED_URL" target="_blank" rel="noopener">新しいタブで開く</a>。</p>
-      <dl class="faq">
+        <article class="kanko" data-reveal>
+          <div class="scene sunset" aria-hidden="true">
+            <svg viewBox="0 0 300 136" preserveAspectRatio="none">
+              <circle cx="218" cy="52" r="21" fill="#f7d489" opacity=".95"/>
+              <path d="M0 88 Q70 58 140 80 T300 72 V136 H0 Z" fill="#8f7248" opacity=".5"/>
+              <path d="M0 104 Q90 78 190 100 T300 96 V136 H0 Z" fill="#75603f" opacity=".65"/>
+              <path d="M28 122 C90 114 212 114 274 122" fill="none" stroke="#fdfefd" stroke-width="2.6" stroke-dasharray="8 7" opacity=".85"/>
+              <circle cx="152" cy="118" r="5" fill="#ffd447" stroke="#07502d" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <h3>地形図で見つけた、名前のない展望地</h3>
+          <p>看板も駐車場もない。けれど、そこからの眺めを知っているのは行った人だけです。</p>
+          <span class="dist">この先 収録可</span>
+        </article>
+        <article class="kanko" data-reveal data-reveal-delay="120">
+          <div class="scene kannon" aria-hidden="true">
+            <svg viewBox="0 0 300 136" preserveAspectRatio="none">
+              <path d="M150 20 C137 33 132 47 132 64 L132 100 L168 100 L168 64 C168 47 163 33 150 20 Z" fill="#9cae9f"/>
+              <ellipse cx="150" cy="26" rx="9" ry="10" fill="#9cae9f"/>
+              <path d="M132 70 Q150 82 168 70" fill="none" stroke="#7d9280" stroke-width="2"/>
+              <path d="M0 112 H300" stroke="#565044" stroke-width="15"/>
+              <path d="M0 112 H300" stroke="#fdfefd" stroke-width="2" stroke-dasharray="16 12"/>
+              <circle cx="216" cy="112" r="5" fill="#ffd447" stroke="#07502d" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <h3>国道沿いに突然あらわれる巨大観音</h3>
+          <p>通り過ぎる予定だった場所ほど、あとで話したくなる。そんな寄り道もピンで残せます。</p>
+          <span class="dist">国道 152 沿い</span>
+        </article>
+        <article class="kanko" data-reveal data-reveal-delay="240">
+          <div class="scene station" aria-hidden="true">
+            <svg viewBox="0 0 300 136" preserveAspectRatio="none">
+              <path d="M42 44 H164 V82 H42 Z" fill="#93855e" opacity=".9"/>
+              <path d="M34 44 H172 L164 30 H42 Z" fill="#746a4c"/>
+              <rect x="92" y="57" width="26" height="25" fill="#f2ecd6" opacity=".9"/>
+              <path d="M0 112 L300 98" stroke="#565044" stroke-width="4"/>
+              <path d="M0 124 L300 110" stroke="#565044" stroke-width="4"/>
+              <path d="M228 94 V120 M248 92 V118" stroke="#8b7f60" stroke-width="3"/>
+              <circle cx="122" cy="102" r="5" fill="#ffd447" stroke="#07502d" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <h3>線路の果ての、誰もいない終着駅</h3>
+          <p>目的地ではない場所に降りたことも、旅の記録としてちゃんと残ります。</p>
+          <span class="dist">終点 まで走行可</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="exit-sign"><span class="no">出口 3</span><span class="name">HOW IT WORKS<small>ご利用の流れ</small></span></p>
+        <h2>計画して、走って、残す。</h2>
+      </div>
+      <div class="steps">
+        <article class="step" data-reveal>
+          <span class="kp"><b>01</b><small>PLAN</small></span>
+          <div class="step-body">
+            <h3>計画する<span class="en">KP 0.0</span></h3>
+            <p>行きたいスポットにピンを並べ、日ごとの順路でつなぎます。長距離の立ち寄りも一枚の旅程になります。</p>
+          </div>
+        </article>
+        <article class="step" data-reveal data-reveal-delay="120">
+          <span class="kp"><b>02</b><small>DRIVE</small></span>
+          <div class="step-body">
+            <h3>走る<span class="en">KP 210</span></h3>
+            <p>旅程どおりに走り、立ち寄った場所を記録します。予定外の寄り道も、その場でピンとして残せます。</p>
+          </div>
+        </article>
+        <article class="step" data-reveal data-reveal-delay="240">
+          <span class="kp"><b>03</b><small>ARCHIVE</small></span>
+          <div class="step-body">
+            <h3>残る<span class="en">KP 420</span></h3>
+            <p>帰るころには、旅行がまるごと一枚の地図になります。次の旅を考えるときにも、その跡を見返せます。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="exit-sign"><span class="no">予告</span><span class="name">COMING SOON<small>この先 順次開通</small></span></p>
+        <h2>この先、<em>サービスエリア</em>あり。</h2>
+        <p>どれも開発中・順次開通予定です。βに合流した方から、順にご案内します。</p>
+      </div>
+      <div class="soon-board" data-reveal>
+        <div class="soon-board-head">
+          <h3>この先のサービスエリア</h3>
+          <span class="en">SERVICE AREA — UNDER CONSTRUCTION</span>
+        </div>
+        <div class="soon-grid">
+          <article class="soon-card">
+            <span class="soon-badge">開発中</span>
+            <div class="soon-mock" aria-hidden="true">
+              <div class="feed-item"><span class="avatar"></span><div class="feed-body"><b>湯めぐりの人</b><span class="feed-meta">東北 5日間・26スポット</span><svg class="mini-route" viewBox="0 0 120 26" aria-hidden="true"><polyline points="8,20 30,14 48,19 70,8 92,13 112,6"/><circle cx="8" cy="20" r="2.6"/><circle cx="48" cy="19" r="2.6"/><circle cx="70" cy="8" r="2.6"/><circle cx="112" cy="6" r="2.6"/></svg></div><span class="feed-foot">足あと 12</span></div>
+              <div class="feed-item"><span class="avatar"></span><div class="feed-body"><b>北へゆく人</b><span class="feed-meta">日帰り・4スポット</span><svg class="mini-route" viewBox="0 0 120 26" aria-hidden="true"><polyline points="8,20 30,14 48,19 70,8 92,13 112,6"/><circle cx="8" cy="20" r="2.6"/><circle cx="48" cy="19" r="2.6"/><circle cx="70" cy="8" r="2.6"/><circle cx="112" cy="6" r="2.6"/></svg></div><span class="feed-foot">足あと 5</span></div>
+            </div>
+            <h3>みんなの旅<span class="dist">2km</span></h3>
+            <p>フォローした人の旅程がフィードに流れてきます。名もないスポットに先客の足あとが付いていたら、それが次の旅のきっかけ。</p>
+          </article>
+          <article class="soon-card">
+            <span class="soon-badge">開発中</span>
+            <div class="soon-mock" aria-hidden="true">
+              <div class="cal-head">2026.04</div>
+              <div class="cal-grid"><i class="out"></i><i class="out"></i><i class="out"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="pin"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="trip"></i><i class="trip"></i><i class="trip"></i><i class="trip"></i><i class="trip"></i><i></i><i class="out"></i><i class="out"></i></div>
+              <p class="cal-note">4/25–29 東北5日間・4/12 日帰り湯</p>
+            </div>
+            <h3>旅のカレンダー<span class="dist">4km</span></h3>
+            <p>旅行は日付にも残ります。月をめくれば、いつどの道を走ったかがひと目でわかります。</p>
+          </article>
+          <article class="soon-card">
+            <span class="soon-badge">開発中</span>
+            <div class="soon-mock" aria-hidden="true">
+              <div class="share-thumb"><svg class="mini-route" viewBox="0 0 120 26" aria-hidden="true"><polyline points="8,20 30,14 48,19 70,8 92,13 112,6"/><circle cx="8" cy="20" r="2.6"/><circle cx="48" cy="19" r="2.6"/><circle cx="70" cy="8" r="2.6"/><circle cx="112" cy="6" r="2.6"/></svg></div>
+              <div class="share-url">michip.app/t/tohoku-5days</div>
+              <div class="share-people"><span class="avatar"></span><span class="avatar"></span><span class="share-note">同乗者と一緒に編集</span></div>
+            </div>
+            <h3>旅程の共有<span class="dist">6km</span></h3>
+            <p>旅程は URL ひとつで渡せます。同乗者と同じ地図を見ながら支度して、帰ればおなじ記録が残ります。</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="join" class="cta-sec">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="exit-sign"><span class="no">料金所</span><span class="name">WAITING LIST<small>β事前登録</small></span></p>
+        <h2>次の旅も、<em>地図に残す</em>。</h2>
+        <p>2026年内のβ公開を目指して開発中。ゲートは開いています。登録は無料、通行料もかかりません。</p>
+      </div>
+      <div class="gate" data-reveal>
+        <div class="lane"><span class="lamp">↓ OPEN</span><b>βの先行案内</b><small>公開したら最初にご連絡</small></div>
+        <div class="lane"><span class="lamp">↓ OPEN</span><b>開発だより</b><small>進捗を月イチで配信</small></div>
+        <div class="lane"><span class="lamp">↓ OPEN</span><b>要望の直通レーン</b><small>フォームの声はぜんぶ読みます</small></div>
+      </div>
+      <div class="form-embed" data-reveal>
+        <span class="gate-bar" aria-hidden="true"></span>
+        <p class="form-head">β事前登録ゲート<span class="en">ETC / 一般 — FREE</span></p>
+        <div class="form-inner">
+          <iframe src="GOOGLE_FORM_EMBED_URL" title="ミチップ β事前登録フォーム" loading="lazy">読み込み中です…</iframe>
+        </div>
+      </div>
+      <a class="open-tab" href="GOOGLE_FORM_EMBED_URL" target="_blank" rel="noopener">フォームが表示されない場合は、新しいタブで開く</a>
+      <dl class="faq" data-reveal>
+        <p class="faq-title">よくある質問 — 案内所</p>
         <dt>どんな場所を記録できますか？</dt>
         <dd>Google マップにピンを打てる場所ならどこでも。名所から、名前のない展望地・お気に入りの路肩まで、あなたのスポットとして残せます。</dd>
         <dt>いつから使えますか？</dt>
@@ -103,9 +663,38 @@
         <dd>基本は無料で使える予定です。AIによる旅程提案など、一部機能は将来有料にする可能性があります。</dd>
         <dt>アプリのインストールは必要ですか？</dt>
         <dd>不要です。スマホ・PCのブラウザから使える形で準備しています。</dd>
-      </dl></div></section>
+      </dl>
+    </div>
+  </section>
+
+  <div class="japan-band">
+    <div class="wrap" data-reveal>
+      <h3>全国、どの道でも。</h3>
+      <p>高速道路も、県道も、名もない林道も。ピンを打てる場所なら、そこはもう旅程です。</p>
+      <div class="japan-map" aria-hidden="true"><!--JAPAN_MAP_SVG--></div>
+    </div>
+  </div>
 </main>
-<footer><div class="wrap foot"><span>ミチップ— スポットをつないで旅行記録を完成させる。</span><a href="https://x.com/" rel="noopener">X にて開発だよりを配信中</a></div></footer>
+<footer>
+  <div class="wrap foot">
+    <span>ミチップ — スポットをつないで旅行記録を完成させる。</span>
+    <a href="https://x.com/" rel="noopener">X にて開発だよりを配信中</a>
+  </div>
+</footer>
+<script>
+window.MICHIP_TM={
+  startCaption:"サンプル走行 5日間 — 画面の中だけで描いたルート図。",
+  finalCaption:"5日間・15スポット・420km — 旅程、全線開通。",
+  dayCaptions:{
+    1:"DAY 1 — 最初のピンから発進。",
+    2:"DAY 2 — 海沿いルートを道なりに。",
+    3:"DAY 3 — 山あいの立ち寄りを追加。",
+    4:"DAY 4 — 復路にもピンを増やす。",
+    5:"DAY 5 — 最終スポット、まもなく終点。"
+  },
+  dayLabel:function(n){return "DAY "+n}
+};
+</script>
 <!--CORE_JS-->
 </body>
 </html>

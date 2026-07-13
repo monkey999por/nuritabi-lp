@@ -1,19 +1,27 @@
 // ミチップ LP 共通コア（全バリアント共通・build.mjs が <!--CORE_JS--> に注入する）
 // 必須 DOM: #tripbox(中に Mock の trip-map.svg) #tmDay #tmSpots #tmKm #tmCaption
+// バリアント側からのカスタマイズ:
+//   window.MICHIP_TM = { startCaption, finalCaption, dayCaptions:{1:..}, dayLabel:fn(n), fallbackCaption:fn(n) }
+//     … <!--CORE_JS--> より前の <script> で定義するとキャプション文言をテーマのトーンに差し替えられる
+//   CSS 変数 --shuffle-bg / --shuffle-ink / --shuffle-border … 🎲ボタンの配色
+//   data-reveal 属性 … ビューポート進入で .is-in が付く（動きの CSS はバリアント側で定義）
 (function(){
   "use strict";
 
   var VARIANTS=__VARIANT_COUNT__; // build.mjs が実数に置換
   var TOTAL_KM=420;
-  var FINAL_CAPTION="5日間・15スポット・420km — サンプルの旅程が、一枚の記録になった。";
-  var START_CAPTION="Mock旅程 5日間 — フロントエンドだけで描いたサンプル地図。";
-  var DAY_CAPTIONS={
+  var cfg=window.MICHIP_TM||{};
+  var FINAL_CAPTION=cfg.finalCaption||"5日間・15スポット・420km — サンプルの旅程が、一枚の記録になった。";
+  var START_CAPTION=cfg.startCaption||"Mock旅程 5日間 — フロントエンドだけで描いたサンプル地図。";
+  var DAY_CAPTIONS=cfg.dayCaptions||{
     1:"1日目、最初のピンを立てる。",
     2:"2日目、海沿いの寄り道をつなぐ。",
     3:"3日目、山あいの立ち寄りを追加する。",
     4:"4日目、戻り道にもピンを増やす。",
     5:"5日目、最後のスポットまでサンプルで記録する。"
   };
+  var dayLabel=cfg.dayLabel||function(n){return n+"日目"};
+  var fallbackCaption=cfg.fallbackCaption||function(n){return n+"日目を記録中。"};
 
   var reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var box=document.getElementById("tripbox");
@@ -33,6 +41,7 @@
     if(!pins.length||!routes.length)return;
 
     var kmPerRoute=TOTAL_KM/routes.length;
+    var maxDay=Math.max.apply(null,pins.map(dayOf).concat(routes.map(dayOf)));
     var token=0;
 
     function reset(){
@@ -50,7 +59,7 @@
           route.style.strokeDashoffset="";
         }
       });
-      setText(dayEl,"1日目");
+      setText(dayEl,dayLabel(1));
       setText(spotsEl,"0");
       setText(kmEl,"0");
       setText(capEl,START_CAPTION);
@@ -64,9 +73,9 @@
         route.style.strokeDasharray="";
         route.style.strokeDashoffset="0";
       });
-      setText(dayEl,"5日目");
+      setText(dayEl,dayLabel(maxDay));
       setText(spotsEl,String(pins.length));
-      setText(kmEl,"420");
+      setText(kmEl,String(TOTAL_KM));
       setText(capEl,FINAL_CAPTION);
     }
 
@@ -92,12 +101,11 @@
       var spotCount=0;
       var km=0;
       var routeIndex=0;
-      var maxDay=Math.max.apply(null,pins.map(dayOf).concat(routes.map(dayOf)));
 
       for(var day=1;day<=maxDay;day++){
         if(myToken!==token)return;
-        setText(dayEl,day+"日目");
-        setText(capEl,DAY_CAPTIONS[day]||day+"日目を記録中。");
+        setText(dayEl,dayLabel(day));
+        setText(capEl,DAY_CAPTIONS[day]||fallbackCaption(day));
         var dayPins=pins.filter(function(pin){return dayOf(pin)===day});
         var dayRoutes=routes.filter(function(route){return dayOf(route)===day});
 
@@ -131,9 +139,9 @@
         }
       }
 
-      setText(dayEl,"5日目");
+      setText(dayEl,dayLabel(maxDay));
       setText(spotsEl,String(pins.length));
-      setText(kmEl,"420");
+      setText(kmEl,String(TOTAL_KM));
       setText(capEl,FINAL_CAPTION);
       await sleep(4000);
       if(myToken===token&&!document.hidden)play();
@@ -150,6 +158,47 @@
 
   initTripPlayback();
 
+  // ── data-reveal: ビューポート進入で .is-in を付与（動きの CSS はバリアント側が定義）──
+  (function(){
+    var targets=[].slice.call(document.querySelectorAll("[data-reveal]"));
+    if(!targets.length)return;
+    targets.forEach(function(el){
+      var delay=el.getAttribute("data-reveal-delay");
+      if(delay)el.style.transitionDelay=delay+"ms";
+    });
+    if(reduced||!("IntersectionObserver" in window)){
+      targets.forEach(function(el){el.classList.add("is-in")});
+      return;
+    }
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add("is-in");
+          io.unobserve(entry.target);
+        }
+      });
+    },{threshold:.15,rootMargin:"0px 0px -8%"});
+    targets.forEach(function(el){io.observe(el)});
+  })();
+
+  // ── フォーム未注入フォールバック: form-url.txt 未設定のプレビューで 404 iframe を見せない ──
+  (function(){
+    var frames=[].slice.call(document.querySelectorAll('iframe[src^="GOOGLE_FORM"]'));
+    frames.forEach(function(frame){
+      frame.style.display="none";
+      var p=document.createElement("p");
+      p.className="form-pending";
+      p.textContent="登録フォームは準備中です。公開まで少しだけお待ちください。";
+      if(!document.querySelector("style[data-form-pending]")){
+        var st=document.createElement("style");
+        st.setAttribute("data-form-pending","");
+        st.textContent=".form-pending{display:grid;place-items:center;min-height:220px;padding:24px;text-align:center;font-weight:700;opacity:.75}";
+        document.head.appendChild(st);
+      }
+      frame.parentNode.insertBefore(p,frame);
+    });
+  })();
+
   // ── 🎲 シャッフル: 別デザインの同じLPへ（回遊・話題性）──
   if(VARIANTS>1){
     var cur=(function(){var m=location.pathname.match(/v(\d+)\.html$/);return m?+m[1]:0})();
@@ -157,11 +206,11 @@
     st.textContent=
       ".nrt-shuffle{position:fixed;right:16px;bottom:16px;z-index:99;"+
       "font:600 13px/1 -apple-system,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;"+
-      "background:rgba(16,16,20,.86);color:#fff;border:1px solid rgba(255,255,255,.28);"+
+      "background:var(--shuffle-bg,rgba(16,16,20,.86));color:var(--shuffle-ink,#fff);border:1px solid var(--shuffle-border,rgba(255,255,255,.28));"+
       "border-radius:999px;padding:11px 18px;cursor:pointer;letter-spacing:.04em;"+
       "box-shadow:0 2px 14px rgba(0,0,0,.3);backdrop-filter:blur(4px)}"+
-      ".nrt-shuffle:hover{background:rgba(16,16,20,.96)}"+
-      ".nrt-shuffle:focus-visible{outline:2px solid #fff;outline-offset:2px}"+
+      ".nrt-shuffle:hover{filter:brightness(1.12)}"+
+      ".nrt-shuffle:focus-visible{outline:2px solid currentColor;outline-offset:2px}"+
       "@media print{.nrt-shuffle{display:none}}";
     document.head.appendChild(st);
     var b=document.createElement("button");
