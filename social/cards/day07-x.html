@@ -1,0 +1,41 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{justify-content:center;align-items:center}
+.term{width:1180px;background:#0a1b15;border:2px solid var(--line);border-radius:14px;box-shadow:0 0 60px rgba(59,255,176,.18);overflow:hidden}
+.term-bar{display:flex;align-items:center;gap:12px;background:rgba(59,255,176,.07);border-bottom:2px solid var(--line);padding:16px 22px}
+.term-bar i{width:16px;height:16px;border-radius:50%;background:#ff6b5e}
+.term-bar i:nth-child(2){background:var(--amber)}
+.term-bar i:nth-child(3){background:var(--neon)}
+.term-bar span{margin-left:12px;font-family:"IBM Plex Mono",monospace;font-size:18px;color:var(--muted);letter-spacing:.08em}
+.term-body{padding:30px 34px 36px;font-family:"IBM Plex Mono",monospace;font-size:24px;line-height:2.1}
+.term-body .cmd{color:#eafff4}
+.term-body .cmd::before{content:"$ ";color:var(--neon)}
+.term-body .cmd b{color:var(--cyan);font-weight:600}
+.term-body .ok{color:var(--neon)}
+.term-body .ok::before{content:"✓ "}
+.term-body .wip{color:var(--amber)}
+.term-body .wip::before{content:"… "}
+.term-body .cm{color:#4d8267}
+.term-body .cm::before{content:"# "}
+h1{font-size:42px;margin:18px 0 4px;line-height:1.6}
+</style></head>
+<body class="t-hud sz-x">
+<div class="card">
+  <div class="term">
+    <div class="term-bar"><i></i><i></i><i></i><span>michip — dev log — 80×24</span></div>
+    <div class="term-body">
+      <p class="cmd"><b>michip</b> dev --status</p>
+      <p class="ok">ピンを立てる / 道順でつなぐ / 一枚の地図に残す</p>
+      <p class="ok">Mock旅程の再生（LPで動いてます）</p>
+      <p class="wip">旅程エディタ: 立ち寄りを並べると移動時間が積み上がる</p>
+      <p class="wip">みんなの旅 / 旅のカレンダー / 旅程の共有</p>
+      <h1>ロングドライブの計画が、<br>そのまま<em>記録</em>になる設計。</h1>
+      <p class="cm">β事前登録 → michip-lp.pages.dev（メールアドレスのみ・10秒）</p>
+    </div>
+  </div>
+</div>
+<footer class="brand-strip"><span class="mark">&gt;_</span><span>michip — ミチップ</span><span class="url">michip-lp.pages.dev</span><span class="cta">$ join --beta</span></footer>
+</body></html>

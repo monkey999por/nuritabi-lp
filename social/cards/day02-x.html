@@ -1,0 +1,33 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{flex-direction:row;gap:52px;align-items:center}
+.left{flex:1;display:flex;flex-direction:column;gap:22px}
+.prompt{font-size:24px;color:var(--muted)}
+h1{font-size:49px;line-height:1.55;white-space:nowrap}
+.chips{display:flex;gap:16px;flex-wrap:wrap}
+.stat-chip{font-size:20px}
+.cap{font-family:"IBM Plex Mono",monospace;font-size:21px;color:var(--muted)}
+.mapwrap{flex:1.1;padding:22px;border-radius:8px}
+.map-static{border-radius:4px;overflow:hidden}
+</style></head>
+<body class="t-hud sz-x">
+<div class="card">
+  <div class="left">
+    <p class="prompt mono"><b>michip</b> replay --trip sample_5days</p>
+    <h1><em>spot</em>をpush。<br><span class="amber">route</span>がcommitされる。</h1>
+    <div class="chips">
+      <span class="stat-chip"><b>5</b> days</span>
+      <span class="stat-chip"><b>15</b> spots</span>
+      <span class="stat-chip"><b>420</b> km</span>
+    </div>
+    <p class="cap">&gt; 5 days / 15 spots / 420 km — trip committed.</p>
+  </div>
+  <div class="mapwrap bracket">
+    <div class="map-static"><!--TRIP_MAP_SVG--></div>
+  </div>
+</div>
+<footer class="brand-strip"><span class="mark">&gt;_</span><span>michip — ミチップ</span><span class="url">michip-lp.pages.dev</span><span class="cta">$ join --beta</span></footer>
+</body></html>

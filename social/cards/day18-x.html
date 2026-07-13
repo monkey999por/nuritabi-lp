@@ -1,0 +1,28 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{justify-content:center;gap:42px}
+.prompt{font-size:26px;color:var(--muted);font-family:"IBM Plex Mono",monospace}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.cell{padding:38px 20px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.cell b{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:88px;line-height:1;color:var(--neon);text-shadow:0 0 30px rgba(59,255,176,.5)}
+.cell:nth-child(4) b{color:var(--amber);text-shadow:0 0 30px rgba(255,207,74,.4)}
+.cell small{font-family:"IBM Plex Mono",monospace;font-size:22px;letter-spacing:.16em;color:var(--muted)}
+.cell span{font-size:22px;color:#c9f2dd}
+.cap{font-family:"IBM Plex Mono",monospace;font-size:24px;color:var(--muted);text-align:center}
+</style></head>
+<body class="t-hud sz-x">
+<div class="card">
+  <p class="prompt mono"><b>michip</b> stats --trip sample_5days</p>
+  <div class="grid">
+    <div class="cell bracket"><b>5</b><small>DAYS</small><span>日単位でまとまる</span></div>
+    <div class="cell bracket"><b>15</b><small>SPOTS</small><span>名もない路肩も1点</span></div>
+    <div class="cell bracket"><b>420</b><small>KM</small><span>道順の線でつながる</span></div>
+    <div class="cell bracket"><b>1</b><small>MAP</small><span>旅がまるごと一枚に</span></div>
+  </div>
+  <p class="cap">&gt; これ全部、LPのヒーローでフロントエンドだけで再生されてます</p>
+</div>
+<footer class="brand-strip"><span class="mark">&gt;_</span><span>michip — ミチップ</span><span class="url">michip-lp.pages.dev</span><span class="cta">$ join --beta</span></footer>
+</body></html>

@@ -1,0 +1,33 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Yuji+Syuku&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{justify-content:center;align-items:center}
+.pc{width:100%;background:#fffdf4;border:2px solid var(--line);padding:20px 20px 0;box-shadow:0 26px 52px rgba(43,50,66,.22);transform:rotate(-.6deg);position:relative}
+.pc::after{content:"MICHIP・道";position:absolute;top:14px;right:18px;width:104px;height:104px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:700;letter-spacing:.1em;color:rgba(38,69,107,.55);border:3px solid rgba(38,69,107,.45);transform:rotate(-14deg);z-index:2}
+.scene{height:520px;background:linear-gradient(180deg,#f0e8d2 0%,#e2d3ae 58%,#968a67 58.5%,#75694e 100%);position:relative;overflow:hidden;border:2px solid rgba(38,69,107,.18)}
+.scene svg{position:absolute;inset:0;width:100%;height:100%}
+h1{font-size:46px;text-align:center;padding:26px 0 8px;color:var(--indigo-deep)}
+.body{font-size:25px;color:#4c5364;text-align:center;padding-bottom:26px;line-height:1.9}
+</style></head>
+<body class="t-retro sz-ig">
+<div class="card">
+  <div class="pc">
+    <div class="scene">
+      <svg viewBox="0 0 900 520" preserveAspectRatio="none">
+        <path d="M130 170 H500 V310 H130 Z" fill="#998866" opacity=".9"/>
+        <path d="M104 170 H526 L500 118 H130 Z" fill="#786c50"/>
+        <rect x="280" y="222" width="80" height="88" fill="#fbf6e8" opacity=".9"/>
+        <path d="M0 448 L900 400" stroke="#5c5648" stroke-width="13"/>
+        <path d="M0 490 L900 442" stroke="#5c5648" stroke-width="13"/>
+        <path d="M690 386 V470 M752 380 V464" stroke="#8a7a55" stroke-width="9"/>
+        <circle cx="368" cy="416" r="15" fill="#c23524" stroke="#fbf5e6" stroke-width="5"/>
+      </svg>
+    </div>
+    <h1>線路の果ての終着駅</h1>
+    <p class="body">目的地ではない場所に降りたことも、<br>旅の記録としてちゃんと残る。</p>
+  </div>
+</div>
+<footer class="brand-strip"><span class="mark">道</span><span>ミチップ</span><span class="url">映えなくて、結構。</span><span class="cta">3/3</span></footer>
+</body></html>

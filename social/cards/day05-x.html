@@ -1,0 +1,41 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Yuji+Syuku&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{flex-direction:row;gap:56px;align-items:center}
+.pc{flex:1.1;background:#fffdf4;border:2px solid var(--line);padding:18px 18px 26px;box-shadow:0 24px 48px rgba(43,50,66,.22);transform:rotate(-1deg);position:relative}
+.pc::after{content:"MICHIP・道";position:absolute;top:12px;right:16px;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font-size:15px;font-weight:700;letter-spacing:.1em;color:rgba(38,69,107,.55);border:3px solid rgba(38,69,107,.45);transform:rotate(-14deg)}
+.scene{height:420px;background:linear-gradient(180deg,#f9e2b8 0%,#eebf82 46%,#d98d55 62%,#7e6a52 62.5%,#5e5140 100%);position:relative;overflow:hidden;border:2px solid rgba(38,69,107,.18)}
+.scene svg{position:absolute;inset:0;width:100%;height:100%}
+.pc-cap{font-size:26px;font-weight:700;color:var(--indigo-deep);text-align:center;margin-top:18px}
+.right{flex:1}
+.tate-wrap{display:flex;gap:34px;align-items:flex-start}
+.tate{font-size:26px}
+h1{font-size:56px;line-height:1.6}
+.body{color:#4c5364;margin-top:24px;max-width:17em;font-size:27px}
+</style></head>
+<body class="t-retro sz-x">
+<div class="card">
+  <div class="pc">
+    <div class="scene">
+      <svg viewBox="0 0 700 420" preserveAspectRatio="none">
+        <circle cx="520" cy="150" r="56" fill="#f5d089" opacity=".9"/>
+        <path d="M0 260 Q160 180 330 240 T700 220 V420 H0 Z" fill="#8a6f4a" opacity=".55"/>
+        <path d="M0 310 Q210 240 440 300 T700 290 V420 H0 Z" fill="#6d5a3e" opacity=".7"/>
+        <path d="M70 370 C210 350 490 350 636 370" fill="none" stroke="#fbf5e6" stroke-width="6" stroke-dasharray="20 17" opacity=".8"/>
+        <circle cx="350" cy="362" r="12" fill="#c23524" stroke="#fbf5e6" stroke-width="4"/>
+      </svg>
+    </div>
+    <p class="pc-cap">— 名前のない展望地より —</p>
+  </div>
+  <div class="right tate-wrap">
+    <p class="tate">寄り道絵はがき</p>
+    <div>
+      <h1>映えなくて、<br><em>結構</em>。</h1>
+      <p class="body">看板も駐車場もない展望地。その眺めを知っているのは、行った人だけです。ミチップは、そういう場所の「行った」をピンで残します。</p>
+    </div>
+  </div>
+</div>
+<footer class="brand-strip"><span class="mark">道</span><span>ミチップ</span><span class="url">michip-lp.pages.dev</span><span class="cta">β事前登録 承り中</span></footer>
+</body></html>

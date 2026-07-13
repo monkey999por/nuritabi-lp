@@ -1,0 +1,30 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@600;800&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{flex-direction:row;gap:48px;align-items:center}
+.left{flex:1;display:flex;flex-direction:column;gap:20px}
+h1{font-size:60px;line-height:1.5;color:#22302a}
+h1 em{font-style:normal;color:var(--green)}
+.body{color:#5c6b62;font-size:27px;max-width:17em}
+.badge{display:inline-flex;align-items:center;gap:14px;font-size:24px;letter-spacing:.14em}
+.badge .chip-y{font-size:22px}
+.mapwrap{flex:1.05;padding:20px;border-radius:18px}
+.map-static{border-radius:8px;overflow:hidden}
+.mapwrap .cap{color:rgba(253,254,253,.85);font-size:21px;letter-spacing:.1em;text-align:center;padding-top:14px}
+</style></head>
+<body class="t-hwy sz-x">
+<div class="card">
+  <div class="left">
+    <p class="badge en"><span class="chip-y">EXIT 2</span>ROUTE — 道順でつなぐ</p>
+    <h1>点だけやと、<br>旅は<em>思い出せない</em>。</h1>
+    <p class="body">どの順番で回って、どの道でつながったか。そこまで残ると、あとから一日の流れを思い出せます。ミチップは、ピンとピンを道順の線でつなぎます。</p>
+  </div>
+  <div class="mapwrap signboard">
+    <div class="map-static"><!--TRIP_MAP_SVG--></div>
+    <p class="cap en">SAMPLE TRIP — 5 DAYS / 420 km</p>
+  </div>
+</div>
+<footer class="brand-strip"><span class="mark">IC</span><span>ミチップ</span><span class="url">michip-lp.pages.dev</span><span class="cta">β事前登録 受付中</span></footer>
+</body></html>

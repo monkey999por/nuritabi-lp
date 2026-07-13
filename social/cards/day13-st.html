@@ -1,0 +1,37 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{justify-content:center;gap:44px}
+.prompt{font-size:28px;color:var(--muted);font-family:"IBM Plex Mono",monospace}
+h1{font-size:80px;line-height:1.5}
+.mapwrap{padding:22px;border-radius:8px}
+.map-static{border-radius:4px;overflow:hidden}
+.chips{display:flex;gap:18px;flex-wrap:wrap}
+.stat-chip{font-size:24px}
+.cta-big{
+  margin-top:8px;text-align:center;
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:34px;
+  color:var(--neon);border:3px solid var(--neon);border-radius:8px;
+  padding:26px;background:rgba(59,255,176,.07);
+  box-shadow:0 0 34px rgba(59,255,176,.3);
+}
+.cta-big small{display:block;font-size:20px;color:var(--muted);margin-top:8px}
+.swipe{text-align:center;font-size:24px;color:var(--muted);font-family:"IBM Plex Mono",monospace}
+</style></head>
+<body class="t-hud sz-st">
+<div class="card">
+  <p class="prompt mono"><b>michip</b> replay --trip sample_5days</p>
+  <h1><em>spot</em>をpush。<br><span class="amber">route</span>が<br>commitされる。</h1>
+  <div class="mapwrap bracket"><div class="map-static"><!--TRIP_MAP_SVG--></div></div>
+  <div class="chips">
+    <span class="stat-chip"><b>5</b> days</span>
+    <span class="stat-chip"><b>15</b> spots</span>
+    <span class="stat-chip"><b>420</b> km</span>
+  </div>
+  <div class="cta-big">$ michip join --beta<small>リンクから10秒で事前登録（無料）</small></div>
+  <p class="swipe">↑ リンクスタンプをタップ</p>
+</div>
+<footer class="brand-strip"><span class="mark">&gt;_</span><span>michip — ミチップ</span><span class="url">michip-lp.pages.dev</span><span class="cta">β受付中</span></footer>
+</body></html>

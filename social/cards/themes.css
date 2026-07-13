@@ -1,0 +1,272 @@
+/* ═══ michip SNS カード共通テーマ（LP v1〜v5 のデザイン言語を移植）═══
+   使い方: <body class="t-retro sz-x"> のように テーマ(t-*) × サイズ(sz-*) を指定。
+   ビルド時に build.mjs がこのCSSをインライン化し、<!--TRIP_MAP_SVG--> を注入する。 */
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+body{display:flex;flex-direction:column;position:relative}
+.card{flex:1;display:flex;flex-direction:column;position:relative;padding:var(--pad);min-height:0}
+
+/* ── サイズ（フォント基準値をサイズごとに切替）── */
+.sz-x{--pad:72px;--fs-h:76px;--fs-h2:54px;--fs-body:30px;--fs-small:22px;--fs-brand:24px}
+.sz-ig{--pad:64px;--fs-h:74px;--fs-h2:52px;--fs-body:30px;--fs-small:22px;--fs-brand:24px}
+.sz-st{--pad:72px;--fs-h:88px;--fs-h2:60px;--fs-body:34px;--fs-small:26px;--fs-brand:28px}
+
+/* ── ブランド帯（全カード共通の下部）── */
+.brand-strip{
+  display:flex;align-items:center;gap:18px;
+  padding:26px var(--pad);flex:none;
+  font-size:var(--fs-brand);font-weight:700;letter-spacing:.06em;
+}
+.brand-strip .mark{width:1.7em;height:1.7em;display:grid;place-items:center;border-radius:50%;font-size:.9em;flex:none}
+.brand-strip .url{margin-left:auto;font-weight:600;letter-spacing:.08em;opacity:.85}
+.brand-strip .cta{font-weight:800}
+
+/* ── 見出し・本文の共通枠 ── */
+h1{font-size:var(--fs-h);line-height:1.42;letter-spacing:.02em;font-weight:800}
+h2{font-size:var(--fs-h2);line-height:1.5;font-weight:800}
+.body{font-size:var(--fs-body);line-height:1.9}
+.small{font-size:var(--fs-small);line-height:1.8}
+
+/* ── trip-map（静的完成表示）── */
+.map-static{position:relative}
+.map-static svg{width:100%;height:100%;display:block}
+.map-static .tm-route{fill:none;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;opacity:1}
+.map-static .tm-pin{opacity:1}
+.map-static .tm-dot{stroke-width:2.4}
+.map-static .tm-label{font-size:11px;font-weight:700;stroke-width:3;paint-order:stroke}
+
+/* ════ v1 昭和レトロ ════ */
+.t-retro{
+  --ink:#2b3242;--indigo:#26456b;--indigo-deep:#1b3350;--red:#c23524;--red-deep:#8e2417;
+  --paper:#fbf5e6;--gold:#b58a3a;--line:#cdb98e;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='36' viewBox='0 0 72 36'%3E%3Cg fill='none' stroke='%2326456b' stroke-opacity='.07' stroke-width='1.4'%3E%3Cpath d='M-18 36a18 18 0 0 1 36 0M0 36a18 18 0 0 1 36 0M18 36a18 18 0 0 1 36 0M36 36a18 18 0 0 1 36 0M54 36a18 18 0 0 1 36 0'/%3E%3Cpath d='M-36 18a18 18 0 0 1 36 0M0 18a18 18 0 0 1 36 0M36 18a18 18 0 0 1 36 0'/%3E%3C/g%3E%3C/svg%3E"),
+    #f2e7cd;
+  color:var(--ink);
+  font-family:"Shippori Mincho B1","Hiragino Mincho ProN",serif;
+}
+.t-retro .fude{font-family:"Yuji Syuku","Shippori Mincho B1",serif}
+.t-retro h1,.t-retro h2{color:var(--indigo-deep)}
+.t-retro em{font-style:normal;color:var(--red)}
+.t-retro .horo{ /* ホーロー看板 */
+  background:linear-gradient(168deg,#fffdf6,#f7efdb);
+  border:4px solid var(--indigo);border-radius:8px;
+  box-shadow:inset 0 0 0 4px #fffdf6,inset 0 0 0 7px var(--indigo),5px 7px 0 rgba(38,50,66,.18);
+  padding:.8em 1em;position:relative;
+}
+.t-retro .horo::before,.t-retro .horo::after{
+  content:"";position:absolute;width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#e8e2cf,#8d8877 60%,#55523f);
+}
+.t-retro .horo::before{top:11px;left:11px}
+.t-retro .horo::after{bottom:11px;right:11px}
+.t-retro .tate{ /* 縦書き朱帯 */
+  writing-mode:vertical-rl;color:#fbf5e6;
+  background:linear-gradient(180deg,#d0402e,var(--red) 60%,var(--red-deep));
+  padding:.9em .45em;letter-spacing:.4em;font-weight:700;
+  box-shadow:3px 4px 0 rgba(142,36,23,.35);
+}
+.t-retro .stamp{ /* 朱肉スタンプ */
+  width:2.6em;height:2.6em;border-radius:50%;display:grid;place-items:center;text-align:center;
+  font-family:"Yuji Syuku",serif;color:var(--red);border:3px solid var(--red);
+  transform:rotate(-10deg);line-height:1.25;
+}
+.t-retro .ticket{ /* 硬券切符 */
+  background:linear-gradient(180deg,#fdf6e0,#f3e6c4);
+  border:3px solid var(--red-deep);border-radius:5px;
+  box-shadow:6px 6px 0 var(--red-deep);
+  padding:.7em 1em .7em 1.6em;position:relative;
+}
+.t-retro .ticket::before{content:"";position:absolute;left:.8em;top:.4em;bottom:.4em;border-left:3px dashed rgba(142,36,23,.5)}
+.t-retro .wood{ /* 観光案内板の木枠 */
+  background:repeating-linear-gradient(94deg,rgba(84,52,28,.12) 0 4px,transparent 4px 14px),linear-gradient(172deg,#8a5a34,#6e4425 58%,#5c3720);
+  border-radius:10px;padding:16px;
+  box-shadow:0 24px 48px rgba(43,50,66,.3),inset 0 2px 0 rgba(255,240,210,.22);
+}
+.t-retro .wood-inner{background:var(--paper);border-radius:5px;padding:18px}
+.t-retro .map-static{background:#cfe3e0}
+.t-retro .tm-sea{fill:#cfe3e0}
+.t-retro .tm-land path{fill:#f8efd4;stroke:rgba(38,69,107,.34);stroke-width:1.2}
+.t-retro .tm-route{stroke:var(--red)}
+.t-retro .tm-dot{fill:var(--red);stroke:var(--paper)}
+.t-retro .tm-label{fill:#33405c;stroke:#f8efd4;font-family:"Shippori Mincho B1",serif}
+.t-retro .brand-strip{background:linear-gradient(180deg,#2c4e77,var(--indigo) 55%,var(--indigo-deep));color:#f5eeda}
+.t-retro .brand-strip .mark{background:var(--red);color:#fbf5e6;border:2px solid #fbf5e6;font-family:"Yuji Syuku",serif}
+.t-retro .brand-strip .cta{color:#e8c98a}
+
+/* ════ v2 旅ノート ════ */
+.t-note{
+  --ink:#3b3831;--red:#e05a3f;--blue:#3f7cac;--marker:#ffe58a;
+  --sticky-y:#fff3ad;--sticky-p:#ffd9cf;--sticky-g:#d3edd9;--tape:rgba(244,215,140,.65);
+  background:
+    linear-gradient(rgba(112,150,180,.18) 2px,transparent 2px),
+    linear-gradient(90deg,rgba(112,150,180,.18) 2px,transparent 2px),
+    #fbf6e8;
+  background-size:52px 52px;
+  color:var(--ink);
+  font-family:"Klee One","Hiragino Maru Gothic ProN",cursive;font-weight:600;
+}
+.t-note h1,.t-note h2{font-weight:600}
+.t-note .hl{background:linear-gradient(transparent 58%,var(--marker) 58% 92%,transparent 92%);padding:0 .06em}
+.t-note .red{color:var(--red)}
+.t-note .sticky{
+  border:3px solid rgba(59,56,49,.75);border-radius:4px 4px 22px 4px;
+  box-shadow:6px 8px 0 rgba(59,56,49,.14);padding:1em;position:relative;
+}
+.t-note .sticky.y{background:linear-gradient(180deg,#fff7c4,var(--sticky-y))}
+.t-note .sticky.p{background:linear-gradient(180deg,#ffe4da,var(--sticky-p))}
+.t-note .sticky.g{background:linear-gradient(180deg,#e0f3e4,var(--sticky-g))}
+.t-note .tape{
+  position:absolute;width:5em;height:1.2em;background:var(--tape);
+  top:-.6em;left:50%;transform:translateX(-50%) rotate(-2deg);
+  border-left:2px dotted rgba(59,56,49,.25);border-right:2px dotted rgba(59,56,49,.25);
+  box-shadow:0 2px 5px rgba(59,56,49,.12);
+}
+.t-note .polaroid{
+  background:#fffdf6;border:2px solid rgba(59,56,49,.2);padding:.5em .5em 0;
+  box-shadow:0 18px 40px rgba(59,56,49,.2);position:relative;
+}
+.t-note .doodle{stroke:var(--red);stroke-width:4;fill:none;stroke-linecap:round}
+.t-note .map-static{background:#d9ebf1;border:3px solid rgba(59,56,49,.4)}
+.t-note .tm-sea{fill:#d9ebf1}
+.t-note .tm-land path{fill:#faf3dc;stroke:rgba(63,124,172,.5);stroke-width:1.2;stroke-dasharray:5 3}
+.t-note .tm-route{stroke:var(--red)}
+.t-note .tm-dot{fill:var(--red);stroke:#fffdf4}
+.t-note .tm-label{fill:#41546b;stroke:#faf3dc;font-family:"Klee One",cursive}
+.t-note .brand-strip{border-top:3px dashed rgba(124,118,105,.4);color:var(--ink)}
+.t-note .brand-strip .mark{background:var(--sticky-y);border:2.5px solid var(--ink);border-radius:8px;transform:rotate(-4deg)}
+.t-note .brand-strip .cta{color:var(--red)}
+
+/* ════ v3 全ツッコミ ════ */
+.t-manga{
+  --ink:#191919;--red:#e7352f;--bg:#fff3bf;
+  background:
+    radial-gradient(circle,rgba(25,25,25,.05) 2px,transparent 2.2px) 0 0/20px 20px,
+    var(--bg);
+  color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+}
+.t-manga .pop{font-family:"Mochiy Pop One",sans-serif;font-weight:400}
+.t-manga .magic{font-family:"Yusei Magic",sans-serif;font-weight:400}
+.t-manga h1,.t-manga h2{font-family:"Mochiy Pop One",sans-serif;font-weight:400}
+.t-manga em{font-style:normal;color:var(--red)}
+.t-manga .koma{background:#fffdf6;border:5px solid var(--ink);box-shadow:11px 11px 0 var(--ink);position:relative}
+.t-manga .shuchusen{position:relative;overflow:hidden}
+.t-manga .shuchusen::before{
+  content:"";position:absolute;inset:-30%;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(25,25,25,.8) 0deg .55deg,transparent .55deg 6.5deg);
+  -webkit-mask-image:radial-gradient(ellipse 62% 62% at 50% 50%,transparent 0 44%,#000 78%);
+  mask-image:radial-gradient(ellipse 62% 62% at 50% 50%,transparent 0 44%,#000 78%);
+  opacity:.5;
+}
+.t-manga .shuchusen>*{position:relative;z-index:1}
+.t-manga .fukidashi{
+  display:inline-block;background:#fff;border:4px solid var(--ink);border-radius:1.2em;
+  padding:.4em .9em;font-family:"Yusei Magic",sans-serif;position:relative;
+}
+.t-manga .fukidashi b{color:var(--red)}
+.t-manga .fukidashi.tail::before{content:"";position:absolute;bottom:-24px;left:14%;border:14px solid transparent;border-top:22px solid var(--ink);border-bottom:0}
+.t-manga .fukidashi.tail::after{content:"";position:absolute;bottom:-15px;left:calc(14% + 4px);border:10px solid transparent;border-top:16px solid #fff;border-bottom:0}
+.t-manga .gizagiza{
+  clip-path:polygon(50% 0%,60% 12%,74% 4%,77% 17%,93% 14%,88% 28%,100% 34%,90% 45%,100% 58%,86% 62%,92% 78%,76% 74%,74% 90%,61% 81%,50% 96%,39% 81%,26% 90%,24% 74%,8% 78%,14% 62%,0% 58%,10% 45%,0% 34%,12% 28%,7% 14%,23% 17%,26% 4%,40% 12%);
+  background:var(--red);color:#fff;display:grid;place-items:center;text-align:center;
+  font-family:"Mochiy Pop One",sans-serif;
+}
+.t-manga .onoma{
+  font-family:"Mochiy Pop One",sans-serif;color:var(--bg);
+  -webkit-text-stroke:4px var(--ink);
+  text-shadow:6px 6px 0 rgba(25,25,25,.25);line-height:1;
+}
+.t-manga .map-static{background:#e3f0f4;border:4px solid var(--ink)}
+.t-manga .tm-sea{fill:#dfeef3}
+.t-manga .tm-land path{fill:#fffbe6;stroke:var(--ink);stroke-width:1.6}
+.t-manga .tm-route{stroke:var(--red);stroke-width:3.6}
+.t-manga .tm-dot{fill:var(--red);stroke:var(--ink)}
+.t-manga .tm-label{fill:var(--ink);stroke:#fffbe6;font-family:"Yusei Magic",sans-serif}
+.t-manga .brand-strip{background:var(--ink);color:var(--bg)}
+.t-manga .brand-strip .mark{background:var(--red);color:#fff;border:2.5px solid var(--bg);border-radius:0;font-family:"Mochiy Pop One",sans-serif;transform:rotate(-4deg)}
+.t-manga .brand-strip .cta{color:#ffd24d}
+
+/* ════ v4 高速道路標識 ════ */
+.t-hwy{
+  --green:#0a6b3d;--green-deep:#07502d;--green-edge:#0d7a46;
+  --yellow:#ffd447;--white:#fdfefd;--asphalt:#2c3134;--asphalt2:#22262a;--blue:#1e5fa8;
+  background:#e8efe7;color:#22302a;
+  font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;font-weight:700;
+}
+.t-hwy .en{font-family:"Overpass","Zen Kaku Gothic New",sans-serif;letter-spacing:.08em;font-weight:800}
+.t-hwy .signboard{
+  background:linear-gradient(174deg,var(--green-edge),var(--green) 55%,var(--green-deep));
+  border:6px solid var(--white);border-radius:22px;
+  outline:3px solid rgba(10,60,35,.5);
+  box-shadow:0 30px 60px rgba(20,40,30,.35),inset 0 2px 0 rgba(255,255,255,.25);
+  color:var(--white);
+}
+.t-hwy .signboard.blue{background:linear-gradient(174deg,#2569b5,var(--blue) 55%,#164a85);outline-color:rgba(12,40,75,.5)}
+.t-hwy .signboard em{font-style:normal;color:var(--yellow)}
+.t-hwy .dir{display:flex;align-items:center;gap:.6em}
+.t-hwy .dir .arrow{font-family:"Overpass",sans-serif;font-weight:800}
+.t-hwy .chip-y{background:var(--yellow);color:#3a3100;border:3px solid var(--white);border-radius:10px;padding:.15em .7em;display:inline-block}
+.t-hwy .kousji{ /* 工事帯 */
+  background:repeating-linear-gradient(-45deg,var(--yellow) 0 26px,var(--asphalt2) 26px 52px);
+}
+.t-hwy .road{background:linear-gradient(180deg,#3a4044,var(--asphalt))}
+.t-hwy .map-static{background:#cfe2ea;border-radius:10px;border:3px solid rgba(255,255,255,.85)}
+.t-hwy .tm-sea{fill:#cfe2ea}
+.t-hwy .tm-land path{fill:#f2f6ea;stroke:#b9c8b4;stroke-width:1.2}
+.t-hwy .tm-route{stroke:#fdfefd;stroke-width:5.6;filter:drop-shadow(0 0 2px rgba(10,107,61,.9))}
+.t-hwy .tm-dot{fill:var(--yellow);stroke:var(--green-deep)}
+.t-hwy .tm-label{fill:#2a3c30;stroke:#f2f6ea;font-family:"Zen Kaku Gothic New",sans-serif}
+.t-hwy .brand-strip{background:linear-gradient(180deg,#33393d,var(--asphalt2));color:var(--white)}
+.t-hwy .brand-strip .mark{background:var(--green);border:2.5px solid var(--white);border-radius:8px;font-family:"Overpass",sans-serif;font-size:.62em}
+.t-hwy .brand-strip .cta{color:var(--yellow)}
+
+/* ════ v5 走行ログHUD ════ */
+.t-hud{
+  --neon:#3bffb0;--cyan:#7cf7ff;--amber:#ffcf4a;--muted:#6fa78c;
+  --line:rgba(59,255,176,.22);--line-dim:rgba(59,255,176,.1);
+  background:
+    linear-gradient(var(--line-dim) 2px,transparent 2px) 0 0/100% 88px,
+    linear-gradient(90deg,var(--line-dim) 2px,transparent 2px) 0 0/88px 100%,
+    radial-gradient(90% 60% at 50% 0%,#0d231b,transparent 70%),
+    #07120f;
+  color:#c9f2dd;
+  font-family:"IBM Plex Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+}
+.t-hud::after{ /* スキャンライン */
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:50;
+  background:repeating-linear-gradient(180deg,rgba(0,0,0,.14) 0 2px,transparent 2px 6px);
+}
+.t-hud .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.t-hud h1,.t-hud h2{font-family:"IBM Plex Mono",ui-monospace,monospace;font-weight:600;color:#eafff4}
+.t-hud em{font-style:normal;color:var(--neon);text-shadow:0 0 24px rgba(59,255,176,.5)}
+.t-hud .amber{color:var(--amber);text-shadow:0 0 24px rgba(255,207,74,.4)}
+.t-hud .prompt::before{content:"$ ";color:var(--neon)}
+.t-hud .prompt b{color:var(--cyan);font-weight:600}
+.t-hud .bracket{position:relative;background:rgba(12,33,26,.55);border:2px solid var(--line)}
+.t-hud .bracket::before,.t-hud .bracket::after{content:"";position:absolute;width:26px;height:26px}
+.t-hud .bracket::before{top:-3px;left:-3px;border-top:4px solid var(--neon);border-left:4px solid var(--neon)}
+.t-hud .bracket::after{bottom:-3px;right:-3px;border-bottom:4px solid var(--neon);border-right:4px solid var(--neon)}
+.t-hud .stat-chip{
+  display:inline-flex;align-items:baseline;gap:.35em;
+  font-family:"IBM Plex Mono",monospace;font-weight:600;
+  background:rgba(59,255,176,.06);border:2px solid var(--line);border-radius:6px;
+  padding:.3em .7em;color:var(--muted);
+}
+.t-hud .stat-chip b{color:var(--neon);text-shadow:0 0 16px rgba(59,255,176,.5);font-size:1.6em}
+.t-hud .map-static{background:#081511;border:2px solid var(--line)}
+.t-hud .tm-sea{fill:transparent}
+.t-hud .tm-land path{fill:#12271f;stroke:rgba(59,255,176,.35);stroke-width:1}
+.t-hud .tm-route{stroke:var(--neon);filter:drop-shadow(0 0 6px rgba(59,255,176,.9))}
+.t-hud .tm-dot{fill:var(--amber);stroke:#07120f;filter:drop-shadow(0 0 6px rgba(255,207,74,.8))}
+.t-hud .tm-label{fill:#a8e8c8;stroke:#07120f;font-family:"IBM Plex Mono",monospace;font-size:10px}
+.t-hud .brand-strip{border-top:2px solid var(--line);color:var(--muted);font-family:"IBM Plex Mono",monospace}
+.t-hud .brand-strip .mark{border:2.5px solid var(--neon);border-radius:6px;color:var(--neon);font-size:.7em;box-shadow:0 0 18px rgba(59,255,176,.3)}
+.t-hud .brand-strip .cta{color:var(--neon)}
+
+/* ── 共通ミニ部品（COMING SOON モック用）── */
+.mini-route{width:100%}
+.mini-route polyline{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-grid i{display:block;aspect-ratio:1;border-radius:4px}

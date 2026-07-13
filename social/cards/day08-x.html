@@ -1,0 +1,41 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Yusei+Magic&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{flex-direction:row;gap:52px;align-items:center}
+.koma{flex:1;height:100%;padding:20px;display:flex;flex-direction:column;transform:rotate(-.5deg)}
+.scene{flex:1;position:relative;border:4px solid var(--ink);overflow:hidden;background:linear-gradient(180deg,#e3ecf2 0%,#d3e0dd 55%,#94a98e 55.5%,#75906f 100%)}
+.scene svg{position:absolute;inset:0;width:100%;height:100%}
+.scene .fukidashi{position:absolute;top:28px;right:26px;font-size:30px;transform:rotate(2deg);box-shadow:5px 5px 0 rgba(25,25,25,.85)}
+.koma .cap{font-family:"Yusei Magic",sans-serif;font-size:24px;padding-top:14px;text-align:center}
+.right{flex:1}
+h1{font-size:62px;line-height:1.45;margin-bottom:18px}
+.magic{font-size:28px;line-height:2;color:#3d3a30}
+.magic b{color:var(--red)}
+.onoma{position:absolute;top:44px;left:46%;font-size:70px;transform:rotate(-8deg);z-index:5}
+</style></head>
+<body class="t-manga sz-x">
+<div class="card">
+  <span class="onoma">ドーン</span>
+  <div class="koma">
+    <div class="scene">
+      <svg viewBox="0 0 700 560" preserveAspectRatio="none">
+        <path d="M350 60 C320 92 308 128 308 170 L308 420 L392 420 L392 170 C392 128 380 92 350 60 Z" fill="#9fb0a4"/>
+        <ellipse cx="350" cy="74" rx="22" ry="25" fill="#9fb0a4"/>
+        <path d="M308 190 Q350 218 392 190" fill="none" stroke="#7d9184" stroke-width="5"/>
+        <path d="M0 480 H700" stroke="#5c5648" stroke-width="40"/>
+        <path d="M0 480 H700" stroke="#fbf5e6" stroke-width="5" stroke-dasharray="42 32"/>
+        <circle cx="520" cy="480" r="13" fill="#e7352f" stroke="#191919" stroke-width="4"/>
+      </svg>
+      <span class="fukidashi">デカすぎる<b>やろ</b>。</span>
+    </div>
+    <p class="cap">国道沿い・巨大観音（イメージや）</p>
+  </div>
+  <div class="right">
+    <h1>通り過ぎる予定やった場所ほど、<em>あとで話したくなる</em>。</h1>
+    <p class="magic">国道沿いの巨大観音。名もない展望地。誰もいない終着駅。<br>SNS映えせん場所の「行った」に、<b>置き場を作ってる</b>んです。</p>
+  </div>
+</div>
+<footer class="brand-strip"><span class="mark">ツ</span><span>ミチップ</span><span class="url">michip-lp.pages.dev</span><span class="cta">登録するんかい（無料）</span></footer>
+</body></html>

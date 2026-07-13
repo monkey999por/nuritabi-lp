@@ -1,0 +1,37 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="themes.css">
+<style>
+.card{flex-direction:row;gap:56px;align-items:center}
+.left{flex:1}
+.kaihatsu{display:inline-block;background:var(--blue);color:#fff;border-radius:6px;padding:4px 22px;font-size:24px;letter-spacing:.16em;transform:rotate(-1.2deg);margin-bottom:22px;box-shadow:4px 4px 0 rgba(59,56,49,.15)}
+h1{font-size:58px;line-height:1.6;margin-bottom:22px}
+.body{color:#5d584c;font-size:27px;max-width:16.5em}
+.right{flex:1;display:flex;flex-direction:column;gap:24px}
+.feed{background:#fffdf6;border:3px solid rgba(59,56,49,.7);border-radius:14px;padding:22px 24px;display:flex;align-items:center;gap:20px;box-shadow:5px 6px 0 rgba(59,56,49,.14)}
+.feed:nth-child(2){transform:rotate(.8deg)}
+.avatar{width:52px;height:52px;border-radius:50%;background:var(--red);flex:none;border:3px solid #fffdf6;box-shadow:0 0 0 3px var(--red)}
+.feed:nth-child(2) .avatar{background:var(--blue);box-shadow:0 0 0 3px var(--blue)}
+.fb{flex:1;min-width:0}
+.fb b{font-size:24px;display:block}
+.fb small{font-size:19px;color:#7c7669}
+.mini-route{height:40px;margin-top:6px}
+.mini-route polyline{stroke:var(--red);stroke-dasharray:2 9}
+.mini-route circle{fill:var(--red)}
+.foot{font-size:19px;color:#7c7669;align-self:flex-end;white-space:nowrap}
+</style></head>
+<body class="t-note sz-x">
+<div class="card">
+  <div class="left">
+    <p class="kaihatsu">開発予定 — みんなの旅</p>
+    <h1>だれかの旅ノートが、<br><span class="hl">そっと流れてくる</span>。</h1>
+    <p class="body">フォローした人の旅程がフィードに。なまえのないスポットに<b class="red">先客の足あと</b>が付いてたら、それが次の旅のきっかけ。</p>
+  </div>
+  <div class="right">
+    <div class="feed"><span class="avatar"></span><div class="fb"><b>湯めぐりの人</b><small>東北 5日間・26スポット</small><svg class="mini-route" viewBox="0 0 240 40"><polyline points="12,30 60,20 96,28 140,10 184,18 228,8"/><circle cx="12" cy="30" r="5"/><circle cx="96" cy="28" r="5"/><circle cx="140" cy="10" r="5"/><circle cx="228" cy="8" r="5"/></svg></div><span class="foot">足あと 12</span></div>
+    <div class="feed"><span class="avatar"></span><div class="fb"><b>北へゆく人</b><small>日帰り・4スポット</small><svg class="mini-route" viewBox="0 0 240 40"><polyline points="12,30 60,20 96,28 140,10 184,18 228,8"/><circle cx="12" cy="30" r="5"/><circle cx="96" cy="28" r="5"/><circle cx="140" cy="10" r="5"/><circle cx="228" cy="8" r="5"/></svg></div><span class="foot">足あと 5</span></div>
+  </div>
+</div>
+<footer class="brand-strip"><span class="mark">記</span><span>ミチップ</span><span class="url">michip-lp.pages.dev</span><span class="cta">β事前登録 うけつけ中</span></footer>
+</body></html>
