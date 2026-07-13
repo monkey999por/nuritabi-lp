@@ -37,9 +37,9 @@
 
 1. フォーム右上「送信」→ `<>`（埋め込む）タブ → 表示された iframe の **src の URL だけ** をコピー
    （形式: `https://docs.google.com/forms/d/e/XXXX/viewform?embedded=true`）
-2. `src/lp-src.html` 内の `GOOGLE_FORM_EMBED_URL`（**2箇所**: iframe の src と「新しいタブで開く」リンク）を置換
-3. `node src/build.mjs` で `public/index.html` を再生成 → commit & push
-4. 実機で: フォームが枠内に収まるか確認。縦に見切れる場合は `src/lp-src.html` の `.form-embed iframe{height:900px}`（モバイルは 960px）を調整して再ビルド
+2. コピーした URL を `src/form-url.txt` に **1 行だけ** 保存（このファイルはコミット不要。ビルド時に全バリアントの `GOOGLE_FORM_EMBED_URL` へ一括注入される）
+3. `node src/build.mjs` で `public/` を再生成 → `public/*.html` を commit & push（URL 未注入のままだと LP には「フォーム準備中」の表示が出る）
+4. 実機で: フォームが枠内に収まるか確認。縦に見切れる場合は各 `src/variants/vN.html` の `iframe{height:900px}`（モバイルは 960px）を調整して再ビルド
 
 ## 運用メモ
 
